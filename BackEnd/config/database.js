@@ -1,11 +1,12 @@
 /***************************database connection*********************/
 const mysql = require('mysql');
+require('dotenv').config();
 
 const con=mysql.createConnection({
-    host:'localhost',
-    user:'root',
-    password:'Mustaqmj@1',
-    database:'csg_rkd_db'
+    host:process.env.host,
+    user:process.env.user,
+    password:process.env.password,
+    database:process.env.database
 
 });
 

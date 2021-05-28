@@ -14,6 +14,8 @@ app.get('*',(req,res)=>{
     res.sendFile(path.join(__dirname,'..','frontEnd','build','index.html'))
 });
 
+// required request[controller] to perform requestForm  operation
+app.use(require('./controllers/request'));
 
 // running node server 
 app.listen(PORT,()=>{

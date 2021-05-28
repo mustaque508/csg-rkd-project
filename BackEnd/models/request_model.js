@@ -39,3 +39,28 @@ exports.storeData=(req,res,next)=>{
     
 
 }
+
+exports.getData=(req,res,next)=>{
+    try 
+    {
+        //select query
+        const sql="SELECT *FROM rkd_data ";
+
+        con.query(sql,(err,result)=>{
+            if(err){
+                res.locals.error=err;
+                next();
+            }else{
+                res.locals.result=result;
+                next();
+            } 
+           
+            
+        })
+
+    }
+    catch(err)
+    {
+        res.send(`got error in model[exports.getData] : ${err}`);
+    }
+}

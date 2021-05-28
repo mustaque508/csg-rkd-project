@@ -1,6 +1,6 @@
 
 /************************ Routing can handle by this file ************************/
-import {React,HomePage,Switch,Route,RequestForm} from '../views/Import'
+import {React,Switch,Route,RequestForm} from '../views/Import'
 
 const Router =() => {
     return (

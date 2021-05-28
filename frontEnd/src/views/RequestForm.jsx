@@ -3,7 +3,8 @@
 
 import 
 {
-    React,TextField,useEffect,plugin_for_contact,Select,MenuItem,MuiThemeProvider,colortheme,Button,useState,axios,toast
+    React,TextField,useEffect,plugin_for_contact,Select,MenuItem,MuiThemeProvider,colortheme,Button,useState,axios,toast,
+    useCallback,Autocomplete
 }
 from './Import'
 
@@ -26,11 +27,42 @@ const RequestForm = () => {
 
     });
 
+    //search array
+    const [searchArray,setSearchArray]=useState([]);
+
+    //get all requester_details
+    const fetch_requester_details = useCallback(
+        ()=>{
+            axios.get('/getData')
+            .then((res)=>{
+                
+                if(res.data.result)
+                {
+                    setSearchArray(res.data.result);
+                }
+                else if(res.data.error)
+                {
+                    toast.error(res.data.error,{autoClose: false}); 
+                }
+
+            }).catch((err)=>{
+                toast.error(err,{autoClose: false});  
+            })
+        },[]
+    )
+
+    
     // display country_code based on country in phone input_field 
     useEffect(() => {
+
+        //plugin for contact
         plugin_for_contact(document.querySelector("#req_contact_no"));
         plugin_for_contact(document.querySelector("#cp_contact_no"));
-    },[]);
+
+        //get all requester_details
+        fetch_requester_details();
+
+    },[fetch_requester_details]);
     
     // change input fields based on [onchange ]
     const inputEvent = (event) =>{
@@ -43,12 +75,22 @@ const RequestForm = () => {
 
         })
     }
-
+ 
+    //change input based on dropdown
+    const handleInputChange = (event,value)=>{
+        setRequest_details((prevValue)=>{
+            return{
+                ...prevValue,
+                location:value
+            }
+        })
+    }
 
     //submit
     const submit = (event) =>{
         event.preventDefault();
         
+        console.log(request_details);
         //send Data
         axios.post('/storeData',request_details)
         .then((res)=>{
@@ -164,7 +206,23 @@ const RequestForm = () => {
                                             {/* Area/location */}
                                             <div className="col-lg-6">
                                                 <label htmlFor="location" className="mt-2">Area/Location</label>
-                                                <TextField className="form-control mt-0" type="text" name="location" id="location" onChange={inputEvent} required={true} />
+                                                {/* <TextField className="form-control mt-0" type="text" name="location" id="location" onChange={inputEvent} required={true} /> */}
+                                                <Autocomplete
+                                                    freeSolo
+                                                    id="free-solo-2-demo"
+                                                    disableClearable
+                                                    options={searchArray.map((option) => option.area_location)}
+                                                    onChange={handleInputChange}
+                                                    renderInput={(params) => (
+                                                        <TextField
+                                                            {...params}
+                                                            onChange={inputEvent}
+                                                            name="location"
+                                                            id="location"
+                                                            InputProps={{ ...params.InputProps, type: 'search' }}
+                                                        />
+                                                    )}
+                                                 />
                                             </div>      
                                         </div>  
                                     </div>

@@ -31,7 +31,7 @@ exports.storeData=(req,res,next)=>{
     }
     catch(err)
     {
-        res.send(`got error in model[exports.storeData] : ${err}`);
+        res.json({error:`got error in model[exports.storeData] : ${err}`});
     }
    
    
@@ -40,11 +40,12 @@ exports.storeData=(req,res,next)=>{
 
 }
 
+//fetch all requester_details
 exports.getData=(req,res,next)=>{
     try 
     {
         //select query
-        const sql="SELECT *FROM rkd_data ";
+        const sql=`SELECT DISTINCT occupation,address,mohalla_masjid_jamat,area_location,contact_person,cp_phone FROM rkd_data`;
 
         con.query(sql,(err,result)=>{
             if(err){
@@ -61,6 +62,6 @@ exports.getData=(req,res,next)=>{
     }
     catch(err)
     {
-        res.send(`got error in model[exports.getData] : ${err}`);
+        res.json({error:`got error in model[exports.getData] : ${err}`});
     }
 }

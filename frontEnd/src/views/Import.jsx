@@ -23,7 +23,9 @@ import axios from 'axios'
 import {toast} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Autocomplete from '@material-ui/lab/Autocomplete'
-
+import Header from '../views/Header'
+import {Navbar,Container,Nav} from 'react-bootstrap'
+import PurchaseForm from './PurchaseForm'
 
 toast.configure()
 
@@ -37,5 +39,6 @@ const colortheme = createMuiTheme({
 export
 {
  App,React,ReactDOM,Link,BrowserRouter,Redirect,HomePage,Route,Switch,Router,RequestForm,TextField,intlTelInput,util,useEffect,
- plugin_for_contact,Select,MenuItem,Button,MuiThemeProvider,colortheme,useState,axios,toast,useCallback,Autocomplete
+ plugin_for_contact,Select,MenuItem,Button,MuiThemeProvider,colortheme,useState,axios,toast,useCallback,Autocomplete,Header,
+ Navbar,Container,Nav,PurchaseForm
 }

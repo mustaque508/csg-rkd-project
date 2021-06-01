@@ -3,6 +3,7 @@
 const con=require('../config/database');
 const moment = require('moment');
 
+
 //store Data
 exports.storeData=(req,res,next)=>{
 
@@ -65,3 +66,5 @@ exports.getData=(req,res,next)=>{
         res.json({error:`got error in model[exports.getData] : ${err}`});
     }
 }
+
+

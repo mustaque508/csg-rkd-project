@@ -7,7 +7,7 @@ const Header = () => {
         <section className="header-section">
                  <Navbar bg="light" expand="lg">
                     <Container>
-                    <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
+                    <Link to="/" className="text-uppercase navbar-brand">covid support group</Link>
 
                     {/* Menu Button */}
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />

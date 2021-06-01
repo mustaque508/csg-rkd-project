@@ -10,7 +10,7 @@ exports.storeData=(req,res,next)=>{
     try
     {
         const{req_name,req_contact_no,card_no,card_type,dependent_no,children_no,occupation,address,location,jamat_name,
-        contact_person,cp_contact_no}=req.body;
+        contact_person,cp_contact_no}=req.body.request_details;
         const created_date=moment(new Date()).format("YYYY-MM-DD h:mm:ss");
 
         //insert query

@@ -41,7 +41,9 @@ const RequestForm = () => {
         'req_card_type_error':'',
         'req_contact_no_error':'',
         'req_name_error':'',
-        'card_no_error':''
+        'card_no_error':'',
+        'dependent_no_error':'',
+        'children_no_error':''
 
     });
 
@@ -49,7 +51,7 @@ const RequestForm = () => {
      const 
      {
          address_error,contact_person_error,cp_contact_error,jamat_name_error,location_error,occupation_error,
-         req_card_type_error,req_contact_no_error,req_name_error,card_no_error
+         req_card_type_error,req_contact_no_error,req_name_error,card_no_error,dependent_no_error,children_no_error
      }=errors;
 
 
@@ -134,56 +136,55 @@ const RequestForm = () => {
         const contact_error=validate_contact(document.querySelector("#req_contact_no"));
         const cp_contact_error=validate_contact(document.querySelector("#cp_contact_no"));
     
+        console.log(request_details);
         
         // send Data
         axios.post('/store_request_details',{request_details,contact_error,cp_contact_error})
         .then((res)=>{
             
-            if(res.data,errors)
+            if(res.data.errors)
             {
                 const 
                 {
                     address_error,contact_person_error,cp_contact_error,jamat_name_error,location_error,occupation_error,
-                    req_card_type_error,req_contact_no_error,req_name_error,card_no_error
+                    req_card_type_error,req_contact_no_error,req_name_error,card_no_error,dependent_no_error,children_no_error
                 }=res.data.errors;
               
                 setErrors({
                     address_error,contact_person_error,cp_contact_error,jamat_name_error,location_error,occupation_error,
-                    req_card_type_error,req_contact_no_error,req_name_error,card_no_error  
+                    req_card_type_error,req_contact_no_error,req_name_error,card_no_error,dependent_no_error,children_no_error  
                 });
                 setOpen(true);
 
             }
-        })
-        // .then((res)=>{
-        //     if(res.data.success)
-        //     {
-        //         setRequest_details({
-        //             'req_name':'',
-        //             'req_contact_no':'',
-        //             'card_no':'',
-        //             'card_type':'',
-        //             'dependent_no':'',
-        //             'children_no':'',
-        //             'occupation':'',
-        //             'address':'',
-        //             'location':'',
-        //             'jamat_name':'',
-        //             'contact_person':'',
-        //             'cp_contact_no':'',
-        //             'values':[]
-        //         });
-        //         event.target.reset();
-        //         toast.success(res.data.success);
-        //     }
-        //     else if(res.data.error)
-        //     {
-        //         toast.error(res.data.error,{autoClose: false});
-        //     }
 
-        // }).catch((err)=>{
-        //     toast.error(err,{autoClose: false});
-        // });
+            if(res.data.success)
+            {
+                setRequest_details({
+                    'req_name':'',
+                    'req_contact_no':'',
+                    'card_no':'',
+                    'card_type':'',
+                    'dependent_no':'',
+                    'children_no':'',
+                    'occupation':'',
+                    'address':'',
+                    'location':'',
+                    'jamat_name':'',
+                    'contact_person':'',
+                    'cp_contact_no':'',
+                    'values':[]
+                });
+                event.target.reset();
+                toast.success(res.data.success);
+            }
+            else if(res.data.error)
+            {
+                toast.error(res.data.error,{autoClose: false});
+            }
+
+        })
+      
     }
 
 
@@ -262,14 +263,18 @@ const RequestForm = () => {
                                             {/* Number of depenedents */}
                                             <div className="col-lg-3">
                                                 <label htmlFor="dependent_no"> Number of depenedents</label>
-                                                <TextField  className="form-control mt-2 mb-2" inputProps={{ min: "0"}} id="dependent_no" type="number" name="dependent_no"  onChange={inputEvent}/>
-                                                
+                                                <BootstrapTooltip title={dependent_no_error} open={open} placement="top-end">
+                                                    <TextField  className="form-control mt-2 mb-2" inputProps={{ min: "0", step: "1" }} id="dependent_no" type="number" name="dependent_no"  onChange={inputEvent} onKeyUp={hideToolTip}/>
+                                                </BootstrapTooltip>
                                             </div>
 
                                             {/* Number of children below 15 years age */}
                                             <div className="col-lg-4">
                                                 <label htmlFor="children_no">Number of children below 15 years age</label>
-                                                <TextField  className="form-control mt-2 mb-2" inputProps={{ min: "0"}} id="children_no"  type="number" name="children_no" onChange={inputEvent}  />
+                                                <BootstrapTooltip title={children_no_error} open={open} placement="top-end">
+                                                    <TextField  className="form-control mt-2 mb-2" inputProps={{ min: "0", step: "1" }} id="children_no"  type="number" name="children_no" onChange={inputEvent} onKeyUp={hideToolTip}  />
+                                                </BootstrapTooltip>
+                                               
                                             </div>   
 
                                             {/* Occupation */}

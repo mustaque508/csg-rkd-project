@@ -11,7 +11,7 @@ const con=require('../config/database');
 const validation = (req,res,next)=>{
 
     //get all input value and perform validation
-    const {req_name,card_no,card_type,occupation,address,location,jamat_name,contact_person,req_contact_no}=req.body.request_details;
+    const {req_name,card_no,card_type,occupation,address,location,jamat_name,contact_person,req_contact_no,dependent_no,children_no}=req.body.request_details;
     const {contact_error,cp_contact_error}=req.body;
 
 
@@ -29,6 +29,8 @@ const validation = (req,res,next)=>{
     errors.jamat_name_error=validations.validate_name(jamat_name);
     errors.contact_person_error=validations.validate_name(contact_person);
     errors.cp_contact_error=cp_contact_error;
+    errors.dependent_no_error=validations.require_validation(dependent_no);
+    errors.children_no_error=validations.require_validation(children_no);
 
     if(validations.checkallvalidation(errors)){
         
@@ -76,9 +78,8 @@ const validation = (req,res,next)=>{
 }
 
 //store data into database
-router.post('/store_request_details',validation,(req,res)=>{
-    console.log("testing");
-    // (res.locals.success) ? res.json({success:`your record saved successfully we will contact you shortly`}): res.json({error:`got error when stroing form_details : ${res.locals.error.sqlMessage}`});
+router.post('/store_request_details',validation,request_model.storeData,(req,res)=>{
+    (res.locals.success) ? res.json({success:`your record saved successfully we will contact you shortly`}): res.json({error:`got error when stroing form_details : ${res.locals.error.sqlMessage}`});
 })
 
 //get all requester_details from database

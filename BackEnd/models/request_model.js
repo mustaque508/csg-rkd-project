@@ -46,7 +46,7 @@ exports.getData=(req,res,next)=>{
     try 
     {
         //select query
-        const sql=`SELECT DISTINCT occupation,address,mohalla_masjid_jamat,area_location,contact_person,cp_phone FROM rkd_data`;
+        const sql=`SELECT DISTINCT occupation,address,mohalla_masjid_jamat,area_location,contact_person FROM rkd_data`;
 
         con.query(sql,(err,result)=>{
             if(err){

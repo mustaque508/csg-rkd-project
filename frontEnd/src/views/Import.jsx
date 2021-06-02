@@ -28,6 +28,8 @@ import {Navbar,Container,Nav} from 'react-bootstrap'
 import PurchaseForm from './PurchaseForm'
 import validator from 'validator'
 import Tooltip from '@material-ui/core/Tooltip'
+import $ from 'jquery'
+import Distribute from './Distribute'
 
 toast.configure()
 
@@ -60,5 +62,5 @@ export
 {
  App,React,ReactDOM,Link,BrowserRouter,Redirect,HomePage,Route,Switch,Router,RequestForm,TextField,intlTelInput,util,useEffect,
  plugin_for_contact,Select,MenuItem,Button,MuiThemeProvider,colortheme,useState,axios,toast,useCallback,Autocomplete,Header,
- Navbar,Container,Nav,PurchaseForm,validator,BootstrapTooltip
+ Navbar,Container,Nav,PurchaseForm,validator,BootstrapTooltip,$,Distribute
 }

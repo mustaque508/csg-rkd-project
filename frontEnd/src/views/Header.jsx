@@ -18,7 +18,7 @@ const Header = () => {
                             <Link className="nav-link active" to="/">HOME</Link>    
                             <Link className="nav-link" to="/request">REQUEST</Link>
                             <Link className="nav-link " to="/purchase">PURCHASE</Link>
-                            <Link className="nav-link " to="/">DISTRIBUTE</Link>
+                            <Link className="nav-link " to="/distribute">DISTRIBUTE</Link>
                         </Nav>
                     </Navbar.Collapse>
                     </Container>

@@ -87,13 +87,13 @@ exports.validate_aadhar_card_number = (props)=>{
 
 // check all validations 
 exports.checkallvalidation=(props)=>{
-    let {req_name_error,req_contact_no_error,req_card_type_error,occupation_error,address_error,location_error,
-        jamat_name_error,contact_person_error,cp_contact_error}=props;
 
-    return (validator.isEmpty(req_name_error) && validator.isEmpty(req_contact_no_error) && validator.isEmpty(req_card_type_error)
-    && validator.isEmpty(occupation_error) && validator.isEmpty(address_error) && validator.isEmpty(location_error) &&
-    validator.isEmpty(jamat_name_error) && validator.isEmpty(contact_person_error) && validator.isEmpty(cp_contact_error)
-    )? true : false;
+        for(let items in props){
+           if(!validator.isEmpty(props[items])){
+               return false;
+           }
+        }
+        return true;
 
 }
 

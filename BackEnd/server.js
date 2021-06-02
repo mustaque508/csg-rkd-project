@@ -12,6 +12,9 @@ app.use(require('./controllers/request'));
 // required request[controller] to perform requestForm  operation
 app.use(require('./controllers/purchase'));
 
+// required request[controller] to perform requestForm  operation
+app.use(require('./controllers/distribute'));
+
 // used for proxy url
 app.use(express.static(path.join(__dirname,'..','frontEnd','build')));
 

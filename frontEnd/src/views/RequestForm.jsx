@@ -90,11 +90,14 @@ const RequestForm = () => {
                 
 
                 res.data.result.map((data,index)=>{
-                    sets.occupation.add(data.occupation);
-                    sets.address.add(data.address);
-                    sets.area_location.add(data.area_location);
-                    sets.contact_person.add(data.contact_person);
-                    sets.mohalla_masjid_jamat.add(data.mohalla_masjid_jamat);
+                    return (
+                        sets.occupation.add(data.occupation),
+                        sets.address.add(data.address),
+                        sets.area_location.add(data.area_location),
+                        sets.contact_person.add(data.contact_person),
+                        sets.mohalla_masjid_jamat.add(data.mohalla_masjid_jamat)
+                    )
+                    
 
                 })
 

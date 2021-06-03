@@ -1,6 +1,7 @@
 /***************** Common validation ********************************/
 const validator = require('validator');
 
+
 //validation for[req_name,occupation,contact_person,jamat_name]
 exports.validate_name = (props) =>{
 
@@ -77,7 +78,7 @@ exports.validate_aadhar_card_number = (props)=>{
      }
      else if(!props.match(/^[2-9]{1}[0-9]{3}[0-9]{4}[0-9]{4}$/))
      {
-         return "invalid aadhar card number";
+         return "invalid card number";
      }
      else
      {

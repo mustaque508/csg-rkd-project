@@ -90,14 +90,17 @@ const PurchaseForm = () => {
                 {
                     
                     res.data.result.map((data,index)=>{
-                        sets.delivered_by.add(data.delivered_by);
-                        sets.loaded_by.add(data.loaded_by);
-                        sets.qty.add(data.qty);
-                        sets.rate.add(data.rate);
-                        sets.recieved_by.add(data.recieved_by);
-                        sets.supplier.add(data.supplier);
-                        sets.unloaded_by.add(data.unloaded_by);
-                        sets.vehicle_used.add(data.vehicle_used);
+                        return(
+                            sets.delivered_by.add(data.delivered_by),
+                            sets.loaded_by.add(data.loaded_by),
+                            sets.qty.add(data.qty),
+                            sets.rate.add(data.rate),
+                            sets.recieved_by.add(data.recieved_by),
+                            sets.supplier.add(data.supplier),
+                            sets.unloaded_by.add(data.unloaded_by),
+                            sets.vehicle_used.add(data.vehicle_used)
+                        )
+                       
                     })
 
                  

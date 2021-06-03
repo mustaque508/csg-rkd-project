@@ -96,13 +96,16 @@ const Distribute = () => {
             if(res.data.result)
             {
                     res.data.result.map ((data,index)=>{
-                        sets.area.add(data.area);
-                        sets.ngo.add(data.NGO);
-                        sets.incharge.add(data.incharge);
-                        sets.csg_volunteers.add(data.csg_volunteers);
-                        sets.contact_person.add(data.contact_person);
-                        sets.mohalla_masjid_jamat.add(data.mohalla_masjid_jamat);
-                        sets.vehicle_used.add(data.vehicle_used);
+                        return(
+                            sets.area.add(data.area),
+                            sets.ngo.add(data.NGO),
+                            sets.incharge.add(data.incharge),
+                            sets.csg_volunteers.add(data.csg_volunteers),
+                            sets.contact_person.add(data.contact_person),
+                            sets.mohalla_masjid_jamat.add(data.mohalla_masjid_jamat),
+                            sets.vehicle_used.add(data.vehicle_used)
+                        )
+                        
                     })
 
                     //area
@@ -147,7 +150,7 @@ const Distribute = () => {
                 toast.error(res.data.error,{autoClose: false}); 
             }
         })
-    },[searchArray.sets]
+    },[searchArray,sets]
     )
 
 

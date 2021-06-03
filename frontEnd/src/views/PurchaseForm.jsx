@@ -258,7 +258,7 @@ const PurchaseForm = () => {
                                                             value={purchase_details.values}
                                                             disableClearable
                                                             options={searchArray.supplier.map((data) => data)}
-                                                            onKeyUp={hideToolTip}
+                                                            onSelect={hideToolTip}
                                                             onChange={(event,value)=>{
                                                                 setPurchase_details((prevValue)=>{
                                                                     return{
@@ -275,7 +275,6 @@ const PurchaseForm = () => {
                                                                     id="supplier"
                                                                     onChange={inputEvent}
                                                                     className="form-control"
-                                                                    onKeyUp={hideToolTip}
                                                                     InputProps={{ ...params.InputProps, type: 'search' }}
                                                                 />
                                                             )}
@@ -288,7 +287,7 @@ const PurchaseForm = () => {
                                                 <div className="col-lg mt-2">
                                                     <label htmlFor="qty" >Quantity (Kg) </label>
                                                     <BootstrapTooltip title={qty_error} open={open} placement={tooltip_position}>
-                                                        <TextField  type="number" name="qty" id="qty"  inputProps={{ min: "0", step: "1" }} onChange={inputEvent} className="form-control" onKeyUp={hideToolTip} />
+                                                        <TextField  type="number" name="qty" id="qty"  inputProps={{ min: "0", step: "1" }} onChange={inputEvent} className="form-control"  onSelect={hideToolTip} />
                                                         {/* <Autocomplete
                                                             freeSolo
                                                             value={purchase_details.values}
@@ -323,7 +322,7 @@ const PurchaseForm = () => {
                                                 <div className="col-lg mt-2">
                                                     <label htmlFor="rate" >Rate (Rs) </label>
                                                     <BootstrapTooltip title={rate_error} open={open} placement={tooltip_position}>
-                                                        <TextField  type="number" name="rate" id="rate"  inputProps={{ min: "0", step: "1" }} onChange={inputEvent} className="form-control" onKeyUp={hideToolTip} />
+                                                        <TextField  type="number" name="rate" id="rate"  inputProps={{ min: "0", step: "1" }} onChange={inputEvent} className="form-control"  onSelect={hideToolTip} />
                                                         {/* <Autocomplete
                                                             freeSolo
                                                             value={purchase_details.values}
@@ -367,7 +366,7 @@ const PurchaseForm = () => {
                                                             value={purchase_details.values}
                                                             disableClearable
                                                             options={searchArray.delivered_by.map((data) => data)}
-                                                            onKeyUp={hideToolTip}
+                                                            onSelect={hideToolTip}
                                                             onChange={(event,value)=>{
                                                                 setPurchase_details((prevValue)=>{
                                                                     return{
@@ -384,7 +383,6 @@ const PurchaseForm = () => {
                                                                     id="delivered_by"
                                                                     onChange={inputEvent}
                                                                     className="form-control"
-                                                                    onKeyUp={hideToolTip}
                                                                     InputProps={{ ...params.InputProps, type: 'search' }}
                                                                 />
                                                             )}
@@ -401,7 +399,7 @@ const PurchaseForm = () => {
                                                             value={purchase_details.values}
                                                             disableClearable
                                                             options={searchArray.recieved_by.map((data) => data)}
-                                                            onKeyUp={hideToolTip}
+                                                            onSelect={hideToolTip}
                                                             onChange={(event,value)=>{
                                                                 setPurchase_details((prevValue)=>{
                                                                     return{
@@ -418,7 +416,6 @@ const PurchaseForm = () => {
                                                                     id="recieved_by"
                                                                     onChange={inputEvent}
                                                                     className="form-control"
-                                                                    onKeyUp={hideToolTip}
                                                                     InputProps={{ ...params.InputProps, type: 'search' }}
                                                                 />
                                                             )}
@@ -435,7 +432,7 @@ const PurchaseForm = () => {
                                                             value={purchase_details.values}
                                                             disableClearable
                                                             options={searchArray.loaded_by.map((data) => data)}
-                                                            onKeyUp={hideToolTip}
+                                                            onSelect={hideToolTip}
                                                             onChange={(event,value)=>{
                                                                 setPurchase_details((prevValue)=>{
                                                                     return{
@@ -452,7 +449,6 @@ const PurchaseForm = () => {
                                                                     id="loaded_by"
                                                                     onChange={inputEvent}
                                                                     className="form-control"
-                                                                    onKeyUp={hideToolTip}
                                                                     InputProps={{ ...params.InputProps, type: 'search' }}
                                                                 />
                                                             )}
@@ -473,7 +469,7 @@ const PurchaseForm = () => {
                                                             value={purchase_details.values}
                                                             disableClearable
                                                             options={searchArray.unloaded_by.map((data) => data)}
-                                                            onKeyUp={hideToolTip}
+                                                            onSelect={hideToolTip}
                                                             onChange={(event,value)=>{
                                                                 setPurchase_details((prevValue)=>{
                                                                     return{
@@ -490,7 +486,6 @@ const PurchaseForm = () => {
                                                                     id="unloaded_by"
                                                                     onChange={inputEvent}
                                                                     className="form-control"
-                                                                    onKeyUp={hideToolTip}
                                                                     InputProps={{ ...params.InputProps, type: 'search' }}
                                                                 />
                                                             )}
@@ -507,7 +502,7 @@ const PurchaseForm = () => {
                                                             value={purchase_details.values}
                                                             disableClearable
                                                             options={searchArray.vehicle_used.map((data) => data)}
-                                                            onKeyUp={hideToolTip}
+                                                            onSelect={hideToolTip}
                                                             onChange={(event,value)=>{
                                                                 setPurchase_details((prevValue)=>{
                                                                     return{
@@ -524,7 +519,6 @@ const PurchaseForm = () => {
                                                                     id="vehicle_used"
                                                                     onChange={inputEvent}
                                                                     className="form-control"
-                                                                    onKeyUp={hideToolTip}
                                                                     InputProps={{ ...params.InputProps, type: 'search' }}
                                                                 />
                                                             )}

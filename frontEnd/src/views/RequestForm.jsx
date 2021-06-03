@@ -278,7 +278,7 @@ const RequestForm = () => {
                                                     <div className="col-lg mt-2 mb-1">
                                                         <label htmlFor="req_name">Full Name</label>
                                                         <BootstrapTooltip title={req_name_error} open={open} placement={tooltip_position}>
-                                                            <TextField  className="form-control"  id="req_name" type="text" name="req_name"  onChange={inputEvent}  onKeyUp={hideToolTip} />
+                                                            <TextField  className="form-control"  id="req_name" type="text" name="req_name"  onChange={inputEvent}   onSelect={hideToolTip} />
                                                         </BootstrapTooltip>
                                                     </div>
 
@@ -286,7 +286,7 @@ const RequestForm = () => {
                                                     <div className="col-lg mt-2 mb-1">
                                                         <label htmlFor="req_contact_no">Contact</label>
                                                         <BootstrapTooltip title={req_contact_no_error} open={open} placement={tooltip_position}>
-                                                            <TextField className="form-control" id="req_contact_no"   type="text" name="req_contact_no" onChange={inputEvent} onKeyUp={hideToolTip}/>
+                                                            <TextField className="form-control" id="req_contact_no"   type="text" name="req_contact_no" onChange={inputEvent}  onSelect={hideToolTip}/>
                                                         </BootstrapTooltip> 
                                                     </div>
 
@@ -294,7 +294,7 @@ const RequestForm = () => {
                                                     <div className="col-lg mt-2 mb-1">
                                                         <label htmlFor="card_no">Aadhar/Ration Card No</label>
                                                         <BootstrapTooltip  title={card_no_error} open={open} placement={tooltip_position}>
-                                                            <TextField  className="form-control"  type="text" name="card_no"  onChange={inputEvent} onKeyUp={hideToolTip} />
+                                                            <TextField  className="form-control"  type="text" name="card_no"  onChange={inputEvent}  onSelect={hideToolTip} />
                                                         </BootstrapTooltip> 
                                                     </div>
 
@@ -302,7 +302,7 @@ const RequestForm = () => {
                                                     <div className="col-lg mb-1">
                                                         <label htmlFor="card_type">Select Card-type</label>
                                                         <BootstrapTooltip title={req_card_type_error} open={open} placement={tooltip_position}>
-                                                            <Select id="card_type" name="card_type" className="form-control border-0" style={{'marginTop':'-0.2rem'}} value={request_details.card_type} onChange={inputEvent} onKeyUp={hideToolTip} >
+                                                            <Select id="card_type" name="card_type" className="form-control border-0" style={{'marginTop':'-0.2rem'}} value={request_details.card_type} onChange={inputEvent}  onSelect={hideToolTip} >
                                                                 <MenuItem value="APL">APL</MenuItem>
                                                                 <MenuItem value="BPL">BPL</MenuItem>
                                                             </Select>
@@ -316,7 +316,7 @@ const RequestForm = () => {
                                                     <div className="col-lg-3 mt-2 mb-1">
                                                         <label htmlFor="dependent_no"> Number of depenedents</label>
                                                         <BootstrapTooltip title={dependent_no_error} open={open} placement={tooltip_position}>
-                                                            <TextField  className="form-control" inputProps={{ min: "0", step: "1" }} id="dependent_no" type="number" name="dependent_no"  onChange={inputEvent} onKeyUp={hideToolTip}/>
+                                                            <TextField  className="form-control" inputProps={{ min: "0", step: "1" }} id="dependent_no" type="number" name="dependent_no"  onChange={inputEvent}  onSelect={hideToolTip}/>
                                                         </BootstrapTooltip>
                                                     </div>
 
@@ -324,7 +324,7 @@ const RequestForm = () => {
                                                     <div className="col-lg-4 mt-2 mb-1">
                                                         <label htmlFor="children_no">Number of children below 15 years age</label>
                                                         <BootstrapTooltip title={children_no_error} open={open} placement={tooltip_position}>
-                                                            <TextField  className="form-control" inputProps={{ min: "0", step: "1" }} id="children_no"  type="number" name="children_no" onChange={inputEvent} onKeyUp={hideToolTip}  />
+                                                            <TextField  className="form-control" inputProps={{ min: "0", step: "1" }} id="children_no"  type="number" name="children_no" onChange={inputEvent}  onSelect={hideToolTip}  />
                                                         </BootstrapTooltip>
                                                     </div>  
 
@@ -337,7 +337,7 @@ const RequestForm = () => {
                                                                 value={request_details.values}
                                                                 disableClearable
                                                                 options={searchArray.occupation.map((data) => data)}
-                                                                onKeyUp={hideToolTip}
+                                                                onSelect={hideToolTip}
                                                                 onChange={(event,value)=>{
                                                                     setRequest_details((prevValue)=>{
                                                                         return{
@@ -354,7 +354,6 @@ const RequestForm = () => {
                                                                         id="occupation"
                                                                         onChange={inputEvent}
                                                                         className="form-control"
-                                                                        onKeyUp={hideToolTip}
                                                                         InputProps={{ ...params.InputProps, type: 'search' }}
                                                                     />
                                                                 )}
@@ -373,7 +372,7 @@ const RequestForm = () => {
                                                                 freeSolo
                                                                 disableClearable
                                                                 value={request_details.values}
-                                                                onKeyUp={hideToolTip}
+                                                                onSelect={hideToolTip}
                                                                 options={searchArray.address.map((data) => data)}
                                                                 onChange={(event,value)=>{
                                                                     setRequest_details((prevValue)=>{
@@ -391,7 +390,6 @@ const RequestForm = () => {
                                                                         type="text"
                                                                         id="address"
                                                                         className="form-control "
-                                                                        onKeyUp={hideToolTip}
                                                                         InputProps={{ ...params.InputProps, type: 'search' }}
                                                                     />
                                                                 )}
@@ -408,7 +406,7 @@ const RequestForm = () => {
                                                                 disableClearable
                                                                 value={request_details.values}
                                                                 options={searchArray.area_location.map((data) => data)}
-                                                                onKeyUp={hideToolTip}
+                                                                onSelect={hideToolTip}
                                                                 onChange={(event,value)=>{
                                                                     setRequest_details((prevValue)=>{
                                                                         return{
@@ -424,7 +422,6 @@ const RequestForm = () => {
                                                                         name="location"
                                                                         id="location"
                                                                         className="form-control"
-                                                                        onKeyUp={hideToolTip}
                                                                         InputProps={{ ...params.InputProps, type: 'search' }}
                                                                     />
                                                                 )}
@@ -453,7 +450,7 @@ const RequestForm = () => {
                                                                 freeSolo
                                                                 disableClearable
                                                                 value={request_details.values}
-                                                                onKeyUp={hideToolTip}
+                                                                onSelect={hideToolTip}
                                                                 options={searchArray.contact_person.map((data) => data)}
                                                                 onChange={(event,value)=>{
                                                                     setRequest_details((prevValue)=>{
@@ -470,7 +467,6 @@ const RequestForm = () => {
                                                                         name="contact_person"
                                                                         type="text"
                                                                         className="form-control "
-                                                                        onKeyUp={hideToolTip}
                                                                         InputProps={{ ...params.InputProps, type: 'search' }}
                                                                     />
                                                                 )}
@@ -482,7 +478,7 @@ const RequestForm = () => {
                                                     <div className="col-lg mt-2 mb-1">
                                                             <label htmlFor="cp_contact_no" >Contact Person Contact No</label>
                                                             <BootstrapTooltip title={cp_contact_error} open={open} placement={tooltip_position}>
-                                                                <TextField className="form-control" id="cp_contact_no"  type="text" name="cp_contact_no" onChange={inputEvent}   onKeyUp={hideToolTip}/>
+                                                                <TextField className="form-control" id="cp_contact_no"  type="text" name="cp_contact_no" onChange={inputEvent}    onSelect={hideToolTip}/>
                                                             </BootstrapTooltip>
                                                     </div>
 
@@ -494,7 +490,7 @@ const RequestForm = () => {
                                                                 freeSolo
                                                                 disableClearable
                                                                 value={request_details.values}
-                                                                onKeyUp={hideToolTip}
+                                                                onSelect={hideToolTip}
                                                                 options={searchArray.mohalla_masjid_jamat.map((data) => data)}
                                                                 onChange={(event,value)=>{
                                                                     setRequest_details((prevValue)=>{
@@ -512,7 +508,6 @@ const RequestForm = () => {
                                                                         type="text"
                                                                         id="jamat_name"
                                                                         className="form-control"
-                                                                        onKeyUp={hideToolTip}
                                                                         InputProps={{ ...params.InputProps, type: 'search' }}
                                                                     />
                                                                 )}

@@ -159,7 +159,7 @@ const PurchaseForm = () => {
         fetch_purchase_details();
 
         // setTooltip_position
-        if($(window).width()<992){
+        if($(window).width()<768){
             setTooltip_position("right-end");
         }
     }, [fetch_purchase_details])
@@ -253,7 +253,7 @@ const PurchaseForm = () => {
                                             <div className="row mt-4">
 
                                                 {/* Supplier */}
-                                                <div className="col-lg mt-2">
+                                                <div className="col-lg-4 col-md-6 mt-2">
                                                     <label htmlFor="supplier">Supplier</label>
                                                     <BootstrapTooltip title={supplier_error} open={open} placement={tooltip_position}>
                                                         <Autocomplete
@@ -287,7 +287,7 @@ const PurchaseForm = () => {
                                                 </div>
 
                                                 {/* quantity */}
-                                                <div className="col-lg mt-2">
+                                                <div className="col-lg-4 col-md-6 mt-2">
                                                     <label htmlFor="qty" >Quantity (Kg) </label>
                                                     <BootstrapTooltip title={qty_error} open={open} placement={tooltip_position}>
                                                         <TextField  type="number" name="qty" id="qty"  inputProps={{ min: "0", step: "1" }} onChange={inputEvent} className="form-control"  onSelect={hideToolTip} />
@@ -322,7 +322,7 @@ const PurchaseForm = () => {
                                                 </div>
 
                                                 {/* Rate */}
-                                                <div className="col-lg mt-2">
+                                                <div className="col-lg-4 col-md-6 mt-2">
                                                     <label htmlFor="rate" >Rate (Rs) </label>
                                                     <BootstrapTooltip title={rate_error} open={open} placement={tooltip_position}>
                                                         <TextField  type="number" name="rate" id="rate"  inputProps={{ min: "0", step: "1" }} onChange={inputEvent} className="form-control"  onSelect={hideToolTip} />
@@ -356,12 +356,10 @@ const PurchaseForm = () => {
                                                     </BootstrapTooltip>
                                                 </div>
 
-                                            </div>
-
-                                            <div className="row mt-2">
+                                           
 
                                                 {/* Delivered By */}
-                                                <div className="col-lg mt-2">
+                                                <div className="col-lg-4 col-md-6 mt-2">
                                                     <label htmlFor="delivered_by" >Delivered By</label>
                                                     <BootstrapTooltip title={delivered_by_error} open={open} placement={tooltip_position}>
                                                         <Autocomplete
@@ -394,7 +392,7 @@ const PurchaseForm = () => {
                                                 </div>
 
                                                 {/* Recieved By */}
-                                                <div className="col-lg mt-2">
+                                                <div className="col-lg-4 col-md-6 mt-2">
                                                     <label htmlFor="recieved_by" >Recieved By</label>
                                                     <BootstrapTooltip title={recieved_by_error} open={open} placement={tooltip_position}>
                                                         <Autocomplete
@@ -427,7 +425,7 @@ const PurchaseForm = () => {
                                                 </div>
 
                                                  {/* Loaded By */}
-                                                 <div className="col-lg mt-2">
+                                                 <div className="col-lg-4 col-md-6 mt-2">
                                                     <label htmlFor="loaded_by" >Loaded By</label>
                                                     <BootstrapTooltip title={loaded_by_error} open={open} placement={tooltip_position}>
                                                         <Autocomplete
@@ -459,12 +457,10 @@ const PurchaseForm = () => {
                                                     </BootstrapTooltip>
                                                 </div>
 
-                                            </div>
 
-                                            <div className="row mt-2">
 
                                                  {/* Unloaded By */}
-                                                 <div className="col-lg mt-2">
+                                                 <div className="col-lg col-md-6 mt-2">
                                                     <label htmlFor="unloaded_by" >Unloaded By</label>
                                                     <BootstrapTooltip title={unloaded_by_error} open={open} placement={tooltip_position}>
                                                         <Autocomplete
@@ -497,7 +493,7 @@ const PurchaseForm = () => {
                                                 </div>
 
                                                  {/* Vehicle Used */}
-                                                 <div className="col-lg mt-2">
+                                                 <div className="col-lg col-md-6 mt-2">
                                                     <label htmlFor="vehicle_used" >Vehicle Used</label>
                                                     <BootstrapTooltip title={vehicle_used_error} open={open} placement={tooltip_position}>
                                                         <Autocomplete

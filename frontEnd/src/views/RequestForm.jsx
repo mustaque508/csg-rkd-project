@@ -153,7 +153,7 @@ const RequestForm = () => {
         fetch_requester_details();
 
         // setTooltip_position 
-        if($(window).width()<992){
+        if($(window).width()<768){
             setTooltip_position("right-end");
         }
 
@@ -278,7 +278,7 @@ const RequestForm = () => {
                                                 <div className="row mt-4">
 
                                                     {/* Full Name */}
-                                                    <div className="col-lg mt-2 mb-1">
+                                                    <div className="col-lg-4 col-md-12  mt-2 mb-1">
                                                         <label htmlFor="req_name">Full Name</label>
                                                         <BootstrapTooltip title={req_name_error} open={open} placement={tooltip_position}>
                                                             <TextField  className="form-control"  id="req_name" type="text" name="req_name"  onChange={inputEvent}   onSelect={hideToolTip} />
@@ -286,7 +286,7 @@ const RequestForm = () => {
                                                     </div>
 
                                                     {/* requester Contact */}
-                                                    <div className="col-lg mt-2 mb-1">
+                                                    <div className="col-lg-4 col-md-6  mt-2 mb-1">
                                                         <label htmlFor="req_contact_no">Contact</label>
                                                         <BootstrapTooltip title={req_contact_no_error} open={open} placement={tooltip_position}>
                                                             <TextField className="form-control" id="req_contact_no"   type="text" name="req_contact_no" onChange={inputEvent}  onSelect={hideToolTip}/>
@@ -294,7 +294,7 @@ const RequestForm = () => {
                                                     </div>
 
                                                     {/* Aadhar Card/Ration Card Number */}
-                                                    <div className="col-lg mt-2 mb-1">
+                                                    <div className="col-lg-4 col-md-6 mt-2 mb-1">
                                                         <label htmlFor="card_no">Aadhar/Ration Card No</label>
                                                         <BootstrapTooltip  title={card_no_error} open={open} placement={tooltip_position}>
                                                             <TextField  className="form-control"  type="text" name="card_no"  onChange={inputEvent}  onSelect={hideToolTip} />
@@ -302,7 +302,7 @@ const RequestForm = () => {
                                                     </div>
 
                                                     {/* Card Type */}
-                                                    <div className="col-lg mb-1">
+                                                    <div className="col-lg-4 col-md-6 mb-1">
                                                         <label htmlFor="card_type">Select Card-type</label>
                                                         <BootstrapTooltip title={req_card_type_error} open={open} placement={tooltip_position}>
                                                             <Select id="card_type" name="card_type" className="form-control border-0" style={{'marginTop':'-0.2rem'}} value={request_details.card_type} onChange={inputEvent}  onSelect={hideToolTip} >
@@ -311,12 +311,10 @@ const RequestForm = () => {
                                                             </Select>
                                                         </BootstrapTooltip>
                                                     </div>
-                                                </div>
-
-                                                <div className="row mt-4  d-flex justify-content-between">
+                                                
 
                                                     {/* Number of depenedents */}
-                                                    <div className="col-lg-3 mt-2 mb-1">
+                                                    <div className="col-lg-4 col-md-6 mt-2 mb-1">
                                                         <label htmlFor="dependent_no"> Number of depenedents</label>
                                                         <BootstrapTooltip title={dependent_no_error} open={open} placement={tooltip_position}>
                                                             <TextField  className="form-control" inputProps={{ min: "0", step: "1" }} id="dependent_no" type="number" name="dependent_no"  onChange={inputEvent}  onSelect={hideToolTip}/>
@@ -324,7 +322,7 @@ const RequestForm = () => {
                                                     </div>
 
                                                      {/* Number of children below 15 years age */}
-                                                    <div className="col-lg-4 mt-2 mb-1">
+                                                    <div className="col-lg-4 col-md-6 mt-2 mb-1">
                                                         <label htmlFor="children_no">Number of children below 15 years age</label>
                                                         <BootstrapTooltip title={children_no_error} open={open} placement={tooltip_position}>
                                                             <TextField  className="form-control" inputProps={{ min: "0", step: "1" }} id="children_no"  type="number" name="children_no" onChange={inputEvent}  onSelect={hideToolTip}  />
@@ -332,7 +330,7 @@ const RequestForm = () => {
                                                     </div>  
 
                                                     {/* Occupation */}
-                                                    <div className="col-lg mt-2 mb-1">
+                                                    <div className="col-lg col-md-6 mt-2 mb-1">
                                                         <label htmlFor="occupation">Occupation</label>
                                                         <BootstrapTooltip title={occupation_error} open={open} placement={tooltip_position}>
                                                             <Autocomplete
@@ -363,10 +361,7 @@ const RequestForm = () => {
                                                             />
                                                         </BootstrapTooltip>
                                                     </div>       
-                                                </div>
-
-                                                <div className="row  mt-4">
-
+                                               
                                                     {/* Address */}
                                                     <div className="col-lg mt-2 mb-1">
                                                         <label htmlFor="address">Address</label>
@@ -446,7 +441,7 @@ const RequestForm = () => {
                                                 <div className="row mt-4">
 
                                                     {/* Contact person */}
-                                                    <div className="col-lg mt-2 mb-1">
+                                                    <div className="col-lg col-md-6 mt-2 mb-1">
                                                         <label htmlFor="contact_person">Contact Person</label>
                                                         <BootstrapTooltip title={contact_person_error} open={open} placement={tooltip_position}>
                                                             <Autocomplete
@@ -478,7 +473,7 @@ const RequestForm = () => {
                                                     </div>
 
                                                     {/* Contact */}
-                                                    <div className="col-lg mt-2 mb-1">
+                                                    <div className="col-lg col-md-6 mt-2 mb-1">
                                                             <label htmlFor="cp_contact_no" >Contact Person Contact No</label>
                                                             <BootstrapTooltip title={cp_contact_error} open={open} placement={tooltip_position}>
                                                                 <TextField className="form-control" id="cp_contact_no"  type="text" name="cp_contact_no" onChange={inputEvent}    onSelect={hideToolTip}/>

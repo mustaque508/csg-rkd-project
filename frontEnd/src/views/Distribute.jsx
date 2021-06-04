@@ -159,7 +159,7 @@ const Distribute = () => {
 
 
         // setTooltip_position (($(window).width()<992) ? "right-end" : "top-end");
-        if($(window).width()<992){
+        if($(window).width()<768){
             setTooltip_position("right-end");
         }
 
@@ -267,7 +267,7 @@ const Distribute = () => {
 
 
                                                  {/* incharge */}
-                                                 <div className="col-lg mt-2 mb-1">
+                                                 <div className="col-lg-4 col-md-6 mt-2 mb-1">
                                                     <label htmlFor="incharge">Incharge </label>
                                                     <BootstrapTooltip title={incharge_error} open={open} placement={tooltip_position}>
                                                         <Autocomplete
@@ -300,7 +300,7 @@ const Distribute = () => {
                                                 </div>
 
                                                 {/* Covid support group volunteers */}
-                                                <div className="col-lg mt-2 mb-1">
+                                                <div className="col-lg-4 col-md-6 mt-2 mb-1">
                                                     <label htmlFor="csg_volnteers">Covid support group volunteers</label>
                                                     <BootstrapTooltip title={csg_volunteers_error} open={open} placement={tooltip_position}>
                                                         <Autocomplete
@@ -336,7 +336,7 @@ const Distribute = () => {
                                             
 
                                                 {/* NGO */}
-                                                <div className="col-lg mt-2">
+                                                <div className="col-lg-4 col-md-6 mt-2">
                                                     <label htmlFor="ngo">NGO </label>
                                                     <BootstrapTooltip title={ngo_error} open={open} placement={tooltip_position}>
                                                         <Autocomplete
@@ -368,12 +368,10 @@ const Distribute = () => {
                                                     </BootstrapTooltip>   
                                                 </div>
 
-                                            </div>
-
-                                            <div className="row mt-4">
+                                           
 
                                                 {/* quantity */}
-                                                <div className="col-lg mt-2">
+                                                <div className="col-lg-4 col-md-6 mt-2">
                                                     <label htmlFor="area">Quantity (kg) </label>
                                                     <BootstrapTooltip title={qty_error} open={open} placement={tooltip_position}>
                                                         <TextField type="number" inputProps={{ min: "0", step: "1" }} id="qty" name="qty" className="form-control" onChange={inputEvent}   onSelect={hideToolTip}  />
@@ -383,7 +381,7 @@ const Distribute = () => {
                                                  
 
                                                  {/* data collected */}
-                                                 <div className="col-lg  mb-1">
+                                                 <div className="col-lg-4 col-md-6  mb-1">
                                                     <label htmlFor="data_collected">Data collected ?</label>
                                                     <BootstrapTooltip title={data_collected_error} open={open} placement={tooltip_position}>
                                                         <Select id="data_collected" name="data_collected" value={distribute_details.data_collected} className="form-control border-0" style={{'marginTop':'-0.2rem'}} onChange={inputEvent}   onSelect={hideToolTip} >
@@ -394,7 +392,7 @@ const Distribute = () => {
                                                 </div>
 
                                                   {/*Mohalla/Masjid Jamat */}
-                                                  <div className="col-lg mt-2">
+                                                  <div className="col-lg-4 col-md-6 mt-2">
                                                     <label htmlFor="jamat_name">Mohalla/Masjid Jamat</label>
                                                     <BootstrapTooltip title={jamat_name_error} open={open} placement={tooltip_position}>
                                                         <Autocomplete
@@ -427,9 +425,7 @@ const Distribute = () => {
                                                     
                                                 </div>
 
-                                            </div>
-
-                                            <div className="row mt-4">
+                                            
 
                                                  {/* area */}
                                                  <div className="col-lg mt-2">
@@ -480,7 +476,7 @@ const Distribute = () => {
                                              <div className="row mt-4">
 
                                                   {/* contact person */}
-                                                 <div className="col-lg mt-2 mb-1">
+                                                 <div className="col-lg col-md-6 mt-2 mb-1">
                                                     <label htmlFor="contact_person">Contact Person</label>
                                                     <BootstrapTooltip title={contact_person_error} open={open} placement={tooltip_position}>
                                                         <Autocomplete
@@ -513,7 +509,7 @@ const Distribute = () => {
                                                 </div>
 
                                                  {/* Contact */}
-                                                 <div className="col-lg mt-2 mb-1">
+                                                 <div className="col-lg col-md-6 mt-2 mb-1">
                                                     <label htmlFor="contact_person">Contact Person Contact No</label>
                                                     <BootstrapTooltip title={cp_contact_error} open={open} placement={tooltip_position}>
                                                         <TextField type="text" id="cp_contact_no" name="cp_contact_no" className="form-control" onChange={inputEvent}  onKeyUp={hideToolTip} />

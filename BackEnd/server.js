@@ -9,11 +9,14 @@ app.use(express.json());
 // required request[controller] to perform requestForm  operation
 app.use(require('./controllers/request'));
 
-// required request[controller] to perform requestForm  operation
+// required request[controller] to perform purchase  operation
 app.use(require('./controllers/purchase'));
 
-// required request[controller] to perform requestForm  operation
+// required request[controller] to perform distribute  operation
 app.use(require('./controllers/distribute'));
+
+// required request[controller] to perform registerForm  operation
+app.use(require('./controllers/register'));
 
 // used for proxy url
 app.use(express.static(path.join(__dirname,'..','frontEnd','build')));

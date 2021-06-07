@@ -9,7 +9,7 @@ import { Link,BrowserRouter,Redirect } from 'react-router-dom'
 import HomePage from '../views/HomePage'
 import { Route, Switch } from 'react-router'
 import Router from '../config/Router'
-import RequestForm from './RequestForm'
+import RequestForm from './options/RequestForm'
 import TextField from '@material-ui/core/TextField'
 import 'intl-tel-input/build/css/intlTelInput.css'
 import intlTelInput from 'intl-tel-input'
@@ -23,13 +23,20 @@ import axios from 'axios'
 import {toast} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Autocomplete from '@material-ui/lab/Autocomplete'
-import Header from '../views/Header'
+import Header from './options/Header'
 import {Navbar,Container,Nav} from 'react-bootstrap'
-import PurchaseForm from './PurchaseForm'
+import PurchaseForm from './options/PurchaseForm'
 import validator from 'validator'
 import Tooltip from '@material-ui/core/Tooltip'
 import $ from 'jquery'
-import Distribute from './Distribute'
+import Distribute from './options/Distribute'
+import Main from './Main'
+import Stayhome from '../dist/img/stayhome.png'
+import RegisterForm from '../views/Register/RegisterForm'
+import Popover from 'react-bootstrap/Popover'
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
+import InfoSharpIcon from '@material-ui/icons/InfoSharp'
+import '../dist/css/Main.css'
 
 toast.configure()
 
@@ -62,5 +69,6 @@ export
 {
  App,React,ReactDOM,Link,BrowserRouter,Redirect,HomePage,Route,Switch,Router,RequestForm,TextField,intlTelInput,util,useEffect,
  plugin_for_contact,Select,MenuItem,Button,MuiThemeProvider,colortheme,useState,axios,toast,useCallback,Autocomplete,Header,
- Navbar,Container,Nav,PurchaseForm,validator,BootstrapTooltip,$,Distribute
+ Navbar,Container,Nav,PurchaseForm,validator,BootstrapTooltip,$,Distribute,Main,Stayhome,RegisterForm,Popover,OverlayTrigger,
+ InfoSharpIcon
 }

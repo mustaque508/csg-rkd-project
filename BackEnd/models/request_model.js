@@ -14,10 +14,12 @@ exports.storeData=(req,res,next)=>{
         const created_date=moment(new Date()).format("YYYY-MM-DD h:mm:ss");
 
         //insert query
-        const sql=`INSERT INTO rkd_data VALUES (Null,'${req_name}','${req_contact_no}','${card_no}','${card_type}',
-                  '${dependent_no}','${occupation}','${children_no}','${address}','${location}','${jamat_name}',
-                  '${contact_person}','${cp_contact_no}','${created_date}')`;
-
+        const sql=`INSERT INTO rkd_data (full_name,contact_no,aadhar_rationcard_no,APL_BPL,no_of_dependents,occupation,
+                   no_of_children_below_15years_age,address,area_location,mohalla_masjid_jamat,contact_person,cp_phone,created_date)
+                   VALUES ('${req_name}','${req_contact_no}','${card_no}','${card_type}','${dependent_no}','${occupation}',
+                   '${children_no}','${address}','${location}','${jamat_name}','${contact_person}','${cp_contact_no}',
+                   '${created_date}')`;
+      
         con.query(sql,(err)=>{
             if(err){
                 res.locals.error=err;

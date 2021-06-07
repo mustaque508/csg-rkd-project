@@ -86,6 +86,96 @@ exports.validate_aadhar_card_number = (props)=>{
      }
 }
 
+//email validation
+exports.validate_email = (props) =>{
+
+    if(validator.isEmpty(props))
+    {
+        return "required";
+    }
+    else if(!(validator.isEmail(props)))
+    {
+        return "Please enter valid email id";
+    }
+    else
+    {
+        return "";
+    }
+}
+
+
+//password validation
+exports.validate_password = (props) =>{
+
+    if(validator.isEmpty(props))
+    {
+        return "required";
+    }
+
+    //password length should be minimum 8 characters.
+    else if(props.length<8)
+    {
+        return "Length should be minimum 8 characters";
+    }
+
+    //check password contain atleast one numeric character 
+    else if(!props.match(/[0-9]+/))
+    {
+        return "The password must include atleast one numeric character";
+    }
+
+    //check password contain atleast one alphabetic letter
+    else if(!props.match(/[a-z]+/))
+    {
+      return "The password must include atleast one Alphabetic letter";
+    }
+
+    // check password contain atleast one capital letter
+    else if(!props.match(/[A-Z]+/))
+    {
+      return "The password must include atleast one capital letter";
+    }
+
+    // check password contain atleast one special character
+    else if(!props.match(/[\W]+/))
+    {
+      return "The password must include atleast one special character";
+    }
+
+    // check password should not contain any white space
+    else if(props.match(/[\s]/))
+    {
+        return "The password should not contain white space";
+    }
+    else
+    {
+        return "";
+    }
+}
+
+
+//confirm password validation
+exports.validate_confirm_password = (password,cpassword) =>{
+
+//check confirm-password is empty string ?
+if(validator.isEmpty(password))
+{
+    return "required";
+}
+else if(password !== cpassword)
+{
+
+  return "mismatch password";
+}
+else
+{
+  return "";
+}
+
+
+}
+
+
 // check all validations 
 exports.checkallvalidation=(props)=>{
 

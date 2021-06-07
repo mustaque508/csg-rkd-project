@@ -5,7 +5,7 @@ import
     React,Header,TextField,MuiThemeProvider,colortheme,Button,useState,axios,toast,useCallback,useEffect,$,
     BootstrapTooltip,Autocomplete
 }
-from './Import'
+from '../Import'
 
 const PurchaseForm = () => {
 

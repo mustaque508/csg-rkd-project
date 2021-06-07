@@ -12,8 +12,10 @@ exports.storeData = (req,res,next)=>{
         const purchase_date=moment(new Date()).format("YYYY-MM-DD h:mm:ss");
 
         //insert query
-        const sql=`INSERT INTO purchase_details VALUES (Null,'${purchase_date}','${supplier}','${qty}','${rate}',
-                  '${delivered_by}','${recieved_by}','${loaded_by}','${unloaded_by}','${vehicle_used}')`;
+        const sql =`INSERT INTO purchase_details (purchase_date,supplier,qty,rate,delivered_by,recieved_by,loaded_by,
+                    unloaded_by,vehicle_used) VALUES ('${purchase_date}','${supplier}','${qty}','${rate}','${delivered_by}',
+                    '${recieved_by}','${loaded_by}','${unloaded_by}','${vehicle_used}')`;
+      
 
         con.query(sql,(err)=>{
             if(err){

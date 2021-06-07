@@ -4,7 +4,7 @@ import
 {
     React,Header,BootstrapTooltip,TextField,Select,MenuItem,useEffect,plugin_for_contact,useState,MuiThemeProvider,colortheme,
     Button,axios,$,toast,useCallback,Autocomplete
-} from './Import'
+} from '../Import'
 
 const Distribute = () => {
 

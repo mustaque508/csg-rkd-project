@@ -1,6 +1,6 @@
 /**************************************  Header Component ********************************************/
 
-import {React,Link,Navbar,Container,Nav} from './Import'
+import {React,Link,Navbar,Container,Nav} from '../Import'
 
 const Header = () => {
     return (

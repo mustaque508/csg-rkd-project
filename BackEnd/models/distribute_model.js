@@ -12,9 +12,12 @@ exports.storeData = (req,res,next) =>{
         const distribution_date=moment(new Date()).format("YYYY-MM-DD h:mm:ss");
     
         //insert query
-        const sql=`INSERT INTO distribution_details VALUES (Null,'${distribution_date}','${area}','${qty}','${ngo}','${incharge}',
-            '${csg_volunteers}','${data_collected}','${jamat_name}','${contact_person}','${cp_contact_no}','${vehicle_used}')`;
-    
+
+        const sql=`INSERT INTO distribution_details (distribution_date,area,qty,NGO,incharge,csg_volunteers,data_collected,
+                    mohall_masjid_jamat,contact_person,cp_phone,vehicle_used)
+                    VALUES ('${distribution_date}','${area}','${qty}','${ngo}','${incharge}','${csg_volunteers}','${data_collected}',
+                    '${jamat_name}','${contact_person}','${cp_contact_no}','${vehicle_used}')`;
+
         con.query(sql,(err)=>{
             if(err){
                 res.locals.error=err;

@@ -18,6 +18,9 @@ app.use(require('./controllers/distribute'));
 // required request[controller] to perform registerForm  operation
 app.use(require('./controllers/register'));
 
+// required request[controller] to perform login  operation
+app.use(require('./controllers/login'));
+
 // used for proxy url
 app.use(express.static(path.join(__dirname,'..','frontEnd','build')));
 

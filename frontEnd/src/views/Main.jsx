@@ -1,13 +1,13 @@
 /************************** Main page  of this project ***************************/
 
-import {React,Stayhome,RegisterForm} from './Import'
+import {React,Stayhome,RegisterForm,LoginForm,useLocation} from './Import'
 
 const Main = () => {
 
     return (
         <section className="main-section mt-4">
             <div className="container mt-5">
-                <div className="row d-flex justify-content-center flex-wrap">
+                <div className="row d-flex justify-content-center flex-wrap mt-5">
 
                     {/* image */}
                     <div className="content_img col-sm-6 d-flex align-items-center">
@@ -16,7 +16,10 @@ const Main = () => {
 
                     {/* content */}
                     <div className="content col-sm-4">
-                        <RegisterForm/>
+                        {
+                             (useLocation().pathname === "/register") ? <RegisterForm/> : <LoginForm/> 
+                        }
+                   
                     </div>
 
                 </div>

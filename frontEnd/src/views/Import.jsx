@@ -36,7 +36,12 @@ import RegisterForm from '../views/Register/RegisterForm'
 import Popover from 'react-bootstrap/Popover'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import InfoSharpIcon from '@material-ui/icons/InfoSharp'
-import '../dist/css/Main.css'
+import LoginForm from './login/LoginForm'
+import { useLocation,useHistory} from 'react-router'
+import { Checkbox,FormControlLabel} from '@material-ui/core'
+import Cookies from 'js-cookie'
+import Welcome from './options/Welcome'
+import WelcomeBar from './options/WelcomeBar'
 
 toast.configure()
 
@@ -70,5 +75,5 @@ export
  App,React,ReactDOM,Link,BrowserRouter,Redirect,HomePage,Route,Switch,Router,RequestForm,TextField,intlTelInput,util,useEffect,
  plugin_for_contact,Select,MenuItem,Button,MuiThemeProvider,colortheme,useState,axios,toast,useCallback,Autocomplete,Header,
  Navbar,Container,Nav,PurchaseForm,validator,BootstrapTooltip,$,Distribute,Main,Stayhome,RegisterForm,Popover,OverlayTrigger,
- InfoSharpIcon
+ InfoSharpIcon,LoginForm,useLocation,useHistory,Checkbox,FormControlLabel,Cookies,Welcome,WelcomeBar
 }

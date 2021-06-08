@@ -1,13 +1,15 @@
 
 /***************************** HomePage component ***********************************/
 
-import {React,Header} from './Import'
+import {React,Header,useLocation} from './Import'
 
 const HomePage = () => {
+
+    const location=useLocation();
     return (
             <>
                 <Header/>
-                <p>HomePage</p> 
+                <p>{location.state.username}</p> 
             </>
            
         

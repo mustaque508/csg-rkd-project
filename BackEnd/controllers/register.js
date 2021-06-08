@@ -28,7 +28,7 @@ const validation = (req,res,next)=>{
          
          con.query(sql,(err,result)=>{
             if(err){
-                res.json({error:`got error when checking register contact number already Exist : ${error}`});
+                res.json({error:`got error when checking register contact number already Exist : ${err}`});
             }
             else
             {
@@ -39,7 +39,7 @@ const validation = (req,res,next)=>{
 
                     con.query(sql,(err,result)=>{
                         if(err){
-                            res.json({error:`got error when checking register email-id already Exist : ${error}`});
+                            res.json({error:`got error when checking register email-id already Exist : ${err}`});
                         }
                         else
                         {

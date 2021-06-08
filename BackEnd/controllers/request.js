@@ -39,7 +39,7 @@ const validation = (req,res,next)=>{
 
         con.query(sql,(err,result)=>{
             if(err){
-                res.json({error:`got error when checking requester_contact_number already Exist : ${error}`});
+                res.json({error:`got error when checking requester_contact_number already Exist : ${err}`});
             }
             else
             {
@@ -50,7 +50,7 @@ const validation = (req,res,next)=>{
                     const sql="SELECT * FROM rkd_data WHERE aadhar_rationcard_no='"+card_no+"'";
                     con.query(sql,(err,result)=>{
                         if(err){
-                            res.json({error:`got error when checking aadhar_rationcard_number already Exist : ${error}`});
+                            res.json({error:`got error when checking aadhar_rationcard_number already Exist : ${err}`});
                         }
                         else
                         {

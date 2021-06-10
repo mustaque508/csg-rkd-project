@@ -2,7 +2,7 @@
 
 import 
 {
-    React,Header,BootstrapTooltip,TextField,Select,MenuItem,useEffect,plugin_for_contact,useState,MuiThemeProvider,colortheme,
+    React,BootstrapTooltip,TextField,Select,MenuItem,useEffect,plugin_for_contact,useState,MuiThemeProvider,colortheme,
     Button,axios,$,toast,useCallback,Autocomplete
 } from '../Import'
 
@@ -236,9 +236,6 @@ const Distribute = () => {
 
     return (
         <section className="ditribute-section">
-
-            {/* header */}
-            <Header/>
 
             {/* content */}
             <div className="container mt-5">

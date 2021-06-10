@@ -1,4 +1,12 @@
- /****************************** This file contain all dependencies ***************************/
+/****************************** This file contain all dependencies ***************************/
+
+import 
+{
+  TextField,Select,MenuItem,Button,createMuiTheme,MuiThemeProvider,makeStyles,Tooltip,
+  Checkbox,FormControlLabel,AppBar,IconButton,Toolbar,Typography,Drawer,Collapse, List, ListItem,
+  ListItemIcon, ListItemText 
+} 
+from '@material-ui/core'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 import '../dist/css/RequestForm.css'
@@ -10,15 +18,10 @@ import HomePage from '../views/HomePage'
 import { Route, Switch } from 'react-router'
 import Router from '../config/Router'
 import RequestForm from './options/RequestForm'
-import TextField from '@material-ui/core/TextField'
 import 'intl-tel-input/build/css/intlTelInput.css'
 import intlTelInput from 'intl-tel-input'
 import {util} from 'intl-tel-input/build/js/utils'
 import { plugin_for_contact} from '../dist/plugins/countrycode'
-import Select from '@material-ui/core/Select'
-import MenuItem from '@material-ui/core/MenuItem'
-import Button from '@material-ui/core/Button'
-import { createMuiTheme, MuiThemeProvider,makeStyles} from "@material-ui/core/styles"
 import axios from 'axios'
 import {toast} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -27,7 +30,6 @@ import Header from './options/Header'
 import {Navbar,Container,Nav} from 'react-bootstrap'
 import PurchaseForm from './options/PurchaseForm'
 import validator from 'validator'
-import Tooltip from '@material-ui/core/Tooltip'
 import $ from 'jquery'
 import Distribute from './options/Distribute'
 import Main from './Main'
@@ -38,12 +40,37 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import InfoSharpIcon from '@material-ui/icons/InfoSharp'
 import LoginForm from './login/LoginForm'
 import { useLocation,useHistory} from 'react-router'
-import { Checkbox,FormControlLabel} from '@material-ui/core'
 import Cookies from 'js-cookie'
 import Welcome from './options/Welcome'
-import WelcomeBar from './options/WelcomeBar'
+import SideBar from './options/SideBar'
+import NavBar from './options/NavBar'
+import MenuIcon from '@material-ui/icons/Menu'
+import AccountCircle from '@material-ui/icons/AccountCircle'
+import {Accordion} from 'react-bootstrap'
+import ExpandLess from '@material-ui/icons/ExpandLess'
+import ExpandMore from '@material-ui/icons/ExpandMore'
+import AddIcon from '@material-ui/icons/Add'
+import VisibilityIcon from '@material-ui/icons/Visibility'
+import DeleteIcon from '@material-ui/icons/Delete'
+import logo from '../dist/img/logo.png'
 
 toast.configure()
+
+//navbar
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+  },
+  title: {
+    flexGrow: 1,
+  },
+  drawerPaper: {
+    width: 240,
+  }
+}));
 
 // color theme for button [login and submit button]
 const colortheme = createMuiTheme({
@@ -75,5 +102,7 @@ export
  App,React,ReactDOM,Link,BrowserRouter,Redirect,HomePage,Route,Switch,Router,RequestForm,TextField,intlTelInput,util,useEffect,
  plugin_for_contact,Select,MenuItem,Button,MuiThemeProvider,colortheme,useState,axios,toast,useCallback,Autocomplete,Header,
  Navbar,Container,Nav,PurchaseForm,validator,BootstrapTooltip,$,Distribute,Main,Stayhome,RegisterForm,Popover,OverlayTrigger,
- InfoSharpIcon,LoginForm,useLocation,useHistory,Checkbox,FormControlLabel,Cookies,Welcome,WelcomeBar
+ InfoSharpIcon,LoginForm,useLocation,useHistory,Checkbox,FormControlLabel,Cookies,Welcome,SideBar,NavBar,AppBar,IconButton,
+ MenuIcon,Toolbar,Typography,useStyles,AccountCircle,Drawer,Accordion,Collapse,List,ListItem,ListItemIcon,ListItemText,ExpandLess,
+ ExpandMore,AddIcon,VisibilityIcon,DeleteIcon,logo
 }

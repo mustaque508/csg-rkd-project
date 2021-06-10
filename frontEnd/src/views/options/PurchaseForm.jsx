@@ -2,7 +2,7 @@
 
 import 
 {
-    React,Header,TextField,MuiThemeProvider,colortheme,Button,useState,axios,toast,useCallback,useEffect,$,
+    React,TextField,MuiThemeProvider,colortheme,Button,useState,axios,toast,useCallback,useEffect,$,
     BootstrapTooltip,Autocomplete
 }
 from '../Import'
@@ -226,9 +226,6 @@ const PurchaseForm = () => {
     
     return (
         <section className="purchase_section">
-
-            {/* header */}
-            <Header/>
 
             {/* content */}
             <div className="container mt-5">

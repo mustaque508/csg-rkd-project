@@ -2,7 +2,7 @@
 
 import
 {
-    React,NavBar,useLocation,RequestForm,Distribute,PurchaseForm
+    React,NavBar,useLocation,RequestForm,Distribute,PurchaseForm,HomePage
 }
  from '../Import'
 
@@ -26,7 +26,7 @@ const Welcome = () => {
                          {
                              (location.pathname === '/request') ? <RequestForm /> :
                              (location.pathname === '/purchase') ? <PurchaseForm/> :
-                             (location.pathname === '/distribute') ? <Distribute/> : "Homepage"
+                             (location.pathname === '/distribute') ? <Distribute/> : <HomePage/>
                          }   
                     </div>
                 </div>

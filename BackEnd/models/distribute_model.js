@@ -38,8 +38,8 @@ exports.storeData = (req,res,next) =>{
     
 }
 
-//get all distribution details
-exports.getData = (req,res,next) =>{
+//get  distinct distribute details from database
+exports.getDistinctData = (req,res,next) =>{
 
     try
     {
@@ -63,6 +63,33 @@ exports.getData = (req,res,next) =>{
     }
     
    
+}
 
-    
+
+//fetch all purchase Details
+exports.getAllData = (req,res,next)=>{
+
+    try 
+    {
+        //select query
+        const sql=`SELECT * FROM distribution_details`;
+
+        con.query(sql,(err,result)=>{
+            if(err){
+                res.locals.error=err;
+                next();
+            }else{
+                res.locals.result=result;
+                next();
+            } 
+           
+            
+        })
+
+    }
+    catch(err)
+    {
+        res.json({error:`got error in model[exports.getData] : ${err}`});
+    }
+
 }

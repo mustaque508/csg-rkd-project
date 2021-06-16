@@ -8,9 +8,19 @@ const Router =() => {
             <Route exact path="/" component={Main}></Route>
             <Route exact path="/register" component={Main}></Route>
             <Route exact path="/welcome" component={Welcome}></Route>
+
+            {/* request */}
             <Route exact path="/request" component={Welcome}></Route>
+            <Route exact path="/request-view" component={Welcome}></Route>
+            <Route exact path="/request-edit-delete" component={Welcome}></Route>
+
+            {/* purchase */}
             <Route exact path="/purchase" component={Welcome}></Route>
+            <Route exact path="/purchase-view" component={Welcome}></Route>
+
+            {/* distribute */}
             <Route exact path="/distribute" component={Welcome}></Route>
+            <Route exact path="/distribute-view" component={Welcome}></Route>
         </Switch>
     )
 }

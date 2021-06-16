@@ -4,9 +4,9 @@
 import
 {
     React,useState,Link,Collapse,List,ListItem,ListItemIcon,ListItemText,ExpandLess,ExpandMore,AddIcon,
-    VisibilityIcon,DeleteIcon,logo
+    VisibilityIcon,EditIcon,logo
 
-} from '../Import'
+} from '../../Import'
 
 
 const SideBar = () => {
@@ -51,20 +51,24 @@ const SideBar = () => {
                                   
 
                                     {/* view Requests */}
-                                    <ListItem button>
-                                        <ListItemIcon>
-                                            <VisibilityIcon />
-                                        </ListItemIcon>
-                                        <ListItemText primary="View requests" />
-                                    </ListItem>
+                                    <Link to="/request-view" className="text-decoration-none text-dark">
+                                        <ListItem button>
+                                            <ListItemIcon>
+                                                <VisibilityIcon />
+                                            </ListItemIcon>
+                                            <ListItemText primary="View requests" />
+                                        </ListItem>
+                                    </Link>
 
                                     {/* delete or Edit Requests */}
-                                    <ListItem button>
-                                        <ListItemIcon>
-                                            <DeleteIcon />
-                                        </ListItemIcon>
-                                        <ListItemText primary="Delete request" />
-                                    </ListItem>
+                                    <Link to="/request-edit-delete" className="text-decoration-none text-dark">
+                                        <ListItem button>
+                                            <ListItemIcon>
+                                                <EditIcon />
+                                            </ListItemIcon>
+                                            <ListItemText primary="Edit/Delete request" />
+                                        </ListItem>
+                                    </Link>
 
                                 </List>
                             </Collapse>
@@ -90,19 +94,21 @@ const SideBar = () => {
                                    
 
                                     {/* view purchase */}
-                                    <ListItem button>
-                                        <ListItemIcon>
-                                            <VisibilityIcon />
-                                        </ListItemIcon>
-                                        <ListItemText primary="View purchases" />
-                                    </ListItem>
+                                    <Link  to="/purchase-view" className="text-decoration-none text-dark">
+                                        <ListItem button>
+                                            <ListItemIcon>
+                                                <VisibilityIcon />
+                                            </ListItemIcon>
+                                            <ListItemText primary="View purchases" />
+                                        </ListItem>
+                                    </Link>
 
                                     {/* delete or Edit purchase */}
                                     <ListItem button>
                                         <ListItemIcon>
-                                            <DeleteIcon />
+                                            <EditIcon />
                                         </ListItemIcon>
-                                        <ListItemText primary="Delete purchase" />
+                                        <ListItemText primary="Edit/Delete purchase" />
                                     </ListItem>
 
                                 </List>
@@ -129,19 +135,21 @@ const SideBar = () => {
                                    
 
                                     {/* view distribute */}
-                                    <ListItem button>
-                                        <ListItemIcon>
-                                            <VisibilityIcon />
-                                        </ListItemIcon>
-                                        <ListItemText primary="View distributes" />
-                                    </ListItem>
+                                    <Link  to="/distribute-view" className="text-decoration-none text-dark">
+                                        <ListItem button>
+                                            <ListItemIcon>
+                                                <VisibilityIcon />
+                                            </ListItemIcon>
+                                            <ListItemText primary="View distributes" />
+                                        </ListItem>
+                                    </Link>
 
                                     {/* delete or Edit distribute */}
                                     <ListItem button>
                                         <ListItemIcon>
-                                            <DeleteIcon />
+                                            <EditIcon />
                                         </ListItemIcon>
-                                        <ListItemText primary="Delete distribute" />
+                                        <ListItemText primary="Edit/Delete distribute" />
                                     </ListItem>
 
                                 </List>

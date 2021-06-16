@@ -41,9 +41,17 @@ router.post('/store_distribute_details',validation,distribute_model.storeData,(r
     (res.locals.success) ? res.json({success:`your record saved successfully`}): res.json({error:`got error when stroing form_details : ${res.locals.error.sqlMessage}`});
 })
 
-//getData
-router.get('/get_distribution_details',distribute_model.getData,(req,res)=>{
+//get distinct distribute details from database
+router.get('/get_distinct_distribute_details',distribute_model.getDistinctData,(req,res)=>{
     (res.locals.result)? res.json({result:res.locals.result}) : res.json({error:`got error when fetching requester_details : ${res.locals.error}`});
 })
+
+
+//get all distribute details from database
+router.get('/get_all_distribute_details',distribute_model.getAllData,(req,res)=>{
+        
+    (res.locals.result)? res.json({result:res.locals.result}) : res.json({error:`got error when fetching requester_details : ${res.locals.error}`});
+})
+
 
 module.exports = router;

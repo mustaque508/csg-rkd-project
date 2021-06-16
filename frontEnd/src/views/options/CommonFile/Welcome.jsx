@@ -2,9 +2,10 @@
 
 import
 {
-    React,NavBar,useLocation,RequestForm,Distribute,PurchaseForm,HomePage
+    React,NavBar,useLocation,RequestForm,Distribute,PurchaseForm,HomePage,RequestView,PurchaseView,DistributeView,
+    RequestEditDelete
 }
- from '../Import'
+ from '../../Import'
 
 
 const Welcome = () => {
@@ -26,7 +27,11 @@ const Welcome = () => {
                          {
                              (location.pathname === '/request') ? <RequestForm /> :
                              (location.pathname === '/purchase') ? <PurchaseForm/> :
-                             (location.pathname === '/distribute') ? <Distribute/> : <HomePage/>
+                             (location.pathname === '/distribute') ? <Distribute/> :
+                             (location.pathname === '/request-view')? <RequestView/> :
+                             (location.pathname === '/purchase-view')? <PurchaseView/> :
+                             (location.pathname === '/distribute-view')? <DistributeView/> :
+                             (location.pathname === '/request-edit-delete')? <RequestEditDelete/> :<HomePage/>
                          }   
                     </div>
                 </div>

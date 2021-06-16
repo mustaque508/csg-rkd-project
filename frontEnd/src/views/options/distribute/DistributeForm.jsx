@@ -6,7 +6,7 @@ import
     Button,axios,$,toast,useCallback,Autocomplete
 } from '../../Import'
 
-const Distribute = () => {
+const DistributeForm = () => {
 
     
 
@@ -89,7 +89,7 @@ const Distribute = () => {
     //get all requester_details
    const fetch_distribution_details = useCallback(
     ()=>{
-        axios.get('/get_distribution_details')
+        axios.get('/get_distinct_distribute_details')
         .then((res)=>{
             
             console.log(res.data.result);
@@ -235,11 +235,11 @@ const Distribute = () => {
 
 
     return (
-      <section className="ditribute-section">
+      <section className="ditribute-section mt-5">
              <div className="container">
                 <div className="row ">
 
-                      {/* content */}\
+                      {/* content */}
                       <div className="content mt-3">
                          <form onSubmit={submit}  method="POST" className="form-group" id="submit" autoComplete="off">
 
@@ -553,4 +553,4 @@ const Distribute = () => {
     )
 }
 
-export default Distribute
+export default DistributeForm

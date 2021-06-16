@@ -35,11 +35,17 @@ router.post('/store_purchase_details',validations,purchase_model.storeData,(req,
 })
 
 
-//get all requester_details from database
-router.get('/get_purchase_details',purchase_model.getData,(req,res)=>{
+//get distinct purchase detials from database
+router.get('/get_distinct_purchase_details',purchase_model.getDistinctData,(req,res)=>{
     (res.locals.result)? res.json({result:res.locals.result}) : res.json({error:`got error when fetching purchase_details : ${res.locals.error}`});
 })
 
+
+//get all purchase details from database
+router.get('/get_all_purchase_details',purchase_model.getAllData,(req,res)=>{
+        
+    (res.locals.result)? res.json({result:res.locals.result}) : res.json({error:`got error when fetching requester_details : ${res.locals.error}`});
+})
 
 
 module.exports = router;

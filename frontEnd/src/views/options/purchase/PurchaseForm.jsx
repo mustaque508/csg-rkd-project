@@ -83,7 +83,7 @@ const PurchaseForm = () => {
     //get all purchase_details
     const fetch_purchase_details = useCallback(
         ()=>{
-            axios.get('/get_purchase_details')
+            axios.get('/get_distinct_purchase_details')
             .then((res)=>{
                 
                 if(res.data.result)

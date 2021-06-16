@@ -8,7 +8,7 @@
          // initialise plugin
              const  iti =intlTelInput(props, {
                  preferredCountries:["in"],             
-                 autoHideDialCode: true,
+                 autoHideDialCode: false,
                  autoPlaceholder: false,
                  nationalMode: false,
                  utilsScript:util

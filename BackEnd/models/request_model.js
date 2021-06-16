@@ -43,11 +43,11 @@ exports.storeData=(req,res,next)=>{
 
 }
 
-//fetch all requester_details
-exports.getData=(req,res,next)=>{
+//fetch DISTINCT requester_details
+exports.getDistinctData=(req,res,next)=>{
     try 
     {
-        //select query
+        //select distinct query
         const sql=`SELECT DISTINCT occupation,address,mohalla_masjid_jamat,area_location,contact_person FROM rkd_data`;
 
         con.query(sql,(err,result)=>{
@@ -69,4 +69,93 @@ exports.getData=(req,res,next)=>{
     }
 }
 
+//fetch all request Details
+exports.getAllData = (req,res,next)=>{
 
+    try 
+    {
+        //select query
+        const sql=`SELECT * FROM rkd_data`;
+
+        con.query(sql,(err,result)=>{
+            if(err){
+                res.locals.error=err;
+                next();
+            }else{
+                res.locals.result=result;
+                next();
+            } 
+           
+            
+        })
+
+    }
+    catch(err)
+    {
+        res.json({error:`got error in model[exports.getAllData] : ${err}`});
+    }
+
+}
+
+
+//delete requester_details
+exports.delete_record =(req,res,next)=>{
+    try
+    {
+        const {id}=req.body;
+       
+        const sql=`DELETE FROM rkd_data WHERE id='${id}'`;
+
+        con.query(sql,(err,result)=>{
+            if(err){
+                res.locals.error=err;
+                next();
+            }else{
+                res.locals.success=true;
+                next();
+            } 
+        })
+    }
+    catch(err)
+    {
+        res.json({error:`got error in model[exports.delete_record] : ${err}`});
+    }
+
+}
+
+//update requester_details
+exports.update_record=(req,res,next)=>{
+
+    try
+    {
+
+        const {
+            id,req_name,req_contact_no,card_no,card_type,dependent_no,children_no,occupation,address,location,jamat_name,
+            contact_person,cp_contact_no,
+        }=req.body.request_details;
+
+        sql=`UPDATE rkd_data SET full_name='${req_name}',contact_no='${req_contact_no}',aadhar_rationcard_no='${card_no}',
+            APL_BPL='${card_type}',no_of_dependents='${dependent_no}',occupation='${occupation}',no_of_children_below_15years_age='${children_no}',
+            address='${address}',area_location='${location}',mohalla_masjid_jamat='${jamat_name}',
+            contact_person='${contact_person}', cp_phone='${cp_contact_no}'
+            WHERE id='${id}'`;
+
+        con.query(sql,(err)=>{
+            if(err){
+                res.locals.error=err;
+                next();
+            }else{
+                res.locals.success=true;
+                next();
+            } 
+               
+                
+        })
+
+    }
+    catch(err)
+    {
+        res.json({error:`got error in model[exports.update_record] : ${err}`});
+    }
+
+}

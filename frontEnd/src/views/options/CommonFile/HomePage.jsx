@@ -1,7 +1,7 @@
 
 /***************************** HomePage component ***********************************/
 
-import {React,useLocation} from '../Import'
+import {React,useLocation} from '../../Import'
 
 const HomePage = () => {
 

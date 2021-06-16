@@ -82,7 +82,7 @@ const RequestForm = () => {
    //get all requester_details
    const fetch_requester_details = useCallback(
     ()=>{
-        axios.get('/get_request_details')
+        axios.get('/get_distinct_request_details')
         .then((res)=>{
             
             if(res.data.result)
@@ -197,9 +197,14 @@ const RequestForm = () => {
         event.preventDefault();
         const contact_error=validate_contact(document.querySelector("#req_contact_no"));
         const cp_contact_error=validate_contact(document.querySelector("#cp_contact_no"));
+
+        //add type field
+        Object.assign(request_details,{contact_error});
+        Object.assign(request_details,{cp_contact_error});
+        Object.assign(request_details,{type:'insert'});
     
         // send Data
-        axios.post('/store_request_details',{request_details,contact_error,cp_contact_error})
+        axios.post('/store_request_details',{request_details})
         .then((res)=>{
             
             if(res.data.errors)

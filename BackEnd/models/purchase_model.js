@@ -38,8 +38,8 @@ exports.storeData = (req,res,next)=>{
 
 }
 
-//get purchase_details from database
-exports.getData=(req,res,next)=>{
+//get  distinct purchase_details from database
+exports.getDistinctData=(req,res,next)=>{
     try 
     {
         //select query
@@ -63,4 +63,34 @@ exports.getData=(req,res,next)=>{
     {
         res.json({error:`got error in model[exports.getData] : ${err}`});
     }
+}
+
+
+
+//fetch all purchase Details
+exports.getAllData = (req,res,next)=>{
+
+    try 
+    {
+        //select query
+        const sql=`SELECT * FROM purchase_details`;
+
+        con.query(sql,(err,result)=>{
+            if(err){
+                res.locals.error=err;
+                next();
+            }else{
+                res.locals.result=result;
+                next();
+            } 
+           
+            
+        })
+
+    }
+    catch(err)
+    {
+        res.json({error:`got error in model[exports.getData] : ${err}`});
+    }
+
 }

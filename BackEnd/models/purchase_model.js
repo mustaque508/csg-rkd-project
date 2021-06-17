@@ -94,3 +94,55 @@ exports.getAllData = (req,res,next)=>{
     }
 
 }
+
+//update record
+exports.update_record = (req,res,next)=>{
+    
+    try
+    {
+        const{delivered_by,loaded_by,qty,rate,recieved_by,supplier,unloaded_by,vehicle_used,id}=req.body;
+
+        const sql=`UPDATE purchase_details SET delivered_by='${delivered_by}',loaded_by='${loaded_by}', qty=${qty},
+        rate='${rate}',recieved_by='${recieved_by}',supplier='${supplier}', unloaded_by='${unloaded_by}',
+        vehicle_used='${vehicle_used}' WHERE id='${id}' `;
+
+        con.query(sql,(err)=>{
+            if(err){
+                res.locals.error=err;
+                next();
+            }else{
+                res.locals.success=true;
+                next();
+            }         
+        })
+
+    }
+    catch(err){
+        res.json({error:`got error in model[exports.update_record] : ${err}`});
+    }
+}
+
+
+//delete record
+exports.delete_record=(req,res,next)=>{
+    try
+    {
+        const {id}=req.body;
+       
+        const sql=`DELETE FROM purchase_details WHERE id='${id}'`;
+
+        con.query(sql,(err,result)=>{
+            if(err){
+                res.locals.error=err;
+                next();
+            }else{
+                res.locals.success=true;
+                next();
+            } 
+        })
+    }
+    catch(err)
+    {
+        res.json({error:`got error in model[exports.delete_record] : ${err}`});
+    }
+}

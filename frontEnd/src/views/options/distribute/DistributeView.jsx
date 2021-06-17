@@ -30,29 +30,69 @@ function DistributeView() {
 
         //get all distribute details
         fetch_distribute_details();
+        
     }, [fetch_distribute_details])
 
 
     //material-table coloumns
     const columns =[
-        {title:'Incharge', field:'incharge'},
-        {title:'CSG_volunteers', field:'csg_volunteers'},
-        {title:'NGO', field:'NGO'},
-        {title:'Quantity (kg)', field:'qty'},
-        {title:'Data_collected', field:'data_collected'},
-        {title:'Area', field:'area'},
-        {title:'Contact_person', field:'contact_person'},
-        {title:'Contact person contact no', field:'cp_phone'},
-        {title:'Mohalla/Masjid jamat ', field:'mohalla_masjid_jamat'},
-        {title:'Vehicle used', field:'vehicle_used'},
-        {title:'Distribution date', field:'distribution_date'}
+        {
+            title:'Sr No',
+            field:'id'
+        },
+        {
+            title:'Incharge', 
+            field:'incharge'
+        },
+        {
+            title:'CSG Volunteers', 
+            field:'csg_volunteers'
+        },
+        {
+            title:'NGO', 
+            field:'NGO'
+        },
+        {
+            title:'Quantity (kg)', 
+            field:'qty'
+        },
+        {
+            title:'Data Collected ?', 
+            field:'data_collected'
+        },
+        {
+            title:'Area', 
+            field:'area'
+        },
+        {
+            title:'Contact person', 
+            field:'contact_person'
+        },
+        {
+            title:'Contact person contact no', 
+            field:'cp_phone'
+        },
+        {
+            title:'Mohalla/Masjid jamat ', 
+            field:'mohalla_masjid_jamat'
+        },
+        {
+            title:'Vehicle used', 
+            field:'vehicle_used'
+        },
+        {
+            title:'Distribution date', 
+            field:'distribution_date',
+            type: "date",
+            dateSetting: { locale: "en-GB" }
+        }
     ];
 
   
     return (
 
         
-        <section className="request-view-section mt-5">
+        <section className="request-view-section mt-5 mb-5">
             <div className="container">
                 <div className="row">
                     <MaterialTable  

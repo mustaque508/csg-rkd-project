@@ -100,7 +100,7 @@ const RequestView = () => {
     return (
 
         
-        <section className="request-view-section mt-5">
+        <section className="request-view-section mt-5 mb-5">
             <div className="container">
                 <div className="row">
                     <MaterialTable  

@@ -20,7 +20,7 @@ const validation = (req,res,next)=>
 
       //get all input value and perform validation
         const {req_name,card_no,card_type,occupation,address,location,jamat_name,contact_person,dependent_no,
-        children_no,contact_error,cp_contact_error}=req.body.request_details;
+        children_no,contact_error,cp_contact_error}=req.body;
       
 
         // validations
@@ -44,7 +44,7 @@ const validation = (req,res,next)=>
 
         let  sql="";
 
-        const {id,req_contact_no,card_no,type}=req.body.request_details;
+        const {id,req_contact_no,card_no,type}=req.body;
 
         if(type === "update")
         {
@@ -180,13 +180,13 @@ router.get('/get_all_request_details',request_model.getAllData,(req,res)=>{
 })
 
 
-//delete requester_details based on aadhar/ration card no
+//delete requester_details based on id
 router.post('/delete_requester_details',request_model.delete_record,(req,res)=>{
     (res.locals.success) ? res.json({success:res.locals.success}): res.json({error:`got error when deleting requester_details : ${res.locals.error.sqlMessage}`});
 })
 
 
-//update requester_details based on aadhar/ration card no
+//update requester_details based on id
 router.post('/update_requester_details',validation,request_model.update_record,(req,res)=>{
     (res.locals.success) ? res.json({success:res.locals.success}): res.json({error:`got error when updating requester_details : ${res.locals.error.sqlMessage}`});
 })

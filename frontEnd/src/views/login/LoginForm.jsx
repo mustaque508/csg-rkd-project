@@ -85,11 +85,11 @@ const LoginForm = () => {
                 // redirect to /welcome with passing username
                 const {full_name}=res.data;
 
+                //set sessionStorage
+                sessionStorage.setItem('uname',full_name);
+
                 history.push({
-                    pathname:'/welcome',
-                    state:{
-                        username:full_name
-                    }
+                    pathname:'/welcome'
                 });
             }
             else if(res.data.error)

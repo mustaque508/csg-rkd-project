@@ -86,7 +86,7 @@ const DistributeForm = () => {
 
 
     
-    //get all requester_details
+    //get all distribution_details
    const fetch_distribution_details = useCallback(
     ()=>{
         axios.get('/get_distinct_distribute_details')
@@ -190,8 +190,11 @@ const DistributeForm = () => {
        
         const cp_contact_error=validate_contact(document.querySelector("#cp_contact_no"));
 
+        //add type field
+        Object.assign(distribute_details,{cp_contact_error});
+
         //sendData
-        axios.post('/store_distribute_details',{distribute_details,cp_contact_error})
+        axios.post('/store_distribute_details',distribute_details)
         .then((res)=>{
 
             if(res.data.errors)

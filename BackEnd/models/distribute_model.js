@@ -8,7 +8,7 @@ exports.storeData = (req,res,next) =>{
 
     try
     {
-        const{area,qty,ngo,incharge,csg_volunteers,data_collected,contact_person,cp_contact_no,vehicle_used,jamat_name}=req.body.distribute_details;
+        const{area,qty,ngo,incharge,csg_volunteers,data_collected,contact_person,cp_contact_no,vehicle_used,jamat_name}=req.body;
         const distribution_date=moment(new Date()).format("YYYY-MM-DD h:mm:ss");
     
         //insert query
@@ -90,6 +90,64 @@ exports.getAllData = (req,res,next)=>{
     catch(err)
     {
         res.json({error:`got error in model[exports.getData] : ${err}`});
+    }
+
+}
+
+//delete record
+exports.delete_record =(req,res,next)=>{
+    try
+    {
+        const {id}=req.body;
+       
+        const sql=`DELETE FROM distribution_details WHERE id='${id}'`;
+
+        con.query(sql,(err,result)=>{
+            if(err){
+                res.locals.error=err;
+                next();
+            }else{
+                res.locals.success=true;
+                next();
+            } 
+        })
+    }
+    catch(err)
+    {
+        res.json({error:`got error in model[exports.delete_record] : ${err}`});
+    }
+
+}
+
+//update record
+exports.update_record=(req,res,next)=>{
+
+    try
+    {
+
+        const{area,qty,ngo,incharge,csg_volunteers,data_collected,contact_person,cp_contact_no,vehicle_used,jamat_name,id}=req.body;
+
+        sql=`UPDATE distribution_details SET area='${area}',qty='${qty}',NGO='${ngo}',incharge='${incharge}',
+            csg_volunteers='${csg_volunteers}',data_collected='${data_collected}',vehicle_used='${vehicle_used}',
+            mohalla_masjid_jamat='${jamat_name}',contact_person='${contact_person}', cp_phone='${cp_contact_no}'
+            WHERE id='${id}'`;
+
+        con.query(sql,(err)=>{
+            if(err){
+                res.locals.error=err;
+                next();
+            }else{
+                res.locals.success=true;
+                next();
+            } 
+               
+                
+        })
+
+    }
+    catch(err)
+    {
+        res.json({error:`got error in model[exports.update_record] : ${err}`});
     }
 
 }

@@ -13,7 +13,7 @@ import '../dist/css/RequestForm.css'
 import App from './App'
 import React,{ useState,useEffect,useCallback} from 'react'
 import ReactDOM from 'react-dom'
-import { Link,BrowserRouter,Redirect } from 'react-router-dom'
+import { Link,BrowserRouter,Redirect} from 'react-router-dom'
 import HomePage from './options/CommonFile/HomePage'
 import { Route, Switch } from 'react-router'
 import Router from '../config/Router'
@@ -57,6 +57,10 @@ import PurchaseView from './options/purchase/PurchaseView'
 import DistributeView from './options/distribute/DistributeView'
 import EditIcon from '@material-ui/icons/Edit'
 import RequestEditDelete from './options/request/RequestEditDelete'
+import PurchaseEditDelete from './options/purchase/PurchaseEditDelete'
+import DistributeEditDelete from './options/distribute/DistributeEditDelete'
+import HomeIcon from '@material-ui/icons/Home';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 
 toast.configure()
@@ -111,5 +115,5 @@ export
  InfoSharpIcon,LoginForm,useLocation,useHistory,Checkbox,FormControlLabel,Cookies,Welcome,SideBar,NavBar,AppBar,IconButton,
  MenuIcon,Toolbar,Typography,useStyles,AccountCircle,Drawer,Accordion,Collapse,List,ListItem,ListItemIcon,ListItemText,ExpandLess,
  ExpandMore,AddIcon,VisibilityIcon,logo,RequestView,MaterialTable,PurchaseView,DistributeView,EditIcon,RequestEditDelete,
- Dialog,DialogTitle,DialogContent
+ Dialog,DialogTitle,DialogContent,PurchaseEditDelete,DistributeEditDelete,HomeIcon,ExitToAppIcon
 }

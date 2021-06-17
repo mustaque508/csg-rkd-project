@@ -4,18 +4,37 @@
 import
 {
     React,useState,Link,Collapse,List,ListItem,ListItemIcon,ListItemText,ExpandLess,ExpandMore,AddIcon,
-    VisibilityIcon,EditIcon,logo
+    VisibilityIcon,EditIcon,logo,useHistory,toast,Cookies,HomeIcon,ExitToAppIcon
 
 } from '../../Import'
 
 
-const SideBar = () => {
 
+
+const SideBar = () => {
+   
     const [open, setOpen] = useState({
         request:false,
         distribute:false,
-        purchase:false
+        purchase:false,
+        other:false
     });
+
+    const history=useHistory();
+
+
+    //logout
+    const logout = ()=>{
+
+        //clear cookies
+        Cookies.remove('email_cookie');
+        Cookies.remove('password_cookie');
+        Cookies.remove('rememberme_cookie');
+
+        //redirect home
+        toast.success(`You have successfully logged out !!`);
+        history.push('/');
+    }
 
 
     return (
@@ -30,6 +49,8 @@ const SideBar = () => {
                         
                         {/* menu */}
                         <List component="nav"  aria-labelledby="nested-list-subheader">
+
+                            
 
                             {/* request submenu */}
                             <ListItem button onClick={()=>{setOpen({request: !open.request})}}> 
@@ -104,12 +125,14 @@ const SideBar = () => {
                                     </Link>
 
                                     {/* delete or Edit purchase */}
-                                    <ListItem button>
-                                        <ListItemIcon>
-                                            <EditIcon />
-                                        </ListItemIcon>
-                                        <ListItemText primary="Edit/Delete purchase" />
-                                    </ListItem>
+                                    <Link to="/purchase-edit-delete" className="text-decoration-none text-dark">
+                                        <ListItem button>
+                                            <ListItemIcon>
+                                                <EditIcon />
+                                            </ListItemIcon>
+                                            <ListItemText primary="Edit/Delete purchase" />
+                                        </ListItem>
+                                    </Link>
 
                                 </List>
                             </Collapse>
@@ -145,16 +168,49 @@ const SideBar = () => {
                                     </Link>
 
                                     {/* delete or Edit distribute */}
-                                    <ListItem button>
-                                        <ListItemIcon>
-                                            <EditIcon />
-                                        </ListItemIcon>
-                                        <ListItemText primary="Edit/Delete distribute" />
-                                    </ListItem>
+                                    <Link to="/distribute-edit-delete" className="text-decoration-none text-dark">
+                                        <ListItem button>
+                                            <ListItemIcon>
+                                                <EditIcon />
+                                            </ListItemIcon>
+                                            <ListItemText primary="Edit/Delete distribute" />
+                                        </ListItem>
+                                    </Link>
 
                                 </List>
                             </Collapse>
 
+
+                            {/* other option menu */}
+                            <ListItem button onClick={()=>{setOpen({other: !open.other})}}> 
+                                <ListItemText primary="Other options"/>
+                                {open.other ? <ExpandLess/> :<ExpandMore/> }
+                            </ListItem>
+                            <Collapse in={open.other} timeout="auto" unmountOnExit >
+                                <List component="div" disablePadding >
+
+                                    {/* homePage */}
+                                    <Link to="/welcome" className="text-decoration-none text-dark">
+                                        <ListItem button>
+                                            <ListItemIcon>
+                                                <HomeIcon />
+                                            </ListItemIcon>
+                                            <ListItemText primary="Welcome page" />
+                                        </ListItem>
+                                    </Link>
+
+                                    {/* Logout */} 
+                                    <ListItem button onClick={logout}>
+                                        <ListItemIcon>
+                                            <ExitToAppIcon />
+                                        </ListItemIcon>
+                                        <ListItemText primary="Logout" />
+                                    </ListItem>
+                                </List>
+                            </Collapse>
+                            
+                            
+                          
                         </List>
                     </div>
                 </div>

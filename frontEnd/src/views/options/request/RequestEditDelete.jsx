@@ -361,7 +361,7 @@ const RequestEditDelete = () => {
         //add type field
         Object.assign(Form_details,{type:'update'},{contact_error},{cp_contact_error});
 
-        axios.post('/update_requester_details',{request_details:Form_details})
+        axios.post('/update_requester_details',Form_details)
         .then((res)=>{
           
             if(res.data.errors)
@@ -400,8 +400,8 @@ const RequestEditDelete = () => {
 
         <>
             {/* dialog-section */}
-            <section className="dialog-section">
-                <Dialog onRendered={()=>{plugin()}} open={open}  aria-labelledby="form-dialog-title">
+            <section className="request-dialog-section">
+                <Dialog fullWidth maxWidth="sm" onRendered={()=>{plugin()}} open={open}  aria-labelledby="form-dialog-title">
 
                     <DialogContent>
 

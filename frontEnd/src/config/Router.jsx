@@ -17,10 +17,13 @@ const Router =() => {
             {/* purchase */}
             <Route exact path="/purchase" component={Welcome}></Route>
             <Route exact path="/purchase-view" component={Welcome}></Route>
+            <Route exact path="/purchase-edit-delete" component={Welcome}></Route>
 
             {/* distribute */}
             <Route exact path="/distribute" component={Welcome}></Route>
             <Route exact path="/distribute-view" component={Welcome}></Route>
+            <Route exact path="/distribute-edit-delete" component={Welcome}></Route>
+
         </Switch>
     )
 }

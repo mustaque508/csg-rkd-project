@@ -1,16 +1,16 @@
 
 /***************************** HomePage component ***********************************/
 
-import {React,useLocation} from '../../Import'
+import {React} from '../../Import'
 
 const HomePage = () => {
 
-    const location=useLocation();
+
     return (
             <section className="homepage-section mt-5">
                 <div className="container">
                     <div className="row">
-                        <h3>Welcome Back, <span className="text-muted">{location.state.username}</span></h3> 
+                        <h3>Welcome Back, <span className="text-muted">{sessionStorage.getItem('uname')}</span></h3> 
                     </div>
                 </div>
             </section>

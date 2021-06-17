@@ -35,22 +35,55 @@ const PurchaseView = () => {
 
     //material-table coloumns
     const columns =[
-        {title:'Supplier', field:'supplier'},
-        {title:'Quantity(kg)', field:'qty'},
-        {title:'Rate(Rs)', field:'rate'},
-        {title:'Delivered by', field:'delivered_by'},
-        {title:'Recieved by', field:'recieved_by'},
-        {title:'Loaded by', field:'loaded_by'},
-        {title:'Unloaded by', field:'unloaded_by'},
-        {title:'Vehicle used', field:'vehicle_used'},
-        {title:'Purchase date', field:'purchase_date'}
+        {
+            title:'Sr No',
+            field:'id'
+        },
+        {
+            title:'Supplier', 
+            field:'supplier'
+        },
+        {
+            title:'Quantity(kg)', 
+            field:'qty'
+        },
+        {
+            title:'Rate(Rs)', 
+            field:'rate'
+        },
+        {
+            title:'Delivered by', 
+            field:'delivered_by'
+        },
+        {
+            title:'Recieved by', 
+            field:'recieved_by'
+        },
+        {
+            title:'Loaded by', 
+            field:'loaded_by'
+        },
+        {
+            title:'Unloaded by', 
+            field:'unloaded_by'
+        },
+        {
+            title:'Vehicle used', 
+            field:'vehicle_used'
+        },
+        {
+            title:'Purchase date', 
+            field:'purchase_date',
+            type: "date",
+            dateSetting: { locale: "en-GB" }
+        }
     ];
 
   
     return (
 
         
-        <section className="request-view-section mt-5">
+        <section className="request-view-section mt-5 mb-5">
             <div className="container">
                 <div className="row">
                     <MaterialTable  

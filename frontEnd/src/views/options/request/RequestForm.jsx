@@ -204,7 +204,7 @@ const RequestForm = () => {
         Object.assign(request_details,{type:'insert'});
     
         // send Data
-        axios.post('/store_request_details',{request_details})
+        axios.post('/store_request_details',request_details)
         .then((res)=>{
             
             if(res.data.errors)

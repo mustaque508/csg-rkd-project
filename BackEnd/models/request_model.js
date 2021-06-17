@@ -10,7 +10,7 @@ exports.storeData=(req,res,next)=>{
     try
     {
         const{req_name,req_contact_no,card_no,card_type,dependent_no,children_no,occupation,address,location,jamat_name,
-        contact_person,cp_contact_no}=req.body.request_details;
+        contact_person,cp_contact_no}=req.body;
         const created_date=moment(new Date()).format("YYYY-MM-DD h:mm:ss");
 
         //insert query
@@ -132,7 +132,7 @@ exports.update_record=(req,res,next)=>{
         const {
             id,req_name,req_contact_no,card_no,card_type,dependent_no,children_no,occupation,address,location,jamat_name,
             contact_person,cp_contact_no,
-        }=req.body.request_details;
+        }=req.body;
 
         sql=`UPDATE rkd_data SET full_name='${req_name}',contact_no='${req_contact_no}',aadhar_rationcard_no='${card_no}',
             APL_BPL='${card_type}',no_of_dependents='${dependent_no}',occupation='${occupation}',no_of_children_below_15years_age='${children_no}',

@@ -3,10 +3,14 @@
 import 
 {
     React,TextField,MuiThemeProvider,colortheme,Button,Popover,OverlayTrigger,InfoSharpIcon,useState,plugin_for_contact,
-    useEffect,axios,BootstrapTooltip,toast
+    useEffect,axios,BootstrapTooltip,toast,useHistory
 } from '../Import'
 
+
+
 const RegisterForm = () => {
+
+    const history=useHistory();
 
     // get input fields
     const [register_details, setregister_details] = useState({
@@ -107,7 +111,11 @@ const RegisterForm = () => {
                         'cpassword':''
                    });
                    event.target.reset();
+                   history.push({
+                       pathname:'/'
+                   });
                    toast.success(res.data.success);
+                   
                }
                else if(res.data.error)
                {

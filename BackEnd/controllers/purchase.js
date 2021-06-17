@@ -47,6 +47,15 @@ router.get('/get_all_purchase_details',purchase_model.getAllData,(req,res)=>{
     (res.locals.result)? res.json({result:res.locals.result}) : res.json({error:`got error when fetching requester_details : ${res.locals.error}`});
 })
 
+//delete  based on id
+router.post('/delete_purchase_details',purchase_model.delete_record,(req,res)=>{
+    (res.locals.success) ? res.json({success:res.locals.success}): res.json({error:`got error when deleting requester_details : ${res.locals.error.sqlMessage}`});
+})
+
+//update record based on id
+router.post('/update_purchase_details',validations,purchase_model.update_record,(req,res)=>{
+    (res.locals.success) ? res.json({success:res.locals.success}): res.json({error:`got error when updating requester_details : ${res.locals.error.sqlMessage}`});
+})
 
 module.exports = router;
 

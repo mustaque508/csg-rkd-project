@@ -67,7 +67,6 @@ const LoginForm = () => {
     //on submit
     const submit = (event) =>{
         event.preventDefault();
-        console.log(login_details);
 
         axios.post('/login',login_details)
         .then((res)=>{
@@ -80,14 +79,16 @@ const LoginForm = () => {
                 });
                 setOpen(true);
             }
-            else if(res.data.full_name)
+            else if(res.data.result)
             {
-                // redirect to /welcome with passing username
-                const {full_name}=res.data;
+              
+                const {full_name,role_id}=res.data.result;
 
                 //set sessionStorage
                 sessionStorage.setItem('uname',full_name);
+                sessionStorage.setItem('role_id',role_id);
 
+                // redirect to /welcome 
                 history.push({
                     pathname:'/welcome'
                 });

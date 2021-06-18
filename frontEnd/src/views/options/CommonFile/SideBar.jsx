@@ -4,7 +4,7 @@
 import
 {
     React,useState,Link,Collapse,List,ListItem,ListItemIcon,ListItemText,ExpandLess,ExpandMore,AddIcon,
-    VisibilityIcon,EditIcon,logo,useHistory,toast,Cookies,HomeIcon,ExitToAppIcon
+    VisibilityIcon,EditIcon,logo,useHistory,toast,Cookies,HomeIcon,ExitToAppIcon,useEffect,useCallback,axios
 
 } from '../../Import'
 
@@ -20,6 +20,27 @@ const SideBar = () => {
         other:false
     });
 
+    const[modules,setModules]=useState({
+        Requests:{
+            read:0,
+            write:0,
+            delete:0
+        },
+        Purchases:{
+            read:0,
+            write:0,
+            delete:0  
+        },
+        Distribute:{
+            read:0,
+            write:0,
+            delete:0
+        }
+    });
+
+
+    const {Requests,Purchases,Distribute}=modules;
+
     const history=useHistory();
 
 
@@ -31,17 +52,68 @@ const SideBar = () => {
         Cookies.remove('password_cookie');
         Cookies.remove('rememberme_cookie');
 
+        //clear session
+        sessionStorage.clear();
+
         //redirect home
         toast.success(`You have successfully logged out !!`);
         history.push('/');
     }
+
+    //get role details based on role_id
+    const fetch_role_details =useCallback(
+        () => {
+            axios.post('/get_role_detials',{role_id:sessionStorage.getItem("role_id")})
+            .then((res)=>{
+                if(res.data.result)
+                {
+
+                    // set rights to user
+                   for (const key in modules) {
+                    res.data.result.forEach(element => {
+                       if(key === element.module)
+                       {
+                          
+                          setModules((prevState)=>{
+                              return{
+                                ...prevState,
+                                [key]:{
+                                    read:parseInt(element.read),
+                                    write:parseInt(element.write),
+                                    delete:parseInt(element.delete)
+                                }
+                              } 
+                          })
+                        
+                       }
+                    });
+                   }
+
+                 
+                }
+                else if(res.data.error)
+                {
+                    toast.error(res.data.error,{autoClose: false}); 
+                }
+            })
+        },
+        [modules],
+    )
+
+    useEffect(() => {
+
+
+      //get role details based on role_id
+      fetch_role_details();
+
+    }, [fetch_role_details])
 
 
     return (
             <section className="sidebar-section">
                 <div className="card border-0 ">
                     <div className="card-body p-0">
-
+                    
                         {/* heading */}
                         <h5 className="card-title text-uppercase d-flex flex-column align-items-center  ">
                             <img src={logo} alt="logo.png" className="img-fluid"/>  
@@ -49,8 +121,6 @@ const SideBar = () => {
                         
                         {/* menu */}
                         <List component="nav"  aria-labelledby="nested-list-subheader">
-
-                            
 
                             {/* request submenu */}
                             <ListItem button onClick={()=>{setOpen({request: !open.request})}}> 
@@ -60,36 +130,58 @@ const SideBar = () => {
                             <Collapse in={open.request} timeout="auto" unmountOnExit >
                                 <List component="div" disablePadding >
 
-                                    {/* Add request */}
-                                    <Link to="/request" className="text-decoration-none text-dark">
-                                        <ListItem button >
-                                            <ListItemIcon>
-                                                <AddIcon />
-                                            </ListItemIcon>
-                                            <ListItemText primary="Request Form" />
-                                        </ListItem>
-                                    </Link>
+                                 {/* Add request */}
+                                  
+                                  {
+                                     
+                                      (Requests.write) ? 
+                                        <Link to="/request" className="text-decoration-none text-dark">
+                                            <ListItem button >
+                                                <ListItemIcon>
+                                                    <AddIcon />
+                                                </ListItemIcon>
+                                                <ListItemText primary="Request Form" />
+                                            </ListItem>
+                                        </Link>
+                                      :null
+
+                                  }
+                                   
                                   
 
-                                    {/* view Requests */}
-                                    <Link to="/request-view" className="text-decoration-none text-dark">
-                                        <ListItem button>
-                                            <ListItemIcon>
-                                                <VisibilityIcon />
-                                            </ListItemIcon>
-                                            <ListItemText primary="View requests" />
-                                        </ListItem>
-                                    </Link>
+                                {/* view Requests */}
 
-                                    {/* delete or Edit Requests */}
-                                    <Link to="/request-edit-delete" className="text-decoration-none text-dark">
-                                        <ListItem button>
-                                            <ListItemIcon>
-                                                <EditIcon />
-                                            </ListItemIcon>
-                                            <ListItemText primary="Edit/Delete request" />
-                                        </ListItem>
-                                    </Link>
+                                  {
+                                      (Requests.read) ?
+                                        <Link to="/request-view" className="text-decoration-none text-dark">
+                                            <ListItem button>
+                                                <ListItemIcon>
+                                                    <VisibilityIcon />
+                                                </ListItemIcon>
+                                                <ListItemText primary="View requests" />
+                                            </ListItem>
+                                        </Link>
+                                      :null
+
+                                  }
+                                    
+
+                                {/* delete or Edit Requests */}
+
+                                  {
+                                        (Requests.delete) ? 
+                                            <Link to="/request-edit-delete" className="text-decoration-none text-dark">
+                                                <ListItem button>
+                                                    <ListItemIcon>
+                                                        <EditIcon />
+                                                    </ListItemIcon>
+                                                    <ListItemText primary="Edit/Delete request" />
+                                                </ListItem>
+                                            </Link>
+                                        :null
+
+                                  }
+                                   
 
                                 </List>
                             </Collapse>
@@ -104,35 +196,56 @@ const SideBar = () => {
                                 <List component="div" disablePadding >
 
                                     {/* Add purchase */}
-                                    <Link  to="/purchase" className="text-decoration-none text-dark">
-                                        <ListItem button >
-                                            <ListItemIcon>
-                                                <AddIcon />
-                                            </ListItemIcon>
-                                            <ListItemText primary="Purchase Form" />
-                                        </ListItem>
-                                    </Link>
+
+                                    {
+                                        (Purchases.write) ? 
+                                        <Link  to="/purchase" className="text-decoration-none text-dark">
+                                            <ListItem button >
+                                                <ListItemIcon>
+                                                    <AddIcon />
+                                                </ListItemIcon>
+                                                <ListItemText primary="Purchase Form" />
+                                            </ListItem>
+                                        </Link>
+                                        :null
+
+                                        
+                                    }
+                                   
                                    
 
                                     {/* view purchase */}
-                                    <Link  to="/purchase-view" className="text-decoration-none text-dark">
-                                        <ListItem button>
-                                            <ListItemIcon>
-                                                <VisibilityIcon />
-                                            </ListItemIcon>
-                                            <ListItemText primary="View purchases" />
-                                        </ListItem>
-                                    </Link>
+
+                                    {
+                                        (Purchases.read) ?
+                                        <Link  to="/purchase-view" className="text-decoration-none text-dark">
+                                            <ListItem button>
+                                                <ListItemIcon>
+                                                    <VisibilityIcon />
+                                                </ListItemIcon>
+                                                <ListItemText primary="View purchases" />
+                                            </ListItem>
+                                        </Link>
+                                        :null
+                                    }
+                                   
 
                                     {/* delete or Edit purchase */}
-                                    <Link to="/purchase-edit-delete" className="text-decoration-none text-dark">
-                                        <ListItem button>
-                                            <ListItemIcon>
-                                                <EditIcon />
-                                            </ListItemIcon>
-                                            <ListItemText primary="Edit/Delete purchase" />
-                                        </ListItem>
-                                    </Link>
+                                    {
+                                        (Purchases.delete) ?
+
+                                        <Link to="/purchase-edit-delete" className="text-decoration-none text-dark">
+                                            <ListItem button>
+                                                <ListItemIcon>
+                                                    <EditIcon />
+                                                </ListItemIcon>
+                                                <ListItemText primary="Edit/Delete purchase" />
+                                            </ListItem>
+                                        </Link>
+                                        :null
+
+                                    }
+                                   
 
                                 </List>
                             </Collapse>
@@ -147,35 +260,53 @@ const SideBar = () => {
                                 <List component="div" disablePadding >
 
                                     {/* Add distribute */}
-                                    <Link  to="/distribute" className="text-decoration-none text-dark">
-                                        <ListItem button >
-                                            <ListItemIcon>
-                                                <AddIcon />
-                                            </ListItemIcon>
-                                            <ListItemText primary="Distribute Form" />
-                                        </ListItem>
-                                    </Link>
+                                    {
+                                        (Distribute.write) ?
+                                        <Link  to="/distribute" className="text-decoration-none text-dark">
+                                            <ListItem button >
+                                                <ListItemIcon>
+                                                    <AddIcon />
+                                                </ListItemIcon>
+                                                <ListItemText primary="Distribute Form" />
+                                            </ListItem>
+                                        </Link>
+                                        :null
+
+                                    }
+                                   
                                    
 
                                     {/* view distribute */}
-                                    <Link  to="/distribute-view" className="text-decoration-none text-dark">
-                                        <ListItem button>
-                                            <ListItemIcon>
-                                                <VisibilityIcon />
-                                            </ListItemIcon>
-                                            <ListItemText primary="View distributes" />
-                                        </ListItem>
-                                    </Link>
+                                    {
+                                        (Distribute.read) ?
+                                        <Link  to="/distribute-view" className="text-decoration-none text-dark">
+                                            <ListItem button>
+                                                <ListItemIcon>
+                                                    <VisibilityIcon />
+                                                </ListItemIcon>
+                                                <ListItemText primary="View distributes" />
+                                            </ListItem>
+                                        </Link>
+                                        :null
+
+                                    }
+                                   
 
                                     {/* delete or Edit distribute */}
-                                    <Link to="/distribute-edit-delete" className="text-decoration-none text-dark">
-                                        <ListItem button>
-                                            <ListItemIcon>
-                                                <EditIcon />
-                                            </ListItemIcon>
-                                            <ListItemText primary="Edit/Delete distribute" />
-                                        </ListItem>
-                                    </Link>
+                                    {
+                                        (Distribute.delete) ?
+                                        <Link to="/distribute-edit-delete" className="text-decoration-none text-dark">
+                                            <ListItem button>
+                                                <ListItemIcon>
+                                                    <EditIcon />
+                                                </ListItemIcon>
+                                                <ListItemText primary="Edit/Delete distribute" />
+                                            </ListItem>
+                                        </Link>
+                                        :null
+
+                                    }
+                                    
 
                                 </List>
                             </Collapse>

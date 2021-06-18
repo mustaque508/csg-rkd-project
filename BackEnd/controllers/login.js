@@ -56,7 +56,7 @@ const validation = (req,res,next) =>{
 
          con.query(sql,(err,result)=>{
            if(err){
-             res.json({error:`got error when checking requester_contact_number already Exist : ${err}`}); 
+             res.json({error:`got error when getting user registeration details : ${err}`}); 
            }
            else{
               
@@ -103,7 +103,13 @@ const validation = (req,res,next) =>{
 
 //login
 router.post('/login',validation,setCookie,login_model.getData,(req,res)=>{
-  (res.locals.full_name) ? res.json({full_name:res.locals.full_name}) : res.json({error:`got error when fetching user_name : ${res.locals.error}`});
+  (res.locals.result) ? res.json({result:res.locals.result}) : res.json({error:`got error when fetching user_name : ${res.locals.error}`});
 })
+
+//fetch role_details based on role_id
+router.post('/get_role_detials',login_model.getRoleDetails,(req,res)=>{
+  (res.locals.result) ? res.json({result:res.locals.result}) : res.json({error:`got error when fetching role_details : ${res.locals.error}`});
+})
+
 
 module.exports = router;

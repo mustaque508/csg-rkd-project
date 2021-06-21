@@ -1,15 +1,23 @@
 /******************************************* View all details of requester ************************************/
 
-import {React,useEffect,axios,useCallback,toast,MaterialTable,useState} from '../../Import'
+import {React,useEffect,axios,toast,MaterialTable,useState} from '../../Import'
 
 const RequestView = () => {
 
     const [requester_details,setRequester_details]=useState([]);
 
-    //get all requester details
-    const fetch_requester_details =useCallback(
-        ()=>{
-            axios.get('get_all_request_details')
+   
+
+    useEffect(() => {
+
+      const source = axios.CancelToken.source();
+
+        //get all requster details
+       const   fetch_requester_details = async() =>{
+
+        try
+        {
+            await axios.get('get_all_request_details',{cancelToken: source.token})
             .then((res)=>{
                 if(res.data.result)
                 {
@@ -24,14 +32,22 @@ const RequestView = () => {
                 toast.error(err,{autoClose: false});  
             })
 
-        },[]
-    );
+        }
+        catch (error) {
+          if (axios.isCancel(error)) {
+          } else {
+              throw error
+          }
+        }
 
-    useEffect(() => {
+      }
 
-        //get all requster details
-        fetch_requester_details();
-    }, [fetch_requester_details])
+      fetch_requester_details();
+
+      return () => {
+        source.cancel('Operation canceled by the user.');
+      }
+    }, [])
 
 
     //material-table coloumns
@@ -98,28 +114,28 @@ const RequestView = () => {
 
   
     return (
-
-        
-        <section className="request-view-section mt-5 mb-5">
-            <div className="container">
-                <div className="row">
-                    <MaterialTable  
-                        title="Requester Details"
-                        data={requester_details}
-                        columns={columns}   
-                        options={{
-                            headerStyle: {
-                                backgroundColor: '#DEF3FA',
-                                color: 'black',
-                                whiteSpace: 'nowrap',
-                            },
-                            exportButton: true
-                        }}
-                    />
-                </div>
-            </div>
-        </section>
-    )
+      <section className="view-section  mt-5 mb-5">
+        <div className="card">
+          <div className="card-body">
+            <h3 className="card-title text-center mb-4">Requester Details</h3>
+            <hr />
+            <MaterialTable
+              title=""
+              data={requester_details}
+              columns={columns}
+              options={{
+                headerStyle: {
+                  backgroundColor: "#DEF3FA",
+                  color: "black",
+                  whiteSpace: "nowrap",
+                },
+                exportButton: true,
+              }}
+            />
+          </div>
+        </div>
+      </section>
+    );
 }
 
 export default RequestView

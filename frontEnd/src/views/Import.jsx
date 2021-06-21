@@ -9,7 +9,7 @@ import
 from '@material-ui/core'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
-import '../dist/css/RequestForm.css'
+import '../dist/css/Responsive.css'
 import App from './App'
 import React,{ useState,useEffect,useCallback} from 'react'
 import ReactDOM from 'react-dom'
@@ -64,6 +64,7 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import PageNotFound from './PageNotFound'
 
 
+
 toast.configure()
 
 //navbar
@@ -78,7 +79,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   drawerPaper: {
-    width: 240,
+    width: 260,
   }
 }));
 

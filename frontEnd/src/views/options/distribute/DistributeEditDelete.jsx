@@ -1,6 +1,6 @@
 /*************************************  Distribute Edit delete  **********************************/
 
-import {React,useEffect,axios,useCallback,toast,MaterialTable,useState,TextField,MuiThemeProvider,Select,MenuItem,
+import {React,useEffect,axios,toast,MaterialTable,useState,TextField,MuiThemeProvider,Select,MenuItem,
     colortheme,BootstrapTooltip,Autocomplete,Button,Dialog,DialogTitle,DialogContent,plugin_for_contact
 } from '../../Import'
 
@@ -87,101 +87,9 @@ const DistributeEditDelete = () => {
         delete data[oldkey];
     }
 
-    //get distinct distribution_details
-   const fetch_distinct_distribution_details = useCallback(
-    ()=>{
-        axios.get('/get_distinct_distribute_details')
-        .then((res)=>{
-            
-            console.log(res.data.result);
-            if(res.data.result)
-            {
-                    res.data.result.map ((data,index)=>{
-                        return(
-                            sets.area.add(data.area),
-                            sets.ngo.add(data.NGO),
-                            sets.incharge.add(data.incharge),
-                            sets.csg_volunteers.add(data.csg_volunteers),
-                            sets.contact_person.add(data.contact_person),
-                            sets.mohalla_masjid_jamat.add(data.mohalla_masjid_jamat),
-                            sets.vehicle_used.add(data.vehicle_used)
-                        )
-                        
-                    })
+ 
 
-                    //area
-                    for (let item of  sets.area) {
-                        searchArray.area.push(item);
-                    }
-
-                    //ngo
-                    for (let item of  sets.ngo) {
-                        searchArray.ngo.push(item);
-                    }
-
-                    //incharge
-                    for (let item of  sets.incharge) {
-                        searchArray.incharge.push(item);
-                    }
-
-                    //csg_volunteers
-                    for (let item of  sets.csg_volunteers) {
-                        searchArray.csg_volunteers.push(item);
-                    }
-
-                    //contact_person
-                    for (let item of  sets.contact_person) {
-                        searchArray.contact_person.push(item);
-                    }
-
-                    //mohalla_masjid_jamat
-                    for (let item of  sets.mohalla_masjid_jamat) {
-                        searchArray.mohalla_masjid_jamat.push(item);
-                    }
-
-                    //vehicle_used
-                    for (let item of  sets.vehicle_used) {
-                        searchArray.vehicle_used.push(item);
-                    }
-
-                    console.log(searchArray);
-            }
-            else if(res.data.error)
-            {
-                toast.error(res.data.error,{autoClose: false}); 
-            }
-        })
-    },[searchArray,sets]
-    )
-
-
-    //get all distribution details
-    const fetch_distribute_details =useCallback(
-        ()=>{
-            axios.get('get_all_distribute_details')
-            .then((res)=>{
-                if(res.data.result)
-                {
-
-                    res.data.result.forEach(element => {
-                        renameKey(element,'ngo','NGO');
-                        renameKey(element,'cp_contact_no','cp_phone');
-                        renameKey(element,'jamat_name','mohalla_masjid_jamat');
-                    });
-
-                    setDistribute_details(res.data.result);
-                    
-                }
-                else
-                {
-                    toast.error(res.data.error,{autoClose: false}); 
-                }
-            }).catch((err)=>{
-                toast.error(err,{autoClose: false});  
-            })
-
-        },[]
-    );
+  
 
     // change input fields based on [onchange ]
      const inputEvent = (event) =>{
@@ -197,13 +105,124 @@ const DistributeEditDelete = () => {
 
     useEffect(() => {
 
+        const source = axios.CancelToken.source();
+
         //get all distribute details
-        fetch_distribute_details();
+        const fetch_distribute_details = async () =>{
+            try
+            {
+                await axios.get('get_all_distribute_details',{cancelToken: source.token})
+                .then((res)=>{
+                    if(res.data.result)
+                    {
+    
+                        res.data.result.forEach(element => {
+                            renameKey(element,'ngo','NGO');
+                            renameKey(element,'cp_contact_no','cp_phone');
+                            renameKey(element,'jamat_name','mohalla_masjid_jamat');
+                        });
+    
+                        setDistribute_details(res.data.result);
+                        
+                    }
+                    else
+                    {
+                        toast.error(res.data.error,{autoClose: false}); 
+                    }
+                }).catch((err)=>{
+                    toast.error(err,{autoClose: false});  
+                })
+            }
+            catch (error) {
+                if (axios.isCancel(error)) {
+                } else {
+                    throw error
+                }
+            }
+        };
 
         //get distinct distribution details
+        const fetch_distinct_distribution_details= async ()=>{
+            try
+            {
+                await axios.get('/get_distinct_distribute_details',{cancelToken: source.token})
+                .then((res)=>{
+                    
+                    console.log(res.data.result);
+                    if(res.data.result)
+                    {
+                            res.data.result.map ((data,index)=>{
+                                return(
+                                    sets.area.add(data.area),
+                                    sets.ngo.add(data.NGO),
+                                    sets.incharge.add(data.incharge),
+                                    sets.csg_volunteers.add(data.csg_volunteers),
+                                    sets.contact_person.add(data.contact_person),
+                                    sets.mohalla_masjid_jamat.add(data.mohalla_masjid_jamat),
+                                    sets.vehicle_used.add(data.vehicle_used)
+                                )
+                                
+                            })
+        
+                            //area
+                            for (let item of  sets.area) {
+                                searchArray.area.push(item);
+                            }
+        
+                            //ngo
+                            for (let item of  sets.ngo) {
+                                searchArray.ngo.push(item);
+                            }
+        
+                            //incharge
+                            for (let item of  sets.incharge) {
+                                searchArray.incharge.push(item);
+                            }
+        
+                            //csg_volunteers
+                            for (let item of  sets.csg_volunteers) {
+                                searchArray.csg_volunteers.push(item);
+                            }
+        
+                            //contact_person
+                            for (let item of  sets.contact_person) {
+                                searchArray.contact_person.push(item);
+                            }
+        
+                            //mohalla_masjid_jamat
+                            for (let item of  sets.mohalla_masjid_jamat) {
+                                searchArray.mohalla_masjid_jamat.push(item);
+                            }
+        
+                            //vehicle_used
+                            for (let item of  sets.vehicle_used) {
+                                searchArray.vehicle_used.push(item);
+                            }
+        
+                            console.log(searchArray);
+                    }
+                    else if(res.data.error)
+                    {
+                        toast.error(res.data.error,{autoClose: false}); 
+                    }
+                })
+            }
+            catch (error) {
+                if (axios.isCancel(error)) {
+                } else {
+                    throw error
+                }
+            }
+        }
+
+        fetch_distribute_details();
         fetch_distinct_distribution_details();
 
-    }, [fetch_distribute_details,fetch_distinct_distribution_details])
+        return () => {
+            source.cancel('Operation canceled by the user.');
+        }
+
+    }, [searchArray,sets])
 
     //validate contact_number based on countrycode
     const validate_contact = (props) =>
@@ -659,38 +678,44 @@ const DistributeEditDelete = () => {
             </section>
 
              {/* view section */}
-             <section className="distirbute-view-section mt-5 mb-5">
-                    <MaterialTable  
-                        title="Distribution Details"
-                        data={distribute_details}
-                        columns={columns}   
-                        options={{
-                            headerStyle: {
-                            backgroundColor: '#DEF3FA',
-                            color: 'black',
-                            whiteSpace: 'nowrap',
-                            },
-                            actionsCellStyle:{
-                                backgroundColor: "#F8F9F9",
-                            }
-                        }}
-                        actions={[
-                            {
-                                //edit
-                                icon:'edit',
-                                tooltip:'Edit',
-                                onClick:(event,rowData)=>handleRowUpdate(rowData)
-                            }
-                        ]}
-                        editable={{
+            <section className="view-section  mt-5 mb-5">
+                <div className="card">
+                    <div className="card-body">
+                        <h3 className="card-title text-center mb-4">Distribution Details</h3>
+                        <hr />
+                        <MaterialTable
+                            title=""
+                            data={distribute_details}
+                            columns={columns}
+                            options={{
+                                headerStyle: {
+                                    backgroundColor: '#DEF3FA',
+                                    color: 'black',
+                                    whiteSpace: 'nowrap',
+                                },
+                                actionsCellStyle: {
+                                    backgroundColor: "#F8F9F9",
+                                }
+                            }}
+                            actions={[
+                                {
+                                    //edit
+                                    icon: 'edit',
+                                    tooltip: 'Edit',
+                                    onClick: (event, rowData) => handleRowUpdate(rowData)
+                                }
+                            ]}
+                            editable={{
 
-                            //delete
-                            onRowDelete: (Data) =>new Promise((resolve) => {
-                            handleRowDelete(Data, resolve);
-                            })
-                        }}
-                    />
-             </section>
+                                //delete
+                                onRowDelete: (Data) => new Promise((resolve) => {
+                                    handleRowDelete(Data, resolve);
+                                })
+                            }}
+                        />
+                    </div>
+                </div>
+            </section>
         </>
     )
 }

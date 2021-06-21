@@ -10,7 +10,7 @@ const HomePage = () => {
             <section className="homepage-section mt-5">
                 <div className="container">
                     <div className="row">
-                        <h3>Welcome Back, <span className="text-muted">{sessionStorage.getItem('uname')}</span></h3> 
+                        <h3><span>Welcome Back,</span><span className="text-muted">{sessionStorage.getItem('uname')}</span></h3> 
                     </div>
                 </div>
             </section>

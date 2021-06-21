@@ -43,8 +43,8 @@ const NavBar = (props) => {
                                 <SideBar/>
                             </Drawer>
 
-                            {/* welcome message */}
-                            <Typography variant="h6" className={classes.title}>
+                            {/* heading */}
+                            <Typography variant="subtitle1" className={classes.title}>
                                covid support group
                             </Typography>
 

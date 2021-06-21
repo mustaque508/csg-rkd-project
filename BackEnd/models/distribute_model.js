@@ -14,7 +14,7 @@ exports.storeData = (req,res,next) =>{
         //insert query
 
         const sql=`INSERT INTO distribution_details (distribution_date,area,qty,NGO,incharge,csg_volunteers,data_collected,
-                    mohall_masjid_jamat,contact_person,cp_phone,vehicle_used)
+                    mohalla_masjid_jamat,contact_person,cp_phone,vehicle_used)
                     VALUES ('${distribution_date}','${area}','${qty}','${ngo}','${incharge}','${csg_volunteers}','${data_collected}',
                     '${jamat_name}','${contact_person}','${cp_contact_no}','${vehicle_used}')`;
 

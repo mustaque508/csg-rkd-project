@@ -130,49 +130,49 @@ const RegisterForm = () => {
 
 
     return (
-        <div>
-            <div className="card border-0">
-                <div className="card-body">
+       <section className="register-section">
+           <div className="card border-0">
+               <div className="card-body">
 
-                    {/* card-title */}
-                    <h2 className="card-title text-capitalize text-center">sign up</h2>
+                   {/* card-title */}
+                   <h2 className="card-title text-capitalize text-center">sign up</h2>
 
-                    {/* content */}
-                    <form onSubmit={submit} method="POST" className="form-group mt-3" id="submit" autoComplete="off">
+                   {/* content */}
+                   <form onSubmit={submit} method="POST" className="form-group mt-4" id="submit" autoComplete="off">
 
                         {/* Full Name */}
-                        <label htmlFor="uname" className="mb-0">Full Name</label>
+                        <label htmlFor="uname">Full Name</label>
                         <BootstrapTooltip title={name_error} placement="right-end" open={open}>
-                            <TextField className="form-control mt-0" type="text" name="uname" id="uname" onChange={inputEvent} onKeyUp={hideToolTip} />
+                            <TextField className="form-control" type="text" name="uname" id="uname" onChange={inputEvent} onKeyUp={hideToolTip} />
                         </BootstrapTooltip>
 
                         {/* Contact */}
-                        <label htmlFor="contact" className="mb-0 mt-2">Contact</label>
+                        <label htmlFor="contact" className="mt-3">Contact</label>
                         <BootstrapTooltip title={phone_error} placement="right-end" open={open}>
-                            <TextField className="form-control mt-0"  type="text" name="contact" id="contact" onChange={inputEvent} onKeyUp={hideToolTip} />
+                            <TextField  className="form-control"  type="text" name="contact" id="contact" onChange={inputEvent} onKeyUp={hideToolTip} />
                         </BootstrapTooltip>
 
                         {/* Email Address */}
-                        <label htmlFor="email_id" className="mb-0 mt-2" >Email Address</label>
-                         <BootstrapTooltip title={email_error} placement="right-end" open={open}>
-                            <TextField className="form-control mt-0"  type="email" name="email_id" id="email_id" onChange={inputEvent} onKeyUp={hideToolTip} />
+                        <label htmlFor="email_id" className="mt-3" >Email Address</label>
+                        <BootstrapTooltip title={email_error} placement="right-end" open={open}>
+                            <TextField className="form-control"  type="email" name="email_id" id="email_id" onChange={inputEvent} onKeyUp={hideToolTip} />
                         </BootstrapTooltip>
 
                         {/* Password */}
-                        <label htmlFor="password" className="mb-0 mt-2" >Password</label>
+                        <label htmlFor="password" className="mt-3" >Password</label>
                         <BootstrapTooltip title={pass_error} placement="right-end" open={open}>
                             <TextField className="form-control mt-0"  type="password" name="password" id="password" onChange={inputEvent} onKeyUp={hideToolTip}  />
                         </BootstrapTooltip>
 
                         {/* Confirm  Password */}
-                        <label htmlFor="password" className="mb-0 mt-2">Confirm Password</label>
+                        <label htmlFor="password" className="mt-3">Confirm Password</label>
                         <BootstrapTooltip title={cpass_error} placement="right-end" open={open}>
-                            <TextField className="form-control mt-0" type="password" name="cpassword" id="cpassword" onChange={inputEvent} onKeyUp={hideToolTip}  />
+                            <TextField className="form-control" type="password" name="cpassword" id="cpassword" onChange={inputEvent} onKeyUp={hideToolTip}  />
                         </BootstrapTooltip>
 
                         {/* display password rules */}
                         <OverlayTrigger trigger={['hover','focus']}  placement="left" overlay={popover}>
-                        <InfoSharpIcon  className="position-absolute text-primary" style={{'right':'1rem','cursor':'pointer','marginTop':'-3.5rem'}} id="info"/>
+                        <InfoSharpIcon  className="position-absolute text-primary" style={{'right':'1rem','cursor':'pointer','marginTop':'-4.1rem'}} id="info"/>
                         </OverlayTrigger>
 
                         {/* submit button */}
@@ -180,10 +180,11 @@ const RegisterForm = () => {
                             <Button  type="submit" variant="contained" color="primary" className="mt-4">submit</Button>  
                         </MuiThemeProvider>
 
-                    </form>
-                </div>
-            </div>
-        </div>
+                   </form>
+
+               </div>
+           </div>
+       </section>
     )
 }
 

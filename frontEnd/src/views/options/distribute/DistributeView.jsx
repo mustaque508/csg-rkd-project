@@ -1,37 +1,50 @@
 /********************************** Distribute View ************************************************/
 
-import {React,useState,useCallback,axios,toast,useEffect,MaterialTable} from '../../Import'
+import {React,useState,axios,toast,useEffect,MaterialTable} from '../../Import'
 
 function DistributeView() {
     const [distribute_details,setDistribute_details]=useState([]);
 
-    //get all distribute details
-    const fetch_distribute_details =useCallback(
-        ()=>{
-            axios.get('get_all_distribute_details')
-            .then((res)=>{
-                if(res.data.result)
-                {
-                    setDistribute_details(res.data.result);
-                    console.log(res.data.result);
-                }
-                else
-                {
-                    toast.error(res.data.error,{autoClose: false}); 
-                }
-            }).catch((err)=>{
-                toast.error(err,{autoClose: false});  
-            })
-
-        },[]
-    );
+;
 
     useEffect(() => {
 
+        const source = axios.CancelToken.source();
+
         //get all distribute details
-        fetch_distribute_details();
+        const fetch_distribute_details = async () =>{
+            try
+            {
+                await axios.get('get_all_distribute_details',{cancelToken: source.token})
+                .then((res)=>{
+                    if(res.data.result)
+                    {
+                        setDistribute_details(res.data.result);
+                        console.log(res.data.result);
+                    }
+                    else
+                    {
+                        toast.error(res.data.error,{autoClose: false}); 
+                    }
+                }).catch((err)=>{
+                    toast.error(err,{autoClose: false});  
+                })
+            }
+            catch (error) {
+                if (axios.isCancel(error)) {
+                } else {
+                    throw error
+                }
+            }
+        }
         
-    }, [fetch_distribute_details])
+        fetch_distribute_details();
+
+        return () => {
+            source.cancel('Operation canceled by the user.');
+        }
+        
+    }, [])
 
 
     //material-table coloumns
@@ -92,18 +105,20 @@ function DistributeView() {
     return (
 
         
-        <section className="request-view-section mt-5 mb-5">
-            <div className="container">
-                <div className="row">
-                    <MaterialTable  
-                        title="Distribution Details"
+        <section className="view-section  mt-5 mb-5">
+            <div className="card">
+                <div className="card-body">
+                    <h3 className="card-title text-center mb-4">Distribution Details</h3>
+                    <hr />
+                    <MaterialTable
+                        title=""
                         data={distribute_details}
-                        columns={columns}   
+                        columns={columns}
                         options={{
                             headerStyle: {
-                            backgroundColor: '#DEF3FA',
-                            color: 'Black',
-                            whiteSpace: 'nowrap'
+                                backgroundColor: '#DEF3FA',
+                                color: 'Black',
+                                whiteSpace: 'nowrap'
                             },
                             exportButton: true
                         }}

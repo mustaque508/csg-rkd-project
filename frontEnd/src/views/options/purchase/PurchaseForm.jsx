@@ -2,7 +2,7 @@
 
 import 
 {
-    React,TextField,MuiThemeProvider,colortheme,Button,useState,axios,toast,useCallback,useEffect,$,
+    React,TextField,MuiThemeProvider,colortheme,Button,useState,axios,toast,useEffect,$,
     BootstrapTooltip,Autocomplete
 }
 from '../../Import'
@@ -80,89 +80,108 @@ const PurchaseForm = () => {
 
 
 
-    //get all purchase_details
-    const fetch_purchase_details = useCallback(
-        ()=>{
-            axios.get('/get_distinct_purchase_details')
-            .then((res)=>{
-                
-                if(res.data.result)
-                {
-                    
-                    res.data.result.map((data,index)=>{
-                        return(
-                            sets.delivered_by.add(data.delivered_by),
-                            sets.loaded_by.add(data.loaded_by),
-                            sets.qty.add(data.qty),
-                            sets.rate.add(data.rate),
-                            sets.recieved_by.add(data.recieved_by),
-                            sets.supplier.add(data.supplier),
-                            sets.unloaded_by.add(data.unloaded_by),
-                            sets.vehicle_used.add(data.vehicle_used)
-                        )
-                       
-                    })
-
-                 
-                    //delivered_by
-                    for (let item of  sets.delivered_by) {
-                        searchArray.delivered_by.push(item);
-                    }
-
-                    //loaded_by
-                    for (let item of  sets.loaded_by) {
-                        searchArray.loaded_by.push(item);
-                    }
-
-                    //qty
-                    for (let item of  sets.qty) {
-                        searchArray.qty.push(item);
-                    }
-
-                    //rate
-                    for (let item of  sets.rate) {
-                        searchArray.rate.push(item);
-                    }
-
-                    //recieved_by
-                    for (let item of  sets.recieved_by) {
-                        searchArray.recieved_by.push(item);
-                    }
-
-                    //supplier
-                    for (let item of  sets.supplier) {
-                        searchArray.supplier.push(item);
-                    }
-
-                    //unloaded_by
-                    for (let item of  sets.unloaded_by) {
-                        searchArray.unloaded_by.push(item);
-                    }
-
-                    //vehicle_used
-                    for (let item of  sets.vehicle_used) {
-                        searchArray.vehicle_used.push(item);
-                    }
-                }
-                else if(res.data.error)
-                {
-                    toast.error(res.data.error,{autoClose: false}); 
-                }
-
-            }).catch((err)=>{
-                toast.error(err,{autoClose: false});  
-            })
-        },[searchArray,sets]
-    )
-
+   
+ 
     useEffect(() => {
+
+        const source = axios.CancelToken.source();
+
+         //get all purchase_details
+        const fetch_purchase_details =async () =>{
+
+            try
+            {
+               await axios.get('/get_distinct_purchase_details',{cancelToken: source.token})
+                .then((res)=>{
+                    
+                    if(res.data.result)
+                    {
+                        
+                        res.data.result.map((data,index)=>{
+                            return(
+                                sets.delivered_by.add(data.delivered_by),
+                                sets.loaded_by.add(data.loaded_by),
+                                sets.qty.add(data.qty),
+                                sets.rate.add(data.rate),
+                                sets.recieved_by.add(data.recieved_by),
+                                sets.supplier.add(data.supplier),
+                                sets.unloaded_by.add(data.unloaded_by),
+                                sets.vehicle_used.add(data.vehicle_used)
+                            )
+                           
+                        })
+    
+                     
+                        //delivered_by
+                        for (let item of  sets.delivered_by) {
+                            searchArray.delivered_by.push(item);
+                        }
+    
+                        //loaded_by
+                        for (let item of  sets.loaded_by) {
+                            searchArray.loaded_by.push(item);
+                        }
+    
+                        //qty
+                        for (let item of  sets.qty) {
+                            searchArray.qty.push(item);
+                        }
+    
+                        //rate
+                        for (let item of  sets.rate) {
+                            searchArray.rate.push(item);
+                        }
+    
+                        //recieved_by
+                        for (let item of  sets.recieved_by) {
+                            searchArray.recieved_by.push(item);
+                        }
+    
+                        //supplier
+                        for (let item of  sets.supplier) {
+                            searchArray.supplier.push(item);
+                        }
+    
+                        //unloaded_by
+                        for (let item of  sets.unloaded_by) {
+                            searchArray.unloaded_by.push(item);
+                        }
+    
+                        //vehicle_used
+                        for (let item of  sets.vehicle_used) {
+                            searchArray.vehicle_used.push(item);
+                        }
+                    }
+                    else if(res.data.error)
+                    {
+                        toast.error(res.data.error,{autoClose: false}); 
+                    }
+    
+                }).catch((err)=>{
+                    toast.error(err,{autoClose: false});  
+                })
+            }
+            catch (error) {
+                if (axios.isCancel(error)) {
+                } else {
+                    throw error
+                }
+            }
+
+        }
+
         fetch_purchase_details();
 
         // setTooltip_position
         if($(window).width()<768){
             setTooltip_position("right-end");
         }
-    }, [fetch_purchase_details])
+
+        return () => {
+            source.cancel('Operation canceled by the user.');
+        }
+
+    }, [searchArray,sets])
     
     // change input fields based on [onchange ]
     const inputEvent = (event) =>{
@@ -235,14 +254,14 @@ const PurchaseForm = () => {
 
                                  {/* purchase Details */}
                                  <MuiThemeProvider theme={colortheme}>
+                                     <div className="row">
 
                                     <div className="title">
                                         <h3>Enter Purchase Details</h3>
                                         <hr />
                                     </div>
 
-                                    <div className="row">
-
+                                   
                                         {/* Supplier */}
                                         <div className="col-lg-4 col-md-6 mt-3">
                                             <label htmlFor="supplier">Supplier</label>
@@ -463,9 +482,7 @@ const PurchaseForm = () => {
                                                 </BootstrapTooltip>
                                         </div>
 
-                                    </div>
-
-                                 </MuiThemeProvider>
+                                  
 
                                 {/* submit button */}
                                 <div className=" mt-1 mb-5">
@@ -473,6 +490,10 @@ const PurchaseForm = () => {
                                         <Button  type="submit" variant="contained" color="primary" className="mt-4">submit</Button>  
                                     </MuiThemeProvider>
                                 </div>
+
+                                </div>
+
+</MuiThemeProvider>
 
                             </form>
 

@@ -104,7 +104,7 @@ const LoginForm = () => {
 
     return (
       <div>
-          <div className="card border-0" style={{'marginTop':'5rem'}}>
+          <div className="card border-0">
               <div className="card-body">
 
                     {/* card-title */}
@@ -128,7 +128,7 @@ const LoginForm = () => {
 
                         {/* checkbox */}
                         <div className="row ml-0">
-                            <div className="remember_me col-6">
+                            <div className="remember_me col-12">
                                 <MuiThemeProvider theme={colortheme}>
                                     <FormControlLabel  control={<Checkbox color="primary" id="remember_me" className="checkbox" name="remember_me" checked={login_details.remember_me} onChange={inputEvent} value={remember_me} /> } label={<span>Remember Me</span>}/>
                                 </MuiThemeProvider>

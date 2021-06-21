@@ -1,36 +1,50 @@
 /************************ Purchase View ***********************************/
 
-import {React,useState,useCallback,axios,toast,useEffect,MaterialTable} from '../../Import'
+import {React,useState,axios,toast,useEffect,MaterialTable} from '../../Import'
 
 const PurchaseView = () => {
     const [purchase_details,setPurchase_details]=useState([]);
 
-    //get all purchase details
-    const fetch_purchase_details =useCallback(
-        ()=>{
-            axios.get('get_all_purchase_details')
-            .then((res)=>{
-                if(res.data.result)
-                {
-                    setPurchase_details(res.data.result);
-                    console.log(res.data.result);
-                }
-                else
-                {
-                    toast.error(res.data.error,{autoClose: false}); 
-                }
-            }).catch((err)=>{
-                toast.error(err,{autoClose: false});  
-            })
-
-        },[]
-    );
+ 
 
     useEffect(() => {
 
+        const source = axios.CancelToken.source();
+
         //get all purchase details
+        const fetch_purchase_details = async () =>{
+            try
+            {
+               await axios.get('get_all_purchase_details',{cancelToken: source.token})
+                .then((res)=>{
+                    if(res.data.result)
+                    {
+                        setPurchase_details(res.data.result);
+                        console.log(res.data.result);
+                    }
+                    else
+                    {
+                        toast.error(res.data.error,{autoClose: false}); 
+                    }
+                }).catch((err)=>{
+                    toast.error(err,{autoClose: false});  
+                })
+    
+            }
+            catch (error) {
+                if (axios.isCancel(error)) {
+                } else {
+                    throw error
+                }
+            }
+        };
+
         fetch_purchase_details();
-    }, [fetch_purchase_details])
+
+        return () => {
+            source.cancel('Operation canceled by the user.');
+          }
+    }, [])
 
 
     //material-table coloumns
@@ -83,18 +97,21 @@ const PurchaseView = () => {
     return (
 
         
-        <section className="request-view-section mt-5 mb-5">
-            <div className="container">
-                <div className="row">
-                    <MaterialTable  
-                        title="Purchase Details"
+        <section className="view-section  mt-5 mb-5">
+            <div className="card">
+                <div className="card-body">
+                    <h3 className="card-title text-center mb-4">Purchase Details</h3>
+                    <hr />
+
+                    <MaterialTable
+                        title=""
                         data={purchase_details}
-                        columns={columns}   
+                        columns={columns}
                         options={{
                             headerStyle: {
-                            backgroundColor: '#DEF3FA',
-                            color: 'Black',
-                            whiteSpace: 'nowrap'
+                                backgroundColor: '#DEF3FA',
+                                color: 'Black',
+                                whiteSpace: 'nowrap'
                             },
                             exportButton: true
                         }}

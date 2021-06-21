@@ -4,7 +4,7 @@
 import
 {
     React,useState,Link,Collapse,List,ListItem,ListItemIcon,ListItemText,ExpandLess,ExpandMore,AddIcon,
-    VisibilityIcon,EditIcon,logo,useHistory,toast,Cookies,HomeIcon,ExitToAppIcon,useEffect,useCallback,axios
+    VisibilityIcon,EditIcon,logo,useHistory,toast,Cookies,HomeIcon,ExitToAppIcon,useEffect,axios
 
 } from '../../Import'
 
@@ -60,53 +60,68 @@ const SideBar = () => {
         history.push('/');
     }
 
-    //get role details based on role_id
-    const fetch_role_details =useCallback(
-        () => {
-            axios.post('/get_role_detials',{role_id:sessionStorage.getItem("role_id")})
-            .then((res)=>{
-                if(res.data.result)
-                {
-
-                    // set rights to user
-                   for (const key in modules) {
-                    res.data.result.forEach(element => {
-                       if(key === element.module)
-                       {
-                          
-                          setModules((prevState)=>{
-                              return{
-                                ...prevState,
-                                [key]:{
-                                    read:parseInt(element.read),
-                                    write:parseInt(element.write),
-                                    delete:parseInt(element.delete)
-                                }
-                              } 
-                          })
-                        
-                       }
-                    });
-                   }
-
-                 
-                }
-                else if(res.data.error)
-                {
-                    toast.error(res.data.error,{autoClose: false}); 
-                }
-            })
-        },
-        [modules],
-    )
-
     useEffect(() => {
+        
+        const source = axios.CancelToken.source();
 
 
-      //get role details based on role_id
-      fetch_role_details();
+         //get role details based on role_id
+        const fetch_role_details =async () =>{
+            try
+            {
+                await axios.post('/get_role_detials',{role_id:sessionStorage.getItem("role_id")},{cancelToken: source.token})
+                .then((res)=>{
+                    if(res.data.result)
+                    {
+    
+                        // set rights to user
+                       for (const key in modules) {
+                        res.data.result.forEach(element => {
+                           if(key === element.module)
+                           {
+                              
+                              setModules((prevState)=>{
+                                  return{
+                                    ...prevState,
+                                    [key]:{
+                                        read:parseInt(element.read),
+                                        write:parseInt(element.write),
+                                        delete:parseInt(element.delete)
+                                    }
+                                  } 
+                              })
+                            
+                           }
+                        });
+                       }
+    
+                     
+                    }
+                    else if(res.data.error)
+                    {
+                        toast.error(res.data.error,{autoClose: false}); 
+                    }
+                })
+            }
+            catch (error) {
+                if (axios.isCancel(error)) {
+                } else {
+                    throw error
+                }
+            }
+        }
+     
+        fetch_role_details();
+   
 
-    }, [fetch_role_details])
+
+        return () => {
+            source.cancel('Operation canceled by the user.');
+        }
+
+    }, [modules])
+
+   
 
 
     return (
@@ -140,7 +155,7 @@ const SideBar = () => {
                                                 <ListItemIcon>
                                                     <AddIcon />
                                                 </ListItemIcon>
-                                                <ListItemText primary="Request Form" />
+                                                <ListItemText primary="Request Form"/>
                                             </ListItem>
                                         </Link>
                                       :null

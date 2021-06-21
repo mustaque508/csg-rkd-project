@@ -1,6 +1,6 @@
 /*************************************** Purchase Edit Delete ****************************************************** */
 
-import {React,useEffect,axios,useCallback,toast,MaterialTable,useState,TextField,MuiThemeProvider,
+import {React,useEffect,axios,toast,MaterialTable,useState,TextField,MuiThemeProvider,
     colortheme,BootstrapTooltip,Autocomplete,Button,Dialog,DialogTitle,DialogContent
 } from '../../Import'
 
@@ -97,96 +97,8 @@ const PurchaseEditDelete = () => {
         vehicle_used:[]
     });
 
-    //get distinct purchase_details
-    const fetch_distinct_purchase_details = useCallback(
-        ()=>{
-            axios.get('/get_distinct_purchase_details')
-            .then((res)=>{
-                
-                if(res.data.result)
-                {
-                    
-                    res.data.result.map((data,index)=>{
-                        return(
-                            sets.delivered_by.add(data.delivered_by),
-                            sets.loaded_by.add(data.loaded_by),
-                            sets.qty.add(data.qty),
-                            sets.rate.add(data.rate),
-                            sets.recieved_by.add(data.recieved_by),
-                            sets.supplier.add(data.supplier),
-                            sets.unloaded_by.add(data.unloaded_by),
-                            sets.vehicle_used.add(data.vehicle_used)
-                        )
-                       
-                    })
 
-                 
-                    //delivered_by
-                    for (let item of  sets.delivered_by) {
-                        searchArray.delivered_by.push(item);
-                    }
-
-                    //loaded_by
-                    for (let item of  sets.loaded_by) {
-                        searchArray.loaded_by.push(item);
-                    }
-
-                    //qty
-                    for (let item of  sets.qty) {
-                        searchArray.qty.push(item);
-                    }
-
-                    //rate
-                    for (let item of  sets.rate) {
-                        searchArray.rate.push(item);
-                    }
-
-                    //recieved_by
-                    for (let item of  sets.recieved_by) {
-                        searchArray.recieved_by.push(item);
-                    }
-
-                    //supplier
-                    for (let item of  sets.supplier) {
-                        searchArray.supplier.push(item);
-                    }
-
-                    //unloaded_by
-                    for (let item of  sets.unloaded_by) {
-                        searchArray.unloaded_by.push(item);
-                    }
-
-                    //vehicle_used
-                    for (let item of  sets.vehicle_used) {
-                        searchArray.vehicle_used.push(item);
-                    }
-                }
-                else if(res.data.error)
-                {
-                    toast.error(res.data.error,{autoClose: false}); 
-                }
-
-            }).catch((err)=>{
-                toast.error(err,{autoClose: false});  
-            })
-        },[searchArray,sets]
-    )
-
-
-    //get all purchase details
-    const  fetch_purchase_details =useCallback(
-        ()=>{
-            axios.get('/get_all_purchase_details')
-            .then((res)=>{
-
-                setPurchasedetails(res.data.result);
-
-            }).catch((err)=>{
-
-                toast.error(err,{autoClose: false});  
-            })
-        },[]
-    );
+  
 
      //Hide Tooltip
      const hideToolTip =() =>{
@@ -195,14 +107,121 @@ const PurchaseEditDelete = () => {
 
 
     useEffect(() => {
+
+        const source = axios.CancelToken.source();
        
         //get all purchase details
-        fetch_purchase_details();
+        const fetch_purchase_details = async() =>{
+            try
+            {
+                await axios.get('/get_all_purchase_details',{cancelToken: source.token})
+                .then((res)=>{
+    
+                    setPurchasedetails(res.data.result);
+    
+                }).catch((err)=>{
+    
+                    toast.error(err,{autoClose: false});  
+                })
+            }
+            catch (error) {
+                if (axios.isCancel(error)) {
+                } else {
+                    throw error
+                }
+            }
+        };
 
         //get distinct purchase details
+        const fetch_distinct_purchase_details= async()=>{
+            try
+            {
+                await axios.get('/get_distinct_purchase_details',{cancelToken: source.token})
+                .then((res)=>{
+                    
+                    if(res.data.result)
+                    {
+                        
+                        res.data.result.map((data,index)=>{
+                            return(
+                                sets.delivered_by.add(data.delivered_by),
+                                sets.loaded_by.add(data.loaded_by),
+                                sets.qty.add(data.qty),
+                                sets.rate.add(data.rate),
+                                sets.recieved_by.add(data.recieved_by),
+                                sets.supplier.add(data.supplier),
+                                sets.unloaded_by.add(data.unloaded_by),
+                                sets.vehicle_used.add(data.vehicle_used)
+                            )
+                           
+                        })
+    
+                     
+                        //delivered_by
+                        for (let item of  sets.delivered_by) {
+                            searchArray.delivered_by.push(item);
+                        }
+    
+                        //loaded_by
+                        for (let item of  sets.loaded_by) {
+                            searchArray.loaded_by.push(item);
+                        }
+    
+                        //qty
+                        for (let item of  sets.qty) {
+                            searchArray.qty.push(item);
+                        }
+    
+                        //rate
+                        for (let item of  sets.rate) {
+                            searchArray.rate.push(item);
+                        }
+    
+                        //recieved_by
+                        for (let item of  sets.recieved_by) {
+                            searchArray.recieved_by.push(item);
+                        }
+    
+                        //supplier
+                        for (let item of  sets.supplier) {
+                            searchArray.supplier.push(item);
+                        }
+    
+                        //unloaded_by
+                        for (let item of  sets.unloaded_by) {
+                            searchArray.unloaded_by.push(item);
+                        }
+    
+                        //vehicle_used
+                        for (let item of  sets.vehicle_used) {
+                            searchArray.vehicle_used.push(item);
+                        }
+                    }
+                    else if(res.data.error)
+                    {
+                        toast.error(res.data.error,{autoClose: false}); 
+                    }
+    
+                }).catch((err)=>{
+                    toast.error(err,{autoClose: false});  
+                })
+            }
+            catch (error) {
+                if (axios.isCancel(error)) {
+                } else {
+                    throw error
+                }
+            }
+        };
+
+        fetch_purchase_details();
         fetch_distinct_purchase_details();
 
-    }, [fetch_purchase_details,fetch_distinct_purchase_details]);
+        return () => {
+            source.cancel('Operation canceled by the user.');
+          }
+
+    }, [searchArray,sets]);
 
 
     //update data to form based on row click
@@ -333,11 +352,11 @@ const PurchaseEditDelete = () => {
                             <div className="row">
                                 <form onSubmit={updateRecord} method="POST" className="form-group" id="submit" autoComplete="off">
 
-                                     {/* purchase Details */}    
+                                    {/* purchase Details */}
                                     <MuiThemeProvider theme={colortheme}>
 
-                                         {/* title */}
-                                         <DialogTitle id="form-dialog-title" className="text-center">Edit Purchase Details</DialogTitle>
+                                        {/* title */}
+                                        <DialogTitle id="form-dialog-title" className="text-center">Edit Purchase Details</DialogTitle>
 
                                         <div className="row">
 
@@ -351,11 +370,11 @@ const PurchaseEditDelete = () => {
                                                         disableClearable
                                                         options={searchArray.supplier.map((data) => data)}
                                                         onSelect={hideToolTip}
-                                                        onChange={(event,value)=>{
-                                                            setForm_details((prevValue)=>{
-                                                                return{
+                                                        onChange={(event, value) => {
+                                                            setForm_details((prevValue) => {
+                                                                return {
                                                                     ...prevValue,
-                                                                    supplier:value
+                                                                    supplier: value
                                                                 }
                                                             })
                                                         }}
@@ -378,17 +397,17 @@ const PurchaseEditDelete = () => {
                                             <div className="mt-3">
                                                 <label htmlFor="qty" >Quantity (Kg) </label>
                                                 <BootstrapTooltip title={qty_error} open={tooltip} placement='right-end'>
-                                                    <TextField  type="number" name="qty" id="qty"  inputProps={{ min: "0", step: "1" }} onChange={inputEvent} className="form-control"  onSelect={hideToolTip} value={qty} />           
+                                                    <TextField type="number" name="qty" id="qty" inputProps={{ min: "0", step: "1" }} onChange={inputEvent} className="form-control" onSelect={hideToolTip} value={qty} />
                                                 </BootstrapTooltip>
                                             </div>
 
-                                             {/* Rate */}
-                                             <div className="mt-3">
+                                            {/* Rate */}
+                                            <div className="mt-3">
                                                 <label htmlFor="rate" >Rate (Rs) </label>
                                                 <BootstrapTooltip title={rate_error} open={tooltip} placement='right-end'>
-                                                    <TextField  type="number" name="rate" id="rate"  inputProps={{ min: "0", step: "1" }} onChange={inputEvent} className="form-control"  onSelect={hideToolTip} value={rate} />   
+                                                    <TextField type="number" name="rate" id="rate" inputProps={{ min: "0", step: "1" }} onChange={inputEvent} className="form-control" onSelect={hideToolTip} value={rate} />
                                                 </BootstrapTooltip>
-                                             </div>
+                                            </div>
 
                                             {/* Delivered By */}
                                             <div className="mt-3">
@@ -400,11 +419,11 @@ const PurchaseEditDelete = () => {
                                                         disableClearable
                                                         options={searchArray.delivered_by.map((data) => data)}
                                                         onSelect={hideToolTip}
-                                                        onChange={(event,value)=>{
-                                                        setForm_details((prevValue)=>{
-                                                            return{
-                                                                ...prevValue,
-                                                                delivered_by:value
+                                                        onChange={(event, value) => {
+                                                            setForm_details((prevValue) => {
+                                                                return {
+                                                                    ...prevValue,
+                                                                    delivered_by: value
                                                                 }
                                                             })
                                                         }}
@@ -427,32 +446,32 @@ const PurchaseEditDelete = () => {
                                             <div className="mt-3">
                                                 <label htmlFor="recieved_by" >Recieved By</label>
                                                 <BootstrapTooltip title={recieved_by_error} open={tooltip} placement='right-end'>
-                                                        <Autocomplete
-                                                            freeSolo
-                                                            value={recieved_by}
-                                                            disableClearable
-                                                            options={searchArray.recieved_by.map((data) => data)}
-                                                            onSelect={hideToolTip}
-                                                            onChange={(event,value)=>{
-                                                                setForm_details((prevValue)=>{
-                                                                    return{
-                                                                        ...prevValue,
-                                                                        recieved_by:value
-                                                                    }
-                                                                })
-                                                            }}
-                                                            renderInput={(params) => (
-                                                                <TextField
-                                                                    {...params}
-                                                                    type="text"
-                                                                    name="recieved_by"
-                                                                    id="recieved_by"
-                                                                    onChange={inputEvent}
-                                                                    className="form-control"
-                                                                    InputProps={{ ...params.InputProps, type: 'search' }}
-                                                                />
-                                                            )}
-                                                        />
+                                                    <Autocomplete
+                                                        freeSolo
+                                                        value={recieved_by}
+                                                        disableClearable
+                                                        options={searchArray.recieved_by.map((data) => data)}
+                                                        onSelect={hideToolTip}
+                                                        onChange={(event, value) => {
+                                                            setForm_details((prevValue) => {
+                                                                return {
+                                                                    ...prevValue,
+                                                                    recieved_by: value
+                                                                }
+                                                            })
+                                                        }}
+                                                        renderInput={(params) => (
+                                                            <TextField
+                                                                {...params}
+                                                                type="text"
+                                                                name="recieved_by"
+                                                                id="recieved_by"
+                                                                onChange={inputEvent}
+                                                                className="form-control"
+                                                                InputProps={{ ...params.InputProps, type: 'search' }}
+                                                            />
+                                                        )}
+                                                    />
                                                 </BootstrapTooltip>
                                             </div>
 
@@ -466,11 +485,11 @@ const PurchaseEditDelete = () => {
                                                         disableClearable
                                                         options={searchArray.loaded_by.map((data) => data)}
                                                         onSelect={hideToolTip}
-                                                        onChange={(event,value)=>{
-                                                            setForm_details((prevValue)=>{
-                                                                return{
+                                                        onChange={(event, value) => {
+                                                            setForm_details((prevValue) => {
+                                                                return {
                                                                     ...prevValue,
-                                                                    loaded_by:value
+                                                                    loaded_by: value
                                                                 }
                                                             })
                                                         }}
@@ -499,11 +518,11 @@ const PurchaseEditDelete = () => {
                                                         disableClearable
                                                         options={searchArray.unloaded_by.map((data) => data)}
                                                         onSelect={hideToolTip}
-                                                        onChange={(event,value)=>{
-                                                            setForm_details((prevValue)=>{
-                                                                return{
+                                                        onChange={(event, value) => {
+                                                            setForm_details((prevValue) => {
+                                                                return {
                                                                     ...prevValue,
-                                                                    unloaded_by:value
+                                                                    unloaded_by: value
                                                                 }
                                                             })
                                                         }}
@@ -532,11 +551,11 @@ const PurchaseEditDelete = () => {
                                                         disableClearable
                                                         options={searchArray.vehicle_used.map((data) => data)}
                                                         onSelect={hideToolTip}
-                                                        onChange={(event,value)=>{
-                                                            setForm_details((prevValue)=>{
-                                                                return{
+                                                        onChange={(event, value) => {
+                                                            setForm_details((prevValue) => {
+                                                                return {
                                                                     ...prevValue,
-                                                                    vehicle_used:value
+                                                                    vehicle_used: value
                                                                 }
                                                             })
                                                         }}
@@ -554,14 +573,14 @@ const PurchaseEditDelete = () => {
                                                     />
                                                 </BootstrapTooltip>
                                             </div>
-                                         </div>
+                                        </div>
                                     </MuiThemeProvider>
 
                                     {/* submit button */}
                                     <MuiThemeProvider theme={colortheme} >
                                         <div className="row mt-4">
-                                            <Button  type="submit" variant="contained" color="primary">Edit</Button> 
-                                            <Button  type="button" variant="contained" className="mt-2" onClick={()=>setOpen(false)}>cancel</Button>   
+                                            <Button type="submit" variant="contained" color="primary">Edit</Button>
+                                            <Button type="button" variant="contained" className="mt-2" onClick={() => setOpen(false)}>cancel</Button>
                                         </div>
                                     </MuiThemeProvider>
 
@@ -574,39 +593,41 @@ const PurchaseEditDelete = () => {
             </section>
 
             {/* view section */}
-            <section className="purchase-view-section mt-5 mb-5">
-                <div className="container">
-                    <div className="row">
-                       <MaterialTable
-                            title="Purchase Details"
+            <section className="view-section mt-5 mb-5">
+                <div className="card">
+                    <div className="card-body">
+                        <h3 className="card-title text-center mb-4">Purchase Details</h3>
+                        <hr />
+                        <MaterialTable
+                            title=""
                             data={purchase_details}
-                            columns={columns}   
+                            columns={columns}
                             options={{
                                 headerStyle: {
-                                backgroundColor: '#DEF3FA',
-                                color: 'black',
-                                whiteSpace: 'nowrap',
+                                    backgroundColor: '#DEF3FA',
+                                    color: 'black',
+                                    whiteSpace: 'nowrap',
                                 },
-                                actionsCellStyle:{
+                                actionsCellStyle: {
                                     backgroundColor: "#F8F9F9",
                                 }
                             }}
                             actions={[
                                 {
                                     //edit
-                                    icon:'edit',
-                                    tooltip:'Edit',
-                                    onClick:(event,rowData)=>handleRowUpdate(rowData)
+                                    icon: 'edit',
+                                    tooltip: 'Edit',
+                                    onClick: (event, rowData) => handleRowUpdate(rowData)
                                 }
                             ]}
                             editable={{
 
                                 //delete
-                                onRowDelete: (Data) =>new Promise((resolve) => {
-                                handleRowDelete(Data, resolve);
+                                onRowDelete: (Data) => new Promise((resolve) => {
+                                    handleRowDelete(Data, resolve);
                                 })
                             }}
-                       />
+                        />
                     </div>
                 </div>
             </section>

@@ -75,7 +75,16 @@ const validation = (req,res,next) =>{
                             //check user isAuthorized
                             if(data.isAuthorized === 1)
                             {
-                                next();
+                               
+                                //check role is assigned or not 
+                                if(data.role_id !== 0){
+                                    next();
+                                }
+                                else
+                                {
+                                  errors.email_error="roles are not assigned to this email-id";
+                                  res.json({errors});
+                                }
                             }
                             else{
                               

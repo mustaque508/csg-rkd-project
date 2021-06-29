@@ -1,7 +1,7 @@
 /*************************************  Distribute Edit delete  **********************************/
 
 import {React,useEffect,axios,toast,MaterialTable,useState,TextField,MuiThemeProvider,Select,MenuItem,
-    colortheme,BootstrapTooltip,Autocomplete,Button,Dialog,DialogTitle,DialogContent,plugin_for_contact
+    colortheme,BootstrapTooltip,Autocomplete,Button,Dialog,DialogTitle,DialogContent,plugin_for_contact,useCallback
 } from '../../Import'
 
 const DistributeEditDelete = () => {
@@ -103,15 +103,12 @@ const DistributeEditDelete = () => {
         })
     }
 
-    useEffect(() => {
-
-        const source = axios.CancelToken.source();
-
-        //get all distribute details
-        const fetch_distribute_details = async () =>{
+    //get all distribute details
+    const fetch_distribute_details=useCallback(
+        () => {
             try
             {
-                await axios.get('get_all_distribute_details',{cancelToken: source.token})
+                 axios.get('get_all_distribute_details')
                 .then((res)=>{
                     if(res.data.result)
                     {
@@ -134,18 +131,18 @@ const DistributeEditDelete = () => {
                 })
             }
             catch (error) {
-                if (axios.isCancel(error)) {
-                } else {
-                    throw error
-                }
+                toast.error(error,{autoClose: false});  
             }
-        };
+        },
+        [],
+    )
 
-        //get distinct distribution details
-        const fetch_distinct_distribution_details= async ()=>{
+    //get distinct distribution details
+    const fetch_distinct_distribution_details=useCallback(
+        () => {
             try
             {
-                await axios.get('/get_distinct_distribute_details',{cancelToken: source.token})
+                 axios.get('/get_distinct_distribute_details')
                 .then((res)=>{
                     
                     console.log(res.data.result);
@@ -208,21 +205,20 @@ const DistributeEditDelete = () => {
                 })
             }
             catch (error) {
-                if (axios.isCancel(error)) {
-                } else {
-                    throw error
-                }
+                toast.error(error,{autoClose: false}); 
             }
-        }
+        },
+        [searchArray,sets],
+    )
+
+
+    useEffect(() => {
 
         fetch_distribute_details();
         fetch_distinct_distribution_details();
 
-        return () => {
-            source.cancel('Operation canceled by the user.');
-        }
 
-    }, [searchArray,sets])
+    }, [fetch_distribute_details,fetch_distinct_distribution_details])
 
     //validate contact_number based on countrycode
     const validate_contact = (props) =>
@@ -364,7 +360,7 @@ const DistributeEditDelete = () => {
                const dataUpdate=[...distribute_details];
                dataUpdate[index]=Form_details;
                setDistribute_details([...dataUpdate]);
-               toast.success('your record updated successfully');
+            //    toast.success('your record updated successfully');
                setOpen(false);
             }
         })
@@ -663,7 +659,7 @@ const DistributeEditDelete = () => {
                                     {/* submit button */}
                                     <MuiThemeProvider theme={colortheme} >
                                         <div className="row mt-4">
-                                            <Button  type="submit" variant="contained" color="primary">Edit</Button> 
+                                            <Button  type="submit" variant="contained" color="primary">save</Button> 
                                             <Button  type="button" variant="contained" className="mt-2" onClick={()=>setOpen(false)}>cancel</Button>   
                                         </div>
                                     </MuiThemeProvider>
@@ -684,7 +680,6 @@ const DistributeEditDelete = () => {
                         <h3 className="card-title text-center mb-4">Distribution Details</h3>
                         <hr />
                         <MaterialTable
-                            title=""
                             data={distribute_details}
                             columns={columns}
                             options={{
@@ -695,7 +690,8 @@ const DistributeEditDelete = () => {
                                 },
                                 actionsCellStyle: {
                                     backgroundColor: "#F8F9F9",
-                                }
+                                },
+                                showTitle:false
                             }}
                             actions={[
                                 {

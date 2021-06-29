@@ -3,7 +3,7 @@
 import 
 {
     React,BootstrapTooltip,TextField,Select,MenuItem,useEffect,plugin_for_contact,useState,MuiThemeProvider,colortheme,
-    Button,axios,$,toast,Autocomplete
+    Button,axios,$,toast,Autocomplete,useCallback
 } from '../../Import'
 
 const DistributeForm = () => {
@@ -12,31 +12,31 @@ const DistributeForm = () => {
 
     //distribute_details
     const[distribute_details,setDistribute_details]=useState({
-        'area':'',
-        'qty':'',
-        'ngo':'',
-        'incharge':'',
-        'csg_volunteers':'',
-        'data_collected':'',
-        'contact_person':'',
-        'cp_contact_no':'',
-        'vehicle_used':'',
-        'jamat_name':'',
-        'values':[]
+        area:'',
+        qty:'',
+        ngo:'',
+        incharge:'',
+        csg_volunteers:'',
+        data_collected:'',
+        contact_person:'',
+        cp_contact_no:'',
+        vehicle_used:'',
+        jamat_name:'',
+        values:[]
     });
 
     //errors
     const [errors,setErrors]=useState({
-        'area_error':'',
-        'contact_person_error':'',
-        'cp_contact_error':'',
-        'csg_volunteers_error':'',
-        'data_collected_error':'',
-        'incharge_error':'',
-        'ngo_error':'',
-        'qty_error':'',
-        'vehicle_used_error':'',
-        'jamat_name_error':'',
+        area_error:'',
+        contact_person_error:'',
+        cp_contact_error:'',
+        csg_volunteers_error:'',
+        data_collected_error:'',
+        incharge_error:'',
+        ngo_error:'',
+        qty_error:'',
+        vehicle_used_error:'',
+        jamat_name_error:'',
     });
 
      // Destructing of objects
@@ -85,13 +85,84 @@ const DistributeForm = () => {
     });
 
 
+    //fetch all distribution_details
+    const fetch_distribution_details=useCallback(
+      () => {
+        try
+        {
+             axios.get('/get_distinct_distribute_details')
+            .then((res)=>{
+                
+                console.log(res.data.result);
+                if(res.data.result)
+                {
+                        res.data.result.map ((data,index)=>{
+                            return(
+                                sets.area.add(data.area),
+                                sets.ngo.add(data.NGO),
+                                sets.incharge.add(data.incharge),
+                                sets.csg_volunteers.add(data.csg_volunteers),
+                                sets.contact_person.add(data.contact_person),
+                                sets.mohalla_masjid_jamat.add(data.mohalla_masjid_jamat),
+                                sets.vehicle_used.add(data.vehicle_used)
+                            )
+                            
+                        })
     
+                        //area
+                        for (let item of  sets.area) {
+                            searchArray.area.push(item);
+                        }
+    
+                        //ngo
+                        for (let item of  sets.ngo) {
+                            searchArray.ngo.push(item);
+                        }
+    
+                        //incharge
+                        for (let item of  sets.incharge) {
+                            searchArray.incharge.push(item);
+                        }
+    
+                        //csg_volunteers
+                        for (let item of  sets.csg_volunteers) {
+                            searchArray.csg_volunteers.push(item);
+                        }
+    
+                        //contact_person
+                        for (let item of  sets.contact_person) {
+                            searchArray.contact_person.push(item);
+                        }
+    
+                        //mohalla_masjid_jamat
+                        for (let item of  sets.mohalla_masjid_jamat) {
+                            searchArray.mohalla_masjid_jamat.push(item);
+                        }
+    
+                        //vehicle_used
+                        for (let item of  sets.vehicle_used) {
+                            searchArray.vehicle_used.push(item);
+                        }
+    
+                        console.log(searchArray);
+                }
+                else if(res.data.error)
+                {
+                    toast.error(res.data.error,{autoClose: false}); 
+                }
+            })
+        }
+        catch (error) {
+          toast.error(error,{autoClose: false}); 
+        }
+      },
+      [searchArray,sets],
+    )
 
 
     useEffect(() => {
 
-        const source = axios.CancelToken.source();
-
+      
         plugin_for_contact(document.querySelector('#cp_contact_no'));
 
 
@@ -100,86 +171,9 @@ const DistributeForm = () => {
             setTooltip_position("right-end");
         }
 
-        //fetch all distribution_details
-        const fetch_distribution_details =async ()=>{
-            try
-            {
-                await axios.get('/get_distinct_distribute_details',{cancelToken: source.token})
-                .then((res)=>{
-                    
-                    console.log(res.data.result);
-                    if(res.data.result)
-                    {
-                            res.data.result.map ((data,index)=>{
-                                return(
-                                    sets.area.add(data.area),
-                                    sets.ngo.add(data.NGO),
-                                    sets.incharge.add(data.incharge),
-                                    sets.csg_volunteers.add(data.csg_volunteers),
-                                    sets.contact_person.add(data.contact_person),
-                                    sets.mohalla_masjid_jamat.add(data.mohalla_masjid_jamat),
-                                    sets.vehicle_used.add(data.vehicle_used)
-                                )
-                                
-                            })
-        
-                            //area
-                            for (let item of  sets.area) {
-                                searchArray.area.push(item);
-                            }
-        
-                            //ngo
-                            for (let item of  sets.ngo) {
-                                searchArray.ngo.push(item);
-                            }
-        
-                            //incharge
-                            for (let item of  sets.incharge) {
-                                searchArray.incharge.push(item);
-                            }
-        
-                            //csg_volunteers
-                            for (let item of  sets.csg_volunteers) {
-                                searchArray.csg_volunteers.push(item);
-                            }
-        
-                            //contact_person
-                            for (let item of  sets.contact_person) {
-                                searchArray.contact_person.push(item);
-                            }
-        
-                            //mohalla_masjid_jamat
-                            for (let item of  sets.mohalla_masjid_jamat) {
-                                searchArray.mohalla_masjid_jamat.push(item);
-                            }
-        
-                            //vehicle_used
-                            for (let item of  sets.vehicle_used) {
-                                searchArray.vehicle_used.push(item);
-                            }
-        
-                            console.log(searchArray);
-                    }
-                    else if(res.data.error)
-                    {
-                        toast.error(res.data.error,{autoClose: false}); 
-                    }
-                })
-            }
-            catch (error) {
-                if (axios.isCancel(error)) {
-                } else {
-                    throw error
-                }
-            }
-        }
-
         fetch_distribution_details();
 
-        return () => {
-            source.cancel('Operation canceled by the user.');
-        }
-    }, [searchArray,sets])
+    }, [fetch_distribution_details])
 
 
     //validate contact_number based on countrycode
@@ -238,7 +232,7 @@ const DistributeForm = () => {
                     'values':[]
                 });
                 event.target.reset();
-                toast.success(res.data.success);
+                // toast.success(res.data.success);
             }
             else if(res.data.error)
             {

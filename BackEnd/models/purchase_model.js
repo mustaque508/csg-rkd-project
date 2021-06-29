@@ -13,11 +13,17 @@ exports.storeData = (req,res,next)=>{
 
         //insert query
         const sql =`INSERT INTO purchase_details (purchase_date,supplier,qty,rate,delivered_by,recieved_by,loaded_by,
-                    unloaded_by,vehicle_used) VALUES ('${purchase_date}','${supplier}','${qty}','${rate}','${delivered_by}',
-                    '${recieved_by}','${loaded_by}','${unloaded_by}','${vehicle_used}')`;
+                    unloaded_by,vehicle_used) VALUES ?`;
       
+            
+        //query values
+        var values=[
+            [
+                purchase_date,supplier,qty,rate,delivered_by,recieved_by,loaded_by,unloaded_by,vehicle_used
+            ]
+        ]
 
-        con.query(sql,(err)=>{
+        con.query(sql,[values],(err)=>{
             if(err){
                 res.locals.error=err;
                 next();
@@ -102,11 +108,15 @@ exports.update_record = (req,res,next)=>{
     {
         const{delivered_by,loaded_by,qty,rate,recieved_by,supplier,unloaded_by,vehicle_used,id}=req.body;
 
-        const sql=`UPDATE purchase_details SET delivered_by='${delivered_by}',loaded_by='${loaded_by}', qty=${qty},
-        rate='${rate}',recieved_by='${recieved_by}',supplier='${supplier}', unloaded_by='${unloaded_by}',
-        vehicle_used='${vehicle_used}' WHERE id='${id}' `;
+        const sql=`UPDATE purchase_details SET delivered_by=?,loaded_by=?, qty=?,rate=?,
+        recieved_by=?,supplier=?,unloaded_by=?,vehicle_used=? WHERE id=?`;
 
-        con.query(sql,(err)=>{
+        // query values
+        let values=[
+            delivered_by,loaded_by,qty,rate,recieved_by,supplier,unloaded_by,vehicle_used,id
+        ];
+
+        con.query(sql,values,(err)=>{
             if(err){
                 res.locals.error=err;
                 next();

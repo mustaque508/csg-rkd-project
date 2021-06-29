@@ -1,21 +1,21 @@
 
      /**********initial plugin for contact number********************************/
 
-     import {intlTelInput,util,validator} from '../../views/Import'
+     import {intlTelInput,util} from '../../views/Import'
 
      const plugin_for_contact =(props)=>{
           
          // initialise plugin
              const  iti =intlTelInput(props, {
                  preferredCountries:["in"],             
-                 autoHideDialCode: true,
+                 autoHideDialCode: false,
                  autoPlaceholder: false,
                  nationalMode: false,
                  utilsScript:util
              });
                
               // check whether entered contact number is correct or not based on country code
-             if(validator.isEmpty(props.value))
+             if(props.value.length<5)
              {
                  return "required";
              }

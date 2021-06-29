@@ -9,28 +9,38 @@ exports.storeData=(req,res,next)=>{
 
     try
     {
-        const{req_name,req_contact_no,card_no,card_type,dependent_no,children_no,occupation,address,location,jamat_name,
-        contact_person,cp_contact_no}=req.body;
-        const created_date=moment(new Date()).format("YYYY-MM-DD h:mm:ss");
+       
+        let {
+            req_name,req_contact_no,aadhar_card_no,ration_card_no,card_type,dependent_no,children_no,occupation,religion,
+            address,location,contact_person,cp_contact_no,ngo,jamat_name,delivered_date
+        }=req.body;
 
-        //insert query
-        const sql=`INSERT INTO rkd_data (full_name,contact_no,aadhar_rationcard_no,APL_BPL,no_of_dependents,occupation,
-                   no_of_children_below_15years_age,address,area_location,mohalla_masjid_jamat,contact_person,cp_phone,created_date)
-                   VALUES ('${req_name}','${req_contact_no}','${card_no}','${card_type}','${dependent_no}','${occupation}',
-                   '${children_no}','${address}','${location}','${jamat_name}','${contact_person}','${cp_contact_no}',
-                   '${created_date}')`;
-      
-        con.query(sql,(err)=>{
+        const created_date=moment(new Date()).format("YYYY-MM-DD");
+
+    
+
+        // insert query
+        const sql=`INSERT INTO rkd_data (full_name,contact_no,aadhar_card_no,ration_card_no,APL_BPL,no_of_dependents, 
+            no_of_children_below_15years_age,occupation,religion,address,area_location,contact_person,cp_phone,NGO, 
+            mohalla_masjid_jamat,created_date,delivery_date) VALUES  ?`;
+
+        //query values
+        let values=[
+            [req_name,req_contact_no.replace(/\s+/g, ''),aadhar_card_no,ration_card_no,card_type,dependent_no,
+            children_no,occupation,religion,address,location,contact_person,
+            cp_contact_no.replace(/\s+/g, ''),ngo,jamat_name,created_date,(delivered_date === "") ? null : moment(delivered_date).format("YYYY-MM-DD")]
+        ];
+
+        con.query(sql,[values],(err)=>{
             if(err){
                 res.locals.error=err;
                 next();
             }else{
                 res.locals.success=true;
                 next();
-            } 
-           
-            
+            }     
         })
+      
     }
     catch(err)
     {
@@ -48,7 +58,7 @@ exports.getDistinctData=(req,res,next)=>{
     try 
     {
         //select distinct query
-        const sql=`SELECT DISTINCT occupation,address,mohalla_masjid_jamat,area_location,contact_person FROM rkd_data`;
+        const sql=`SELECT DISTINCT occupation,address,mohalla_masjid_jamat,area_location,contact_person,NGO,religion FROM rkd_data`;
 
         con.query(sql,(err,result)=>{
             if(err){
@@ -126,30 +136,33 @@ exports.delete_record =(req,res,next)=>{
 //update requester_details
 exports.update_record=(req,res,next)=>{
 
+   
     try
     {
 
         const {
-            id,req_name,req_contact_no,card_no,card_type,dependent_no,children_no,occupation,address,location,jamat_name,
-            contact_person,cp_contact_no,
+            req_name,req_contact_no,aadhar_card_no,ration_card_no,card_type,dependent_no,children_no,occupation,religion,
+            address,location,contact_person,cp_contact_no,ngo,jamat_name,delivery_date,created_date,id
         }=req.body;
 
-        sql=`UPDATE rkd_data SET full_name='${req_name}',contact_no='${req_contact_no}',aadhar_rationcard_no='${card_no}',
-            APL_BPL='${card_type}',no_of_dependents='${dependent_no}',occupation='${occupation}',no_of_children_below_15years_age='${children_no}',
-            address='${address}',area_location='${location}',mohalla_masjid_jamat='${jamat_name}',
-            contact_person='${contact_person}', cp_phone='${cp_contact_no}'
-            WHERE id='${id}'`;
+        const sql=`UPDATE rkd_data SET full_name=?,contact_no=?,aadhar_card_no=?,ration_card_no=?,APL_BPL=?,no_of_dependents=?,
+            no_of_children_below_15years_age=?,occupation=?,religion=?,address=?,area_location=?,contact_person=?,cp_phone=?,
+            NGO=?,mohalla_masjid_jamat=?,created_date=?,delivery_date=?
+            WHERE id=?`;
 
-        con.query(sql,(err)=>{
+        let values=[
+            req_name,req_contact_no.replace(/\s+/g, ''),aadhar_card_no,ration_card_no,card_type,dependent_no,children_no,
+            occupation,religion,address,location,contact_person,cp_contact_no.replace(/\s+/g, ''),ngo,jamat_name,moment(created_date).format("YYYY-MM-DD"),
+            (delivery_date)? moment(delivery_date).format("YYYY-MM-DD"):null,id
+        ];
+
+         con.query(sql,values,(err)=>{
             if(err){
-                res.locals.error=err;
-                next();
+               throw err;
             }else{
                 res.locals.success=true;
                 next();
-            } 
-               
-                
+            }     
         })
 
     }
@@ -158,4 +171,42 @@ exports.update_record=(req,res,next)=>{
         res.json({error:`got error in model[exports.update_record] : ${err}`});
     }
 
+}
+
+
+//update selected record
+exports.update_selected_record =(req,res,next)=>{
+
+    try
+    {
+
+        for (let index = 0;  index< req.body.length; index++) {
+
+            const id = req.body[index].id;
+          
+            const query=`UPDATE rkd_data SET delivery_status='delivered' WHERE id='${id}'`;
+
+            con.query(query,(err)=>{
+                if(err){
+                    res.locals.error=err;
+                    next();
+                } 
+                else{
+                   res.locals.success=true;
+                   next();
+                }
+
+                
+            })
+
+
+        }
+
+
+    }
+    catch(err)
+    {
+        res.json({error:`got error in model[exports.update_selected_record] : ${err}`});
+    }
+   
 }

@@ -2,7 +2,7 @@
 
 import {React,useEffect,axios,toast,MaterialTable,useState,TextField,plugin_for_contact,
     Select,MenuItem,MuiThemeProvider,colortheme,BootstrapTooltip,Autocomplete,Button,Dialog,DialogTitle,
-    DialogContent
+    DialogContent,MuiPickersUtilsProvider,MomentUtils,KeyboardDatePicker,useCallback
 } from '../../Import'
 
 
@@ -22,15 +22,14 @@ const RequestEditDelete = () => {
     //tooltip
     const[tooltip,setTooltip]=useState(false);
 
-    //row index
-    const[index,setIndex]=useState(0);
+  
 
 
     //Request Details
     const [Form_details,setForm_details]=useState({
         req_name:'',
         req_contact_no:'',
-        card_no:'',
+        aadhar_card_no:'',
         card_type:'',
         dependent_no:'',
         children_no:'',
@@ -41,24 +40,33 @@ const RequestEditDelete = () => {
         contact_person:'',
         cp_contact_no:'',
         id:'',
-        created_date:''
+        created_date:'',
+        delivery_date:'',
+        ngo:'',
+        ration_card_no:'',
+        religion:'',
+        delivery_status:''
+
 
     });
 
     // error_fields
     const[errors,setErrors]=useState({
-        'address_error':'',
-        'contact_person_error':'',
-        'cp_contact_error':'',
-        'jamat_name_error':'',
-        'location_error':'',
-        'occupation_error':'',
-        'req_card_type_error':'',
-        'req_contact_no_error':'',
-        'req_name_error':'',
-        'card_no_error':'',
-        'dependent_no_error':'',
-        'children_no_error':''
+        address_error:'',
+        contact_person_error:'',
+        cp_contact_error:'',
+        jamat_name_error:'',
+        location_error:'',
+        occupation_error:'',
+        req_card_type_error:'',
+        req_contact_no_error:'',
+        req_name_error:'',
+        aadhar_card_no_error:'',
+        ration_card_no_error:'',
+        ngo_error:'',
+        dependent_no_error:'',
+        children_no_error:'',
+        religion_error:''
 
     });
 
@@ -66,13 +74,16 @@ const RequestEditDelete = () => {
     const 
     {
          address_error,contact_person_error,cp_contact_error,jamat_name_error,location_error,occupation_error,
-         req_card_type_error,req_contact_no_error,req_name_error,card_no_error,dependent_no_error,children_no_error
+         req_card_type_error,req_contact_no_error,req_name_error,aadhar_card_no_error,dependent_no_error,ngo_error,
+         children_no_error,ration_card_no_error,religion_error
      }=errors;
 
      const{
-        req_name,req_contact_no,card_no,card_type,dependent_no,children_no,occupation,address,location,jamat_name,
-        contact_person,cp_contact_no
+        req_name,req_contact_no,aadhar_card_no,card_type,dependent_no,children_no,occupation,address,location,jamat_name,
+        contact_person,cp_contact_no,ngo,ration_card_no,delivery_date,religion
      }=Form_details;
+
+
 
     //used for removing duplicate entries
     const [sets]=useState({
@@ -80,7 +91,9 @@ const RequestEditDelete = () => {
         address:new Set(),
         area_location:new Set(),
         contact_person:new Set(),
-        mohalla_masjid_jamat:new Set()
+        mohalla_masjid_jamat:new Set(),
+        ngo:new Set(),
+        religion:new Set()
 
     });
   
@@ -89,7 +102,9 @@ const RequestEditDelete = () => {
         address:[],
         area_location:[],
         contact_person:[],
-        mohalla_masjid_jamat:[]
+        mohalla_masjid_jamat:[],
+        ngo:[],
+        religion:[]
     });
 
 
@@ -109,16 +124,12 @@ const RequestEditDelete = () => {
  
     }
  
-
-    useEffect(() => {
-
-        const source = axios.CancelToken.source();
-
-        //get all requster details
-        const fetch_requester_details =async() =>{
-            try
+    //get all requester_details
+    const fetch_requester_details=useCallback(
+      () => {
+        try
             {
-                await axios.get('get_all_request_details',{cancelToken: source.token})
+                axios.get('get_all_request_details')
                 .then((res)=>{
                     if(res.data.result)
                     {
@@ -133,9 +144,12 @@ const RequestEditDelete = () => {
                            renameKey(element,'location','area_location');
                            renameKey(element,'jamat_name','mohalla_masjid_jamat');
                            renameKey(element,'cp_contact_no','cp_phone');
+                           renameKey(element,'ngo','NGO');
                        });
                     
+                       console.log(res.data.result);
                        setRequester_details(res.data.result);
+                      
                 
                     }
                     else
@@ -147,96 +161,107 @@ const RequestEditDelete = () => {
                 })
             }
             catch (error) {
-                if (axios.isCancel(error)) {
-                } else {
-                    throw error
-                }
+              toast.error(error,{autoClose: false});  
             }
-        };
+      },
+      [],
+    )
 
-        //get distinct requester_details
-        const fetch_distinct_requester_details =async() =>{
-            try
-            {
-               await axios.get('/get_distinct_request_details',{cancelToken: source.token})
-                .then((res)=>{
-                    
-                    if(res.data.result)
-                    {
+
+    //fetch distinct values
+    const fetch_distinct_requester_details=useCallback(
+      () => {
+        try
+        {
+            axios.get('/get_distinct_request_details')
+            .then((res)=>{
+                
+                if(res.data.result)
+                {
+                 
+    
+                    res.data.result.map((data,index)=>{
+                        return (
+                            sets.occupation.add(data.occupation),
+                            sets.address.add(data.address),
+                            sets.area_location.add(data.area_location),
+                            sets.contact_person.add(data.contact_person),
+                            sets.mohalla_masjid_jamat.add(data.mohalla_masjid_jamat),
+                            sets.ngo.add(data.NGO),
+                            sets.religion.add(data.religion)
+                        )
                         
-        
-                        res.data.result.map((data,index)=>{
-                            return (
-                                sets.occupation.add(data.occupation),
-                                sets.address.add(data.address),
-                                sets.area_location.add(data.area_location),
-                                sets.contact_person.add(data.contact_person),
-                                sets.mohalla_masjid_jamat.add(data.mohalla_masjid_jamat)
-                            )
-                            
-        
-                        })
-        
-                    
-                        //occupation
-                        for (let item of  sets.occupation) {
-                            searchArray.occupation.push(item);
-                        }
-        
-                         //address
-                         for (let item of  sets.address) {
-                            searchArray.address.push(item);
-                        }
-                       
-        
-                         //area_location
-                         for (let item of  sets.area_location) {
-                            searchArray.area_location.push(item);
-                        }
-        
-                         //contact_person
-                         for (let item of  sets.contact_person) {
-                            searchArray.contact_person.push(item);
-                        }
-        
-                         //mohalla_masjid_jamat
-                         for (let item of  sets.mohalla_masjid_jamat) {
-                            searchArray.mohalla_masjid_jamat.push(item);
-                        }
-                       
-                       
-                       
+    
+                    })
+    
+                
+                    //occupation
+                    for (let item of  sets.occupation) {
+                        searchArray.occupation.push(item);
                     }
-                    else if(res.data.error)
-                    {
-                        toast.error(res.data.error,{autoClose: false}); 
+    
+                     //address
+                     for (let item of  sets.address) {
+                        searchArray.address.push(item);
                     }
-        
-                }).catch((err)=>{
-                    toast.error(err,{autoClose: false});  
-                })
-            }
-            catch (error) {
-                if (axios.isCancel(error)) {
-                } else {
-                    throw error
-                }
-            }
+                   
+    
+                     //area_location
+                     for (let item of  sets.area_location) {
+                        searchArray.area_location.push(item);
+                    }
+    
+                     //contact_person
+                     for (let item of  sets.contact_person) {
+                        searchArray.contact_person.push(item);
+                    }
+    
+                     //mohalla_masjid_jamat
+                     for (let item of  sets.mohalla_masjid_jamat) {
+                        searchArray.mohalla_masjid_jamat.push(item);
+                    }
 
-        };
+                    //NGO
+                      for (let item of  sets.ngo) {
+                        searchArray.ngo.push(item);
+                    }
+
+                      //NGO
+                      for (let item of  sets.religion) {
+                        searchArray.religion.push(item);
+                    }
+                   
+                   
+                   
+                }
+                else if(res.data.error)
+                {
+                    toast.error(res.data.error,{autoClose: false}); 
+                }
+    
+            }).catch((err)=>{
+                toast.error(err,{autoClose: false});  
+            })
+        }
+        catch (error) {
+          toast.error(error,{autoClose: false});  
+        }
+      },
+      [searchArray,sets],
+    )
+
+    useEffect(() => {
 
         fetch_requester_details();
         fetch_distinct_requester_details();
 
-        return () => {
-          source.cancel('Operation canceled by the user.');
-        }
 
-    }, [searchArray,sets])
+    }, [fetch_requester_details,fetch_distinct_requester_details])
 
 
     // change input fields based on [onchange ]
     const inputEvent = (event) =>{
+      if(event.target){
         const{name,value}=event.target;
         setForm_details((prevValue)=>{
             return{
@@ -245,6 +270,19 @@ const RequestEditDelete = () => {
             }
 
         })
+      }
+      else{
+
+      
+        setForm_details((prevValue)=>{
+          return {
+            ...prevValue,
+            delivery_date:event
+          }
+        })
+
+      }
+     
     }
 
     //Hide Tooltip
@@ -259,66 +297,90 @@ const RequestEditDelete = () => {
     }
 
     //material-table coloumns
-    const columns =[
-        {
-            title:'Sr No',
-            field:'id'
-        },
-        {
-            title:'Name', 
-            field:'req_name'
-        },
-        {
-            title:'Contact no', 
-            field:'req_contact_no'
-        },
-        {
-            title:'Aadhar/Ration card no',
-            field:'card_no'
-        },
-        {
-            title:'Card type', 
-            field:'card_type'
-        },
-        {
-            title:'Number of dependents',
-            field:'dependent_no'
-        },
-        {
-            title:'Number of children below 15 years age', 
-            field:'children_no'
-        },
-        {
-            title:'Occupation',
-            field:'occupation'
-        },
-        {
-            title:'Address',
-            field:'address'
-
-        },
-        {
-            title:'Area/Location',
-            field:'location'
-        },
-        {
-            title:'Contact person', 
-            field:'contact_person'
-        },
-        {
-            title:'Contact person contact no',
-            field:'cp_contact_no'
-        },
-        {
-            title:'Mohalla/Masjid jamat',
-            field:'jamat_name'
-        },
-        {
-            title:'Created Date',
-            field:'created_date',
-            type:'date',
-            dateSetting: { locale: "en-GB" }
-        }
+    const columns = [
+      {
+        title: "Sr No",
+        field: "id"
+      },
+      {
+        title: "Full Name",
+        field: "req_name"
+      },
+      {
+        title: "Contact number",
+        field: "req_contact_no"
+      },
+      {
+        title: "Aadhar Card no",
+        field: "aadhar_card_no"
+      },
+      {
+        title: "Ration Card no",
+        field: "ration_card_no"
+      },
+      {
+        title: "Card type",
+        field: "card_type"
+      },
+      {
+        title: "Number of dependents",
+        field: "dependent_no"
+      },
+      {
+        title: "Number of children below 15 years age",
+        field: "children_no"
+      },
+      {
+        title: "Occupation",
+        field: "occupation"
+      },
+      {
+        title: "Religion",
+        field: "religion"
+      },
+      {
+        title: "Address",
+        field: "address"
+      },
+      {
+        title: "Area/Location",
+        field: "location"
+      },
+      {
+        title: "Contact person", 
+        field: "contact_person" 
+      },
+      { 
+          title: "Contact person contact no", 
+          field: "cp_contact_no"
+      },
+      { 
+        title: "NGO", 
+        field: "ngo"
+      },
+      { 
+          title: "Mohalla/Masjid jamat", 
+          field: "jamat_name" 
+      },
+      {
+        title: "Created Date",
+        field: "created_date",
+        type: "date",
+        dateSetting: { locale: "en-GB" }
+      },
+      {
+        title: "Delivery Date",
+        field: "delivery_date",
+        type: "date",
+        dateSetting: { locale: "en-GB" }
+      },
+      {
+        title: "Delivery status", 
+        field: "delivery_status",
+        cellStyle:(e,rowData)=>{
+          return (rowData.delivery_status === "delivered") ? {color:"green"} : {color:"red"}
+        } 
+      }
     ];
 
     //delete record
@@ -351,19 +413,16 @@ const RequestEditDelete = () => {
    //update data to form based on row click
     const handleRowUpdate=(rowData)=>{
            
-        const{req_name,req_contact_no,card_no,card_type,dependent_no,children_no,occupation,address,location,
-            contact_person,cp_contact_no,jamat_name,id,created_date
+        const{req_name,req_contact_no,aadhar_card_no,card_type,dependent_no,children_no,occupation,address,location,
+            contact_person,cp_contact_no,jamat_name,id,created_date,ration_card_no,ngo,delivery_date,religion,delivery_status
         }=rowData;
 
+        
+
         setForm_details({
-            req_name,req_contact_no,card_no,card_type,dependent_no,children_no,occupation,address,contact_person,id,
-            location,cp_contact_no,jamat_name,created_date
+            req_name,req_contact_no,aadhar_card_no,card_type,dependent_no,children_no,occupation,address,contact_person,id,
+            location,cp_contact_no,jamat_name,created_date,ration_card_no,ngo,delivery_date,religion,delivery_status
         })
-
-
-        //set index
-        setIndex(rowData.tableData.id);
-
         setOpen(true);
 
 
@@ -379,7 +438,11 @@ const RequestEditDelete = () => {
         //add type field
         Object.assign(Form_details,{type:'update'},{contact_error},{cp_contact_error});
 
+
         axios.post('/update_requester_details',Form_details)
+        // .then((res)=>{
+        //   console.log(res);
+        // })
         .then((res)=>{
           
             if(res.data.errors)
@@ -387,23 +450,23 @@ const RequestEditDelete = () => {
                 const 
                 {
                     address_error,contact_person_error,cp_contact_error,jamat_name_error,location_error,occupation_error,
-                    req_card_type_error,req_contact_no_error,req_name_error,card_no_error,dependent_no_error,children_no_error
+                    req_card_type_error,req_contact_no_error,req_name_error,aadhar_card_no_error,ration_card_no_error,religion_error,
+                    ngo_error,dependent_no_error,children_no_error,
+
                 }=res.data.errors;
               
                 setErrors({
                     address_error,contact_person_error,cp_contact_error,jamat_name_error,location_error,occupation_error,
-                    req_card_type_error,req_contact_no_error,req_name_error,card_no_error,dependent_no_error,children_no_error  
+                    req_card_type_error,req_contact_no_error,req_name_error,aadhar_card_no_error,dependent_no_error,children_no_error,
+                    ration_card_no_error,religion_error,ngo_error
                 });
                 setTooltip(true);
 
             }
             else if(res.data.success)
             {
-               const dataUpdate=[...requester_details];
-               dataUpdate[index]=Form_details;
-               setRequester_details([...dataUpdate]);
-               toast.success('your record updated successfully');
-               setOpen(false);
+              fetch_requester_details();
+              setOpen(false);
             }
         })
 
@@ -488,22 +551,42 @@ const RequestEditDelete = () => {
                           </BootstrapTooltip>
                         </div>
 
-                        {/* Aadhar Card/Ration Card Number */}
+                        {/* Aadhar Card Number */}
                         <div className="mt-3">
-                          <label htmlFor="card_no">Aadhar/Ration Card No</label>
+                          <label htmlFor="aadhar_card_no">Aadhar Card No</label>
                           <BootstrapTooltip
-                            title={card_no_error}
+                            title={aadhar_card_no_error}
                             open={tooltip}
                             placement="right-end"
                           >
                             <TextField
-                              id="card_no"
+                              id="aadhar_card_no"
                               type="text"
-                              name="card_no"
+                              name="aadhar_card_no"
                               className="form-control  "
                               onChange={inputEvent}
                               onSelect={hideToolTip}
-                              value={card_no}
+                              value={aadhar_card_no}
+                            />
+                          </BootstrapTooltip>
+                        </div>
+
+                        {/* ration Card Number */}
+                        <div className="mt-3">
+                          <label htmlFor="ration_card_no">Ration Card No</label>
+                          <BootstrapTooltip
+                            title={ration_card_no_error}
+                            open={tooltip}
+                            placement="right-end"
+                          >
+                            <TextField
+                              id="ration_card_no"
+                              type="text"
+                              name="ration_card_no"
+                              className="form-control  "
+                              onChange={inputEvent}
+                              onSelect={hideToolTip}
+                              value={ration_card_no}
                             />
                           </BootstrapTooltip>
                         </div>
@@ -621,6 +704,51 @@ const RequestEditDelete = () => {
                           </BootstrapTooltip>
                         </div>
 
+
+                        {/* Religion */}
+                        <div className="mt-3">
+                          <label htmlFor="occupation">Religion</label>
+                          <BootstrapTooltip
+                            title={religion_error}
+                            open={tooltip}
+                            placement="right-end"
+                          >
+                            <Autocomplete
+                              freeSolo
+                              value={religion}
+                              disableClearable
+                              options={searchArray.religion.map(
+                                (data) => data
+                              )}
+                              onSelect={hideToolTip}
+                              className="mt-1"
+                              onChange={(event, value) => {
+                                setForm_details((prevValue) => {
+                                  return {
+                                    ...prevValue,
+                                    religion: value,
+                                  };
+                                });
+                              }}
+                              renderInput={(params) => (
+                                <TextField
+                                  {...params}
+                                  type="text"
+                                  name="religion"
+                                  id="religion"
+                                  onChange={inputEvent}
+                                  className="form-control"
+                                  value={religion}
+                                  InputProps={{
+                                    ...params.InputProps,
+                                    type: "search",
+                                  }}
+                                />
+                              )}
+                            />
+                          </BootstrapTooltip>
+                        </div>
+
                         {/* Address */}
                         <div className="mt-3">
                           <label htmlFor="address">Address</label>
@@ -705,6 +833,29 @@ const RequestEditDelete = () => {
                             />
                           </BootstrapTooltip>
                         </div>
+
+                        {/* delivery Date */}
+                        <div className="mt-3">
+                          <label htmlFor="delivery_date">
+                            Delivery date
+                          </label>
+                          <MuiPickersUtilsProvider utils={MomentUtils}>
+                            <KeyboardDatePicker 
+                              disableToolbar
+                              variant="inline"
+                              format="DD/MM/YYYY"
+                              margin="normal"
+                              className="form-control"
+                              value={delivery_date}
+                              onChange={inputEvent}
+                              KeyboardButtonProps={{
+                                'aria-label': 'change date',
+                              }}
+
+                            />
+                            </MuiPickersUtilsProvider>
+                        </div>
+
                       </div>
                     </MuiThemeProvider>
 
@@ -784,6 +935,52 @@ const RequestEditDelete = () => {
                           </BootstrapTooltip>
                         </div>
 
+                          {/* NGO */}
+                          <div className="mt-3">
+                          <label htmlFor="ngo">
+                            NGO
+                          </label>
+                          <BootstrapTooltip
+                            title={ngo_error}
+                            open={tooltip}
+                            placement="right-end"
+                          >
+                            <Autocomplete
+                              freeSolo
+                              disableClearable
+                              value={ngo}
+                              onSelect={hideToolTip}
+                              className="mt-1"
+                              options={searchArray.ngo.map(
+                                (data) => data
+                              )}
+                              onChange={(event, value) => {
+                                setForm_details((prevValue) => {
+                                  return {
+                                    ...prevValue,
+                                    ngo: value,
+                                  };
+                                });
+                              }}
+                              renderInput={(params) => (
+                                <TextField
+                                  {...params}
+                                  onChange={inputEvent}
+                                  name="ngo"
+                                  type="text"
+                                  id="ngo"
+                                  className="form-control"
+                                  value={ngo}
+                                  InputProps={{
+                                    ...params.InputProps,
+                                    type: "search",
+                                  }}
+                                />
+                              )}
+                            />
+                          </BootstrapTooltip>
+                        </div>
+                     
                         {/* Mohalla/Masjid jamat */}
                         <div className="mt-3">
                           <label htmlFor="jamat_name">
@@ -840,7 +1037,7 @@ const RequestEditDelete = () => {
                           variant="contained"
                           color="primary"
                         >
-                          Edit
+                          save
                         </Button>
                         <Button
                           type="button"
@@ -866,7 +1063,6 @@ const RequestEditDelete = () => {
               <h3 className="card-title text-center mb-4">Requester Details</h3>
               <hr />
               <MaterialTable
-                title=""
                 data={requester_details}
                 columns={columns}
                 options={{
@@ -878,6 +1074,7 @@ const RequestEditDelete = () => {
                   actionsCellStyle: {
                     backgroundColor: "#F8F9F9",
                   },
+                  showTitle:false
                 }}
                 actions={[
                   {

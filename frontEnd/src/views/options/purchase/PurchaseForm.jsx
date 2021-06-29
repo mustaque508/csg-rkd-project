@@ -3,7 +3,7 @@
 import 
 {
     React,TextField,MuiThemeProvider,colortheme,Button,useState,axios,toast,useEffect,$,
-    BootstrapTooltip,Autocomplete
+    BootstrapTooltip,Autocomplete,useCallback
 }
 from '../../Import'
 
@@ -11,27 +11,27 @@ const PurchaseForm = () => {
 
     //purchase_details
     const[purchase_details,setPurchase_details]=useState({
-        'supplier':'',
-        'qty':'',
-        'rate':'',
-        'delivered_by':'',
-        'recieved_by':'',
-        'loaded_by':'',
-        'unloaded_by':'',
-        'vehicle_used':'',
-        'values':[]
+        supplier:'',
+        qty:'',
+        rate:'',
+        delivered_by:'',
+        recieved_by:'',
+        loaded_by:'',
+        unloaded_by:'',
+        vehicle_used:'',
+        values:[]
     })
 
     // error_fields
     const[errors,setErrors]=useState({
-        'delivered_by_error':'',
-        'loaded_by_error':'',
-        'qty_error':'',
-        'rate_error':'',
-        'recieved_by_error':'',
-        'supplier_error':'',
-        'unloaded_by_error':'',
-        'vehicle_used_error':''
+        delivered_by_error:'',
+        loaded_by_error:'',
+        qty_error:'',
+        rate_error:'',
+        recieved_by_error:'',
+        supplier_error:'',
+        unloaded_by_error:'',
+        vehicle_used_error:''
 
     });
 
@@ -79,19 +79,12 @@ const PurchaseForm = () => {
     });
 
 
-
-   
- 
-    useEffect(() => {
-
-        const source = axios.CancelToken.source();
-
-         //get all purchase_details
-        const fetch_purchase_details =async () =>{
-
+    //get all purchase_details
+    const fetch_purchase_details=useCallback(
+        () => {
             try
             {
-               await axios.get('/get_distinct_purchase_details',{cancelToken: source.token})
+                axios.get('/get_distinct_purchase_details')
                 .then((res)=>{
                     
                     if(res.data.result)
@@ -162,13 +155,14 @@ const PurchaseForm = () => {
                 })
             }
             catch (error) {
-                if (axios.isCancel(error)) {
-                } else {
-                    throw error
-                }
+                toast.error(error,{autoClose: false});  
             }
-
-        }
+        },
+        [searchArray,sets],
+    )
+   
+ 
+    useEffect(() => {
 
         fetch_purchase_details();
 
@@ -177,11 +171,10 @@ const PurchaseForm = () => {
             setTooltip_position("right-end");
         }
 
-        return () => {
-            source.cancel('Operation canceled by the user.');
-        }
 
-    }, [searchArray,sets])
+    }, [fetch_purchase_details])
+
+
     
     // change input fields based on [onchange ]
     const inputEvent = (event) =>{
@@ -233,7 +226,7 @@ const PurchaseForm = () => {
                         'values':[]
                     });
                     event.target.reset();
-                    toast.success(res.data.success);
+                    // toast.success(res.data.success);
                 }
                 else if(res.data.error)
                 {

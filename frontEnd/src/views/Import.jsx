@@ -9,7 +9,7 @@ import
 from '@material-ui/core'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
-import '../dist/css/Responsive.css'
+
 import App from './App'
 import React,{ useState,useEffect,useCallback} from 'react'
 import ReactDOM from 'react-dom'
@@ -62,6 +62,14 @@ import DistributeEditDelete from './options/distribute/DistributeEditDelete'
 import HomeIcon from '@material-ui/icons/Home'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import PageNotFound from './PageNotFound'
+import { MuiPickersUtilsProvider,KeyboardDatePicker } from '@material-ui/pickers'
+import MomentUtils from '@date-io/moment'
+
+
+
+
+
+
 
 
 
@@ -86,7 +94,8 @@ const useStyles = makeStyles((theme) => ({
 // color theme for button [login and submit button]
 const colortheme = createMuiTheme({
     palette: {
-      primary: { main: "#0275d8", contrastText: "#fff" }
+      primary: { main: "#0275d8", contrastText: "#fff" },
+      secondary:{main: '#0275d8'}
     }
   });
 
@@ -117,5 +126,6 @@ export
  InfoSharpIcon,LoginForm,useLocation,useHistory,Checkbox,FormControlLabel,Cookies,Welcome,SideBar,NavBar,AppBar,IconButton,
  MenuIcon,Toolbar,Typography,useStyles,AccountCircle,Drawer,Accordion,Collapse,List,ListItem,ListItemIcon,ListItemText,ExpandLess,
  ExpandMore,AddIcon,VisibilityIcon,logo,RequestView,MaterialTable,PurchaseView,DistributeView,EditIcon,RequestEditDelete,
- Dialog,DialogTitle,DialogContent,PurchaseEditDelete,DistributeEditDelete,HomeIcon,ExitToAppIcon,PageNotFound
+ Dialog,DialogTitle,DialogContent,PurchaseEditDelete,DistributeEditDelete,HomeIcon,ExitToAppIcon,PageNotFound,MuiPickersUtilsProvider,
+ KeyboardDatePicker,MomentUtils
 }

@@ -1,7 +1,7 @@
 /*************************************** Purchase Edit Delete ****************************************************** */
 
 import {React,useEffect,axios,toast,MaterialTable,useState,TextField,MuiThemeProvider,
-    colortheme,BootstrapTooltip,Autocomplete,Button,Dialog,DialogTitle,DialogContent
+    colortheme,BootstrapTooltip,Autocomplete,Button,Dialog,DialogTitle,DialogContent,useCallback
 } from '../../Import'
 
 const PurchaseEditDelete = () => {
@@ -36,14 +36,14 @@ const PurchaseEditDelete = () => {
 
     // error_fields
     const[errors,setErrors]=useState({
-        'delivered_by_error':'',
-        'loaded_by_error':'',
-        'qty_error':'',
-        'rate_error':'',
-        'recieved_by_error':'',
-        'supplier_error':'',
-        'unloaded_by_error':'',
-        'vehicle_used_error':''
+        delivered_by_error:'',
+        loaded_by_error:'',
+        qty_error:'',
+        rate_error:'',
+        recieved_by_error:'',
+        supplier_error:'',
+        unloaded_by_error:'',
+        vehicle_used_error:''
 
     });
 
@@ -105,16 +105,12 @@ const PurchaseEditDelete = () => {
         setTooltip(false);
     }
 
-
-    useEffect(() => {
-
-        const source = axios.CancelToken.source();
-       
-        //get all purchase details
-        const fetch_purchase_details = async() =>{
+    //get all purchase details
+    const fetch_purchase_details =useCallback(
+        () => {
             try
             {
-                await axios.get('/get_all_purchase_details',{cancelToken: source.token})
+                 axios.get('/get_all_purchase_details')
                 .then((res)=>{
     
                     setPurchasedetails(res.data.result);
@@ -125,18 +121,18 @@ const PurchaseEditDelete = () => {
                 })
             }
             catch (error) {
-                if (axios.isCancel(error)) {
-                } else {
-                    throw error
-                }
+                toast.error(error,{autoClose: false});  
             }
-        };
+        },
+        [],
+    )
 
-        //get distinct purchase details
-        const fetch_distinct_purchase_details= async()=>{
+    //get distinct purchase details
+    const fetch_distinct_purchase_details=useCallback(
+        () => {
             try
             {
-                await axios.get('/get_distinct_purchase_details',{cancelToken: source.token})
+                 axios.get('/get_distinct_purchase_details')
                 .then((res)=>{
                     
                     if(res.data.result)
@@ -207,21 +203,16 @@ const PurchaseEditDelete = () => {
                 })
             }
             catch (error) {
-                if (axios.isCancel(error)) {
-                } else {
-                    throw error
-                }
+                toast.error(error,{autoClose: false});  
             }
-        };
+        },
+        [searchArray,sets],
+    )
 
+    useEffect(() => {
         fetch_purchase_details();
         fetch_distinct_purchase_details();
-
-        return () => {
-            source.cancel('Operation canceled by the user.');
-          }
-
-    }, [searchArray,sets]);
+    }, [fetch_purchase_details,fetch_distinct_purchase_details]);
 
 
     //update data to form based on row click
@@ -264,7 +255,7 @@ const PurchaseEditDelete = () => {
                const dataUpdate=[...purchase_details];
                dataUpdate[index]=Form_details;
                setPurchasedetails([...dataUpdate]);
-               toast.success('your record updated successfully');
+            //    toast.success('your record updated successfully');
                setOpen(false);
             }
         })
@@ -579,7 +570,7 @@ const PurchaseEditDelete = () => {
                                     {/* submit button */}
                                     <MuiThemeProvider theme={colortheme} >
                                         <div className="row mt-4">
-                                            <Button type="submit" variant="contained" color="primary">Edit</Button>
+                                            <Button type="submit" variant="contained" color="primary">save</Button>
                                             <Button type="button" variant="contained" className="mt-2" onClick={() => setOpen(false)}>cancel</Button>
                                         </div>
                                     </MuiThemeProvider>
@@ -599,7 +590,6 @@ const PurchaseEditDelete = () => {
                         <h3 className="card-title text-center mb-4">Purchase Details</h3>
                         <hr />
                         <MaterialTable
-                            title=""
                             data={purchase_details}
                             columns={columns}
                             options={{
@@ -610,7 +600,8 @@ const PurchaseEditDelete = () => {
                                 },
                                 actionsCellStyle: {
                                     backgroundColor: "#F8F9F9",
-                                }
+                                },
+                                showTitle:false,
                             }}
                             actions={[
                                 {

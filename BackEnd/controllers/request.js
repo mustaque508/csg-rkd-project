@@ -12,6 +12,7 @@ const validation = (req,res,next)=>
 {
 
     
+   
       
     //initialize empty to errors object
     const errors={};
@@ -19,14 +20,15 @@ const validation = (req,res,next)=>
 
 
       //get all input value and perform validation
-        const {req_name,card_no,card_type,occupation,address,location,jamat_name,contact_person,dependent_no,
-        children_no,contact_error,cp_contact_error}=req.body;
+        const {req_name,aadhar_card_no,ration_card_no,card_type,occupation,address,location,jamat_name,contact_person,dependent_no,
+        children_no,contact_error,cp_contact_error,ngo,religion}=req.body;
       
 
         // validations
         errors.req_name_error=validations.validate_name(req_name);
         errors.req_contact_no_error=contact_error;
-        errors.card_no_error=validations.validate_aadhar_card_number(card_no);
+        errors.aadhar_card_no_error=validations.require_validation(aadhar_card_no);
+        errors.ration_card_no_error=validations.require_validation(ration_card_no);
         errors.req_card_type_error=validations.require_validation(card_type);
         errors.occupation_error=validations.require_validation(occupation);
         errors.address_error=validations.require_validation(address);
@@ -36,6 +38,11 @@ const validation = (req,res,next)=>
         errors.cp_contact_error=cp_contact_error;
         errors.dependent_no_error=validations.require_validation(dependent_no.toString());
         errors.children_no_error=validations.require_validation(children_no.toString());
+        errors.ngo_error=validations.validate_name(ngo);
+        errors.religion_error=validations.validate_name(religion);
+
+
+        // console.log(errors);
 
    
     
@@ -44,12 +51,14 @@ const validation = (req,res,next)=>
 
         let  sql="";
 
-        const {id,req_contact_no,card_no,type}=req.body;
+        const {id,req_contact_no,aadhar_card_no,ration_card_no,type}=req.body;
+
+      
 
         if(type === "update")
         {
-            //select id based on contact_no
-            sql=`SELECT contact_no,aadhar_rationcard_no FROM rkd_data WHERE id='${id}'`;
+           
+            sql=`SELECT contact_no,aadhar_card_no,ration_card_no FROM rkd_data WHERE id='${id}'`;
 
             con.query(sql,(err,result)=>{
 
@@ -64,15 +73,40 @@ const validation = (req,res,next)=>
                     {
                         
                        
-                        // check input[aadhar_rationcard_no] and db[aadhar_rationcard_no] is same
-                        if(result[0].aadhar_rationcard_no === card_no)
+                        // check input[aadhar_card_no] and db[aadhar_card_no] is same
+                        if(result[0].aadhar_card_no === aadhar_card_no)
                         {
-                           next();
+                                //check input[ration_card no] and db[ration_card] is same
+                                if(result[0].ration_card_no === ration_card_no)
+                                {
+                                    next();
+                                }
+                                else
+                                {
+                                    //check ration card no already exist
+                                    sql=`SELECT *FROM rkd_data WHERE ration_card_no='${ration_card_no}'`;
+
+                                    con.query(sql,(err,result)=>{
+                                        if(err){
+                                            res.json({error:`got error when checking aadhar_rationcard_number already Exist : ${err}`});
+                                        }
+                                        else{
+                                            if(result.length === 0){
+                                                next();                                       
+                                            }
+                                            else{
+                                                errors.ration_card_no_error="Already Exist";
+                                                res.json({errors});
+                                            }
+                                        }
+        
+                                    })
+                                }
                         }
                         else
                         {
-                            //check aadhar_rationcard_no already exist
-                            sql=`SELECT *FROM rkd_data WHERE aadhar_rationcard_no='${card_no}'`;
+                            //check aadhar_card_no already exist
+                            sql=`SELECT *FROM rkd_data WHERE aadhar_card_no='${aadhar_card_no}'`;
 
                             con.query(sql,(err,result)=>{
                                 if(err){
@@ -83,7 +117,7 @@ const validation = (req,res,next)=>
                                         next();                                       
                                     }
                                     else{
-                                        errors.card_no_error="Already Exist";
+                                        errors.aadhar_card_no_error="Already Exist";
                                         res.json({errors});
                                     }
                                 }
@@ -130,18 +164,37 @@ const validation = (req,res,next)=>
                     if(result.length === 0){
                        
                         //check aadhar_card no already exist
-                        const sql="SELECT * FROM rkd_data WHERE aadhar_rationcard_no='"+card_no+"'";
+                         sql="SELECT * FROM rkd_data WHERE aadhar_card_no='"+aadhar_card_no+"'";
                         con.query(sql,(err,result)=>{
                             if(err){
-                                res.json({error:`got error when checking aadhar_rationcard_number already Exist : ${err}`});
+                                res.json({error:`got error when checking aadhar_card_number already Exist : ${err}`});
                             }
                             else
                             {
-                                if(result.length ===0){
-                                   next();
+                                if(result.length ===0)
+                                {
+                                   //check ration card number already exist
+                                   sql="SELECT * FROM rkd_data WHERE ration_card_no ='"+ration_card_no+"'";
+                                   
+                                   con.query(sql,(err,result)=>{
+                                       if(err){
+                                        res.json({error:`got error when checking ration_card_number already Exist : ${err}`});
+                                       }
+                                       else
+                                       {
+                                          if(result.length === 0){
+                                              next();
+                                          }
+                                          else{
+                                             errors.ration_card_no_error="Already Exist";
+                                             res.json({errors});
+                                          } 
+
+                                       }
+                                   })
                                 }
                                 else{
-                                    errors.card_no_error="Already Exist";
+                                    errors.aadhar_card_no_error="Already Exist";
                                     res.json({errors});
                                 }
                             }
@@ -164,7 +217,7 @@ const validation = (req,res,next)=>
 
 //store data into database
 router.post('/store_request_details',validation,request_model.storeData,(req,res)=>{
-    (res.locals.success) ? res.json({success:`your record saved successfully we will contact you shortly`}): res.json({error:`got error when stroing form_details : ${res.locals.error.sqlMessage}`});
+    (res.locals.success) ? res.json({success:true}): res.json({error:`got error when stroing form_details : ${res.locals.error.sqlMessage}`});
 })
 
 //get distinct requester_details from database
@@ -189,6 +242,12 @@ router.post('/delete_requester_details',request_model.delete_record,(req,res)=>{
 //update requester_details based on id
 router.post('/update_requester_details',validation,request_model.update_record,(req,res)=>{
     (res.locals.success) ? res.json({success:res.locals.success}): res.json({error:`got error when updating requester_details : ${res.locals.error.sqlMessage}`});
+})
+
+
+//update selected rows
+router.post('/update_selected',request_model.update_selected_record,(req,res)=>{
+    (res.locals.success) ? res.json({success:res.locals.success}): res.json({error:`got error when updating selected record : ${res.locals.error.sqlMessage}`});
 })
 
 module.exports = router;

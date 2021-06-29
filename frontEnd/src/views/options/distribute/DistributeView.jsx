@@ -1,21 +1,17 @@
 /********************************** Distribute View ************************************************/
 
-import {React,useState,axios,toast,useEffect,MaterialTable} from '../../Import'
+import {React,useState,axios,toast,useEffect,MaterialTable,useCallback} from '../../Import'
 
 function DistributeView() {
     const [distribute_details,setDistribute_details]=useState([]);
 
-;
 
-    useEffect(() => {
-
-        const source = axios.CancelToken.source();
-
-        //get all distribute details
-        const fetch_distribute_details = async () =>{
+    //get all distribute details
+    const fetch_distribute_details=useCallback(
+        () => {
             try
             {
-                await axios.get('get_all_distribute_details',{cancelToken: source.token})
+                 axios.get('get_all_distribute_details')
                 .then((res)=>{
                     if(res.data.result)
                     {
@@ -31,20 +27,17 @@ function DistributeView() {
                 })
             }
             catch (error) {
-                if (axios.isCancel(error)) {
-                } else {
-                    throw error
-                }
+                toast.error(error,{autoClose: false});
             }
-        }
-        
-        fetch_distribute_details();
+        },
+        [],
+    )
 
-        return () => {
-            source.cancel('Operation canceled by the user.');
-        }
+    useEffect(() => {
+
+        fetch_distribute_details();  
         
-    }, [])
+    }, [fetch_distribute_details])
 
 
     //material-table coloumns
@@ -111,7 +104,6 @@ function DistributeView() {
                     <h3 className="card-title text-center mb-4">Distribution Details</h3>
                     <hr />
                     <MaterialTable
-                        title=""
                         data={distribute_details}
                         columns={columns}
                         options={{
@@ -120,7 +112,8 @@ function DistributeView() {
                                 color: 'Black',
                                 whiteSpace: 'nowrap'
                             },
-                            exportButton: true
+                            showTitle:false
+                            // exportButton: true
                         }}
                     />
                 </div>

@@ -14,11 +14,18 @@ exports.storeData = (req,res,next) =>{
         //insert query
 
         const sql=`INSERT INTO distribution_details (distribution_date,area,qty,NGO,incharge,csg_volunteers,data_collected,
-                    mohalla_masjid_jamat,contact_person,cp_phone,vehicle_used)
-                    VALUES ('${distribution_date}','${area}','${qty}','${ngo}','${incharge}','${csg_volunteers}','${data_collected}',
-                    '${jamat_name}','${contact_person}','${cp_contact_no}','${vehicle_used}')`;
+                    mohalla_masjid_jamat,contact_person,cp_phone,vehicle_used) VALUES  ?`;
 
-        con.query(sql,(err)=>{
+        // query values
+        let values=[
+            [
+                distribution_date,area,qty,ngo,incharge,csg_volunteers,data_collected,jamat_name,contact_person,
+                cp_contact_no.replace(/\s+/g, ''),vehicle_used
+
+            ]
+        ];
+
+        con.query(sql,[values],(err)=>{
             if(err){
                 res.locals.error=err;
                 next();
@@ -127,12 +134,17 @@ exports.update_record=(req,res,next)=>{
 
         const{area,qty,ngo,incharge,csg_volunteers,data_collected,contact_person,cp_contact_no,vehicle_used,jamat_name,id}=req.body;
 
-        sql=`UPDATE distribution_details SET area='${area}',qty='${qty}',NGO='${ngo}',incharge='${incharge}',
-            csg_volunteers='${csg_volunteers}',data_collected='${data_collected}',vehicle_used='${vehicle_used}',
-            mohalla_masjid_jamat='${jamat_name}',contact_person='${contact_person}', cp_phone='${cp_contact_no}'
-            WHERE id='${id}'`;
+        sql=`UPDATE distribution_details SET area=?,qty=?,NGO=?,incharge=?,csg_volunteers=?,data_collected=?,
+            vehicle_used=?,mohalla_masjid_jamat=?,contact_person=?,cp_phone=? WHERE id=?`;
 
-        con.query(sql,(err)=>{
+        // query values
+        let values=[
+            area,qty,ngo,incharge,csg_volunteers,data_collected,vehicle_used,jamat_name,contact_person,
+            cp_contact_no.replace(/\s+/g, ''),id
+        ];
+
+        
+        con.query(sql,values,(err)=>{
             if(err){
                 res.locals.error=err;
                 next();

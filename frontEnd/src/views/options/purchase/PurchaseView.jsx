@@ -1,21 +1,18 @@
 /************************ Purchase View ***********************************/
 
-import {React,useState,axios,toast,useEffect,MaterialTable} from '../../Import'
+import {React,useState,axios,toast,useEffect,MaterialTable,useCallback} from '../../Import'
 
 const PurchaseView = () => {
+
     const [purchase_details,setPurchase_details]=useState([]);
 
  
-
-    useEffect(() => {
-
-        const source = axios.CancelToken.source();
-
-        //get all purchase details
-        const fetch_purchase_details = async () =>{
+    //get all purchase details
+    const fetch_purchase_details=useCallback(
+        () => {
             try
             {
-               await axios.get('get_all_purchase_details',{cancelToken: source.token})
+                axios.get('get_all_purchase_details')
                 .then((res)=>{
                     if(res.data.result)
                     {
@@ -32,19 +29,16 @@ const PurchaseView = () => {
     
             }
             catch (error) {
-                if (axios.isCancel(error)) {
-                } else {
-                    throw error
-                }
+                toast.error(error,{autoClose: false});    
             }
-        };
+        },
+        [],
+    )
 
+
+    useEffect(() => {
         fetch_purchase_details();
-
-        return () => {
-            source.cancel('Operation canceled by the user.');
-          }
-    }, [])
+    }, [fetch_purchase_details])
 
 
     //material-table coloumns
@@ -104,7 +98,6 @@ const PurchaseView = () => {
                     <hr />
 
                     <MaterialTable
-                        title=""
                         data={purchase_details}
                         columns={columns}
                         options={{
@@ -113,7 +106,8 @@ const PurchaseView = () => {
                                 color: 'Black',
                                 whiteSpace: 'nowrap'
                             },
-                            exportButton: true
+                            showTitle:false,
+                            // exportButton: true
                         }}
                     />
                 </div>

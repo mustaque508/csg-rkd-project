@@ -10,9 +10,16 @@ exports.storeData = (req,res,next) =>{
     const created_date=moment(new Date()).format("YYYY-MM-DD h:mm:ss");
 
     //insert query
-    const sql=`INSERT INTO user_register (full_name,contact_no,email_id,password,created_date) VALUES ('${uname}','${contact}','${email_id}','${password}','${created_date}')`;
+    const sql=`INSERT INTO user_register (full_name,contact_no,email_id,password,created_date) VALUES ?`;
 
-    con.query(sql,(err)=>{
+    // query values
+    let values=[
+        [
+            uname,contact,email_id,password,created_date
+        ]
+    ];
+
+    con.query(sql,[values],(err)=>{
         if(err){
            res.locals.error=err;
            next();

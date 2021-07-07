@@ -2,7 +2,7 @@
 
 import 
 {
-  TextField,Select,MenuItem,Button,createMuiTheme,MuiThemeProvider,makeStyles,Tooltip,
+  TextField,MenuItem,Button,createMuiTheme,MuiThemeProvider,makeStyles,
   Checkbox,FormControlLabel,AppBar,IconButton,Toolbar,Typography,Drawer,Collapse, List, ListItem,
   ListItemIcon, ListItemText,Dialog,DialogTitle,DialogContent
 } 
@@ -29,7 +29,6 @@ import Autocomplete from '@material-ui/lab/Autocomplete'
 import {Navbar,Container,Nav} from 'react-bootstrap'
 import PurchaseForm from './options/purchase/PurchaseForm'
 import validator from 'validator'
-import $ from 'jquery'
 import Distribute from './options/distribute/DistributeForm'
 import Main from './Main'
 import Stayhome from '../dist/img/stayhome.png'
@@ -100,29 +99,29 @@ const colortheme = createMuiTheme({
   });
 
  //bootstrap 
- const useStylesBootstrap = makeStyles((theme) => ({
-  arrow: {
-    color:"red"
-  },
-  tooltip: {
-    backgroundColor:"red",
-    fontSize: "0.8rem"
-  }
-}));
+//  const useStylesBootstrap = makeStyles((theme) => ({
+//   arrow: {
+//     color:"red"
+//   },
+//   tooltip: {
+//     backgroundColor:"red",
+//     fontSize: "0.8rem"
+//   }
+// }));
 
 
 
-function BootstrapTooltip(props) {
-  const classes = useStylesBootstrap();
+// function BootstrapTooltip(props) {
+//   const classes = useStylesBootstrap();
 
-  return <Tooltip arrow classes={classes} {...props} disableFocusListener disableHoverListener disableTouchListener />;
-}
+//   return <Tooltip arrow classes={classes} {...props} disableFocusListener disableHoverListener disableTouchListener />;
+// }
 
 export
 {
  App,React,ReactDOM,Link,BrowserRouter,Redirect,HomePage,Route,Switch,Router,RequestForm,TextField,intlTelInput,util,useEffect,
- plugin_for_contact,Select,MenuItem,Button,MuiThemeProvider,colortheme,useState,axios,toast,useCallback,Autocomplete,
- Navbar,Container,Nav,PurchaseForm,validator,BootstrapTooltip,$,Distribute,Main,Stayhome,RegisterForm,Popover,OverlayTrigger,
+ plugin_for_contact,MenuItem,Button,MuiThemeProvider,colortheme,useState,axios,toast,useCallback,Autocomplete,
+ Navbar,Container,Nav,PurchaseForm,validator,Distribute,Main,Stayhome,RegisterForm,Popover,OverlayTrigger,
  InfoSharpIcon,LoginForm,useLocation,useHistory,Checkbox,FormControlLabel,Cookies,Welcome,SideBar,NavBar,AppBar,IconButton,
  MenuIcon,Toolbar,Typography,useStyles,AccountCircle,Drawer,Accordion,Collapse,List,ListItem,ListItemIcon,ListItemText,ExpandLess,
  ExpandMore,AddIcon,VisibilityIcon,logo,RequestView,MaterialTable,PurchaseView,DistributeView,EditIcon,RequestEditDelete,

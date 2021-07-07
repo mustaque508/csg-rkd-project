@@ -142,18 +142,18 @@ exports.update_record=(req,res,next)=>{
 
         const {
             req_name,req_contact_no,aadhar_card_no,ration_card_no,card_type,dependent_no,children_no,occupation,religion,
-            address,location,contact_person,cp_contact_no,ngo,jamat_name,delivery_date,created_date,id
+            address,location,contact_person,cp_contact_no,ngo,jamat_name,delivery_date,created_date,id,delivery_status
         }=req.body;
 
         const sql=`UPDATE rkd_data SET full_name=?,contact_no=?,aadhar_card_no=?,ration_card_no=?,APL_BPL=?,no_of_dependents=?,
             no_of_children_below_15years_age=?,occupation=?,religion=?,address=?,area_location=?,contact_person=?,cp_phone=?,
-            NGO=?,mohalla_masjid_jamat=?,created_date=?,delivery_date=?
+            NGO=?,mohalla_masjid_jamat=?,created_date=?,delivery_date=?,delivery_status=?
             WHERE id=?`;
 
         let values=[
             req_name,req_contact_no.replace(/\s+/g, ''),aadhar_card_no,ration_card_no,card_type,dependent_no,children_no,
             occupation,religion,address,location,contact_person,cp_contact_no.replace(/\s+/g, ''),ngo,jamat_name,moment(created_date).format("YYYY-MM-DD"),
-            (delivery_date)? moment(delivery_date).format("YYYY-MM-DD"):null,id
+            (delivery_date)? moment(delivery_date).format("YYYY-MM-DD"):null,delivery_status,id
         ];
 
          con.query(sql,values,(err)=>{

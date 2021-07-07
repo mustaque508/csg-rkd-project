@@ -1,7 +1,7 @@
 /*************************************  Distribute Edit delete  **********************************/
 
-import {React,useEffect,axios,toast,MaterialTable,useState,TextField,MuiThemeProvider,Select,MenuItem,
-    colortheme,BootstrapTooltip,Autocomplete,Button,Dialog,DialogTitle,DialogContent,plugin_for_contact,useCallback
+import {React,useEffect,axios,toast,MaterialTable,useState,TextField,MuiThemeProvider,MenuItem,
+    colortheme,Autocomplete,Button,Dialog,DialogTitle,DialogContent,plugin_for_contact,useCallback
 } from '../../Import'
 
 const DistributeEditDelete = () => {
@@ -11,9 +11,7 @@ const DistributeEditDelete = () => {
     //dialog
     const [open, setOpen] =useState(false);
 
-    //tooltip
-    const[tooltip,setTooltip]=useState(false);
-
+   
     //row index
     const[index,setIndex]=useState(0);
 
@@ -40,7 +38,6 @@ const DistributeEditDelete = () => {
         contact_person_error:'',
         cp_contact_error:'',
         csg_volunteers_error:'',
-        data_collected_error:'',
         incharge_error:'',
         ngo_error:'',
         qty_error:'',
@@ -50,7 +47,7 @@ const DistributeEditDelete = () => {
 
     // Destructing of objects
     const {
-        area_error,contact_person_error,cp_contact_error,csg_volunteers_error,data_collected_error,incharge_error,
+        area_error,contact_person_error,cp_contact_error,csg_volunteers_error,incharge_error,
         ngo_error,qty_error,vehicle_used_error,jamat_name_error
     }=errors;
 
@@ -227,10 +224,7 @@ const DistributeEditDelete = () => {
  
      }
 
-   //Hide Tooltip
-   const hideToolTip =() =>{
-        setTooltip(false);
-    }
+  
 
     //update data to form based on row click
     const handleRowUpdate = (rowData) =>{
@@ -344,15 +338,15 @@ const DistributeEditDelete = () => {
             {
                 const 
                 {
-                    area_error,contact_person_error,cp_contact_error,csg_volunteers_error,data_collected_error,incharge_error,
+                    area_error,contact_person_error,cp_contact_error,csg_volunteers_error,incharge_error,
                     ngo_error,qty_error,vehicle_used_error,jamat_name_error
                 }=res.data.errors;
               
                 setErrors({
-                    area_error,contact_person_error,cp_contact_error,csg_volunteers_error,data_collected_error,incharge_error,
+                    area_error,contact_person_error,cp_contact_error,csg_volunteers_error,incharge_error,
                     ngo_error,qty_error,vehicle_used_error,jamat_name_error
                 });
-                setTooltip(true);
+               
 
             }
             else if(res.data.success)
@@ -368,352 +362,462 @@ const DistributeEditDelete = () => {
     }
 
     return (
-        <>
-            {/* dialog-section */}
-            <section className="distribute-dialog-section">
+      <>
+        {/* dialog-section */}
+        <section className="distribute-dialog-section">
+          <Dialog
+            fullWidth
+            maxWidth="sm"
+            onRendered={() =>
+              plugin_for_contact(document.querySelector("#cp_contact_no"))
+            }
+            open={open}
+            aria-labelledby="form-dialog-title"
+          >
+            <DialogContent>
+              <div className="container">
+                <div className="row">
+                  <form
+                    onSubmit={updateRecord}
+                    method="POST"
+                    className="form-group"
+                    id="submit"
+                    autoComplete="off"
+                  >
+                    {/* Distributer Details */}
+                    <MuiThemeProvider theme={colortheme}>
+                      {/* title */}
+                      <DialogTitle
+                        id="form-dialog-title"
+                        className="text-center"
+                      >
+                        Edit Distributer Details
+                      </DialogTitle>
 
-                <Dialog fullWidth maxWidth="sm" onRendered={()=>plugin_for_contact(document.querySelector('#cp_contact_no'))} open={open} aria-labelledby="form-dialog-title">
-                    <DialogContent>
-
-                        <div className="container">
-                            <div className="row">
-                                <form onSubmit={updateRecord} method="POST" className="form-group" id="submit" autoComplete="off">
-
-                                     {/* Distributer Details */}
-                                     <MuiThemeProvider theme={colortheme}>
-
-                                        {/* title */}
-                                        <DialogTitle id="form-dialog-title" className="text-center">Edit Distributer Details</DialogTitle>
-
-                                        <div className="row">
-
-                                            {/* incharge */}
-                                            <div>
-                                                <label htmlFor="incharge">Incharge </label>
-                                                <BootstrapTooltip title={incharge_error} open={tooltip} placement='right-end'>
-                                                        <Autocomplete
-                                                            freeSolo
-                                                            value={incharge}
-                                                            disableClearable
-                                                            options={searchArray.incharge.map((data) => data)}
-                                                            onSelect={hideToolTip}
-                                                            onChange={(event,value)=>{
-                                                                setForm_details((prevValue)=>{
-                                                                    return{
-                                                                        ...prevValue,
-                                                                        incharge:value
-                                                                    }
-                                                                })
-                                                            }}
-                                                            renderInput={(params) => (
-                                                                <TextField
-                                                                    {...params}
-                                                                    type="text"
-                                                                    name="incharge"
-                                                                    id="incharge"
-                                                                    onChange={inputEvent}
-                                                                    className="form-control"
-                                                                    InputProps={{ ...params.InputProps, type: 'search' }}
-                                                                />
-                                                            )}
-                                                        />
-                                                </BootstrapTooltip>
-                                            </div>
-
-                                            {/* Covid support group volunteers */}
-                                            <div className="mt-3">
-                                                <label htmlFor="csg_volnteers">Covid support group volunteers</label>
-                                                <BootstrapTooltip title={csg_volunteers_error} open={tooltip} placement='right-end'>
-                                                    <Autocomplete
-                                                        freeSolo
-                                                        value={csg_volunteers}
-                                                        disableClearable
-                                                        options={searchArray.csg_volunteers.map((data) => data)}
-                                                        onSelect={hideToolTip}
-                                                        onChange={(event,value)=>{
-                                                            setForm_details((prevValue)=>{
-                                                                return{
-                                                                    ...prevValue,
-                                                                    csg_volunteers:value
-                                                                }
-                                                            })
-                                                        }}
-                                                        renderInput={(params) => (
-                                                            <TextField
-                                                                {...params}
-                                                                type="text"
-                                                                name="csg_volunteers"
-                                                                id="csg_volunteers"
-                                                                onChange={inputEvent}
-                                                                className="form-control"
-                                                                InputProps={{ ...params.InputProps, type: 'search' }}
-                                                            />
-                                                        )}
-                                                    />
-                                                </BootstrapTooltip>
-                                            </div>
-
-                                            {/* NGO */}
-                                            <div className="mt-3">
-                                                <label htmlFor="ngo">NGO </label>
-                                                <BootstrapTooltip title={ngo_error} open={tooltip} placement='right-end'>
-                                                    <Autocomplete
-                                                        freeSolo
-                                                        value={ngo}
-                                                        disableClearable
-                                                        options={searchArray.ngo.map((data) => data)}
-                                                        onSelect={hideToolTip}
-                                                        onChange={(event,value)=>{
-                                                            setForm_details((prevValue)=>{
-                                                                return{
-                                                                    ...prevValue,
-                                                                    ngo:value
-                                                                }
-                                                            })
-                                                        }}
-                                                        renderInput={(params) => (
-                                                            <TextField
-                                                                {...params}
-                                                                type="text"
-                                                                name="ngo"
-                                                                id="ngo"
-                                                                onChange={inputEvent}
-                                                                className="form-control"
-                                                                InputProps={{ ...params.InputProps, type: 'search' }}
-                                                            />
-                                                        )}
-                                                    />
-                                                </BootstrapTooltip>   
-                                            </div>
-
-                                            {/* quantity */}
-                                            <div className="mt-3">
-                                                <label htmlFor="area">Quantity (kg) </label>
-                                                <BootstrapTooltip title={qty_error} open={tooltip} placement='right-end'>
-                                                    <TextField type="number" inputProps={{ min: "0", step: "1" }} id="qty" name="qty" className="form-control" onChange={inputEvent}   onSelect={hideToolTip} value={qty}  />
-                                                </BootstrapTooltip>
-                                            </div>
-
-                                            {/* data collected */}
-                                            <div className="mt-3">
-                                                <label htmlFor="data_collected">Data collected ?</label>
-                                                <BootstrapTooltip title={data_collected_error} open={tooltip} placement='right-end'>
-                                                    <Select id="data_collected" name="data_collected" value={data_collected} className="w-100 "  onChange={inputEvent}   onSelect={hideToolTip} >
-                                                        <MenuItem value="YES">YES</MenuItem>
-                                                        <MenuItem value="NO">NO</MenuItem>
-                                                    </Select>
-                                                </BootstrapTooltip>
-                                            </div>
-
-                                            {/*Mohalla/Masjid Jamat */}
-                                            <div className="mt-3">
-                                                <label htmlFor="jamat_name">Mohalla/Masjid Jamat</label>
-                                                <BootstrapTooltip title={jamat_name_error} open={tooltip} placement='right-end'>
-                                                    <Autocomplete
-                                                        freeSolo
-                                                        value={jamat_name}
-                                                        disableClearable
-                                                        options={searchArray.mohalla_masjid_jamat.map((data) => data)}
-                                                        onSelect={hideToolTip}
-                                                        onChange={(event,value)=>{
-                                                            setForm_details((prevValue)=>{
-                                                                return{
-                                                                    ...prevValue,
-                                                                    jamat_name:value
-                                                                }
-                                                            })
-                                                        }}
-                                                        renderInput={(params) => (
-                                                            <TextField
-                                                                {...params}
-                                                                type="text"
-                                                                name="jamat_name"
-                                                                id="jamat_name"
-                                                                onChange={inputEvent}
-                                                                className="form-control"
-                                                                InputProps={{ ...params.InputProps, type: 'search' }}
-                                                            />
-                                                        )}
-                                                    />
-                                                </BootstrapTooltip> 
-                                            </div>
-
-                                            {/* area */}
-                                            <div className="mt-3">
-                                                <label htmlFor="area">Area</label>
-                                                <BootstrapTooltip title={area_error} open={tooltip} placement='right-end'>
-                                                    <Autocomplete
-                                                        freeSolo
-                                                        value={area}
-                                                        disableClearable
-                                                        options={searchArray.area.map((data) => data)}
-                                                        onSelect={hideToolTip}
-                                                        onChange={(event,value)=>{
-                                                            setForm_details((prevValue)=>{
-                                                                return{
-                                                                    ...prevValue,
-                                                                    area:value
-                                                                }
-                                                            })
-                                                        }}
-                                                        renderInput={(params) => (
-                                                            <TextField
-                                                                {...params}
-                                                                type="text"
-                                                                name="area"
-                                                                id="csg_volunteers"
-                                                                onChange={inputEvent}
-                                                                className="form-control"
-                                                                InputProps={{ ...params.InputProps, type: 'search' }}
-                                                            />
-                                                        )}
-                                                    />
-                                                </BootstrapTooltip> 
-                                            </div>
-                                        </div>
-                                     </MuiThemeProvider>
-
-                                    {/* too contact person details */}
-                                    <MuiThemeProvider theme={colortheme}>
-
-                                         {/* title */}
-                                         <DialogTitle id="form-dialog-title" className="text-center">Edit Contact Person Details</DialogTitle>
-
-                                         <div className="row">
-
-                                             {/* Contact person */}
-                                             <div>
-                                                <label htmlFor="contact_person">Contact Person</label>
-                                                <BootstrapTooltip title={contact_person_error} open={tooltip} placement='right-end'>
-                                                    <Autocomplete
-                                                        freeSolo
-                                                        value={contact_person}
-                                                        disableClearable
-                                                        options={searchArray.contact_person.map((data) => data)}
-                                                        onSelect={hideToolTip}
-                                                        onChange={(event,value)=>{
-                                                            setForm_details((prevValue)=>{
-                                                                return{
-                                                                    ...prevValue,
-                                                                    contact_person:value
-                                                                }
-                                                            })
-                                                        }}
-                                                        renderInput={(params) => (
-                                                            <TextField
-                                                                {...params}
-                                                                type="text"
-                                                                name="contact_person"
-                                                                id="contact_person"
-                                                                onChange={inputEvent}
-                                                                className="form-control"
-                                                                InputProps={{ ...params.InputProps, type: 'search' }}
-                                                            />
-                                                        )}
-                                                    />
-                                                </BootstrapTooltip>  
-                                             </div>
-
-                                             {/* Contact */}
-                                             <div className="mt-3">
-                                                <label htmlFor="contact_person">Contact Person Contact No</label>
-                                                <BootstrapTooltip title={cp_contact_error} open={tooltip} placement='right-end'>
-                                                    <TextField type="text" id="cp_contact_no" name="cp_contact_no" className="form-control" onChange={inputEvent}  onKeyUp={hideToolTip} value={cp_contact_no} />
-                                                </BootstrapTooltip>
-                                             </div>
-
-                                             <div className="mt-3">
-                                                <label htmlFor="vehicle_used">Vehicle Used</label>
-                                                <BootstrapTooltip title={vehicle_used_error} open={tooltip} placement='right-end'>
-                                                    <Autocomplete
-                                                        freeSolo
-                                                        value={vehicle_used}
-                                                        disableClearable
-                                                        options={searchArray.vehicle_used.map((data) => data)}
-                                                        onSelect={hideToolTip}
-                                                        onChange={(event,value)=>{
-                                                            setForm_details((prevValue)=>{
-                                                                return{
-                                                                    ...prevValue,
-                                                                    vehicle_used:value
-                                                                }
-                                                            })
-                                                        }}
-                                                        renderInput={(params) => (
-                                                            <TextField
-                                                                {...params}
-                                                                type="text"
-                                                                name="vehicle_used"
-                                                                id="vehicle_used"
-                                                                onChange={inputEvent}
-                                                                className="form-control"
-                                                                InputProps={{ ...params.InputProps, type: 'search' }}
-                                                            />
-                                                        )}
-                                                    />
-                                                </BootstrapTooltip>
-                                             </div>
-                                         </div>
-                                    </MuiThemeProvider>
-
-                                    {/* submit button */}
-                                    <MuiThemeProvider theme={colortheme} >
-                                        <div className="row mt-4">
-                                            <Button  type="submit" variant="contained" color="primary">save</Button> 
-                                            <Button  type="button" variant="contained" className="mt-2" onClick={()=>setOpen(false)}>cancel</Button>   
-                                        </div>
-                                    </MuiThemeProvider>
-
-                                </form>
-                            </div>
+                      <div className="row">
+                        {/* incharge */}
+                        <div>
+                          <label htmlFor="incharge">Incharge </label>
+                         
+                            <Autocomplete
+                              freeSolo
+                              inputValue={incharge}
+                              disableClearable
+                              options={searchArray.incharge.map((data) => data)}
+                             
+                              onChange={(event, value) => {
+                                setForm_details((prevValue) => {
+                                  return {
+                                    ...prevValue,
+                                    incharge: value,
+                                  };
+                                });
+                              }}
+                              renderInput={(params) => (
+                                <TextField
+                                  {...params}
+                                  type="text"
+                                  name="incharge"
+                                  id="incharge"
+                                  onChange={inputEvent}
+                                  className="form-control"
+                                  InputProps={{
+                                    ...params.InputProps,
+                                    type: "search",
+                                  }}
+                                  error={(incharge_error) ? true : false}
+                                  helperText={incharge_error}
+                                />
+                              )}
+                            />
+                         
                         </div>
 
-                    </DialogContent>
-                </Dialog>
+                        {/* Covid support group volunteers */}
+                        <div className="mt-3">
+                          <label htmlFor="csg_volnteers">
+                            Covid support group volunteers
+                          </label>
+                          
+                            <Autocomplete
+                              freeSolo
+                              inputValue={csg_volunteers}
+                              disableClearable
+                              options={searchArray.csg_volunteers.map(
+                                (data) => data
+                              )}
+                             
+                              onChange={(event, value) => {
+                                setForm_details((prevValue) => {
+                                  return {
+                                    ...prevValue,
+                                    csg_volunteers: value,
+                                  };
+                                });
+                              }}
+                              renderInput={(params) => (
+                                <TextField
+                                  {...params}
+                                  type="text"
+                                  name="csg_volunteers"
+                                  id="csg_volunteers"
+                                  onChange={inputEvent}
+                                  className="form-control"
+                                  InputProps={{
+                                    ...params.InputProps,
+                                    type: "search",
+                                  }}
+                                  error={(csg_volunteers_error) ? true : false}
+                                  helperText={csg_volunteers_error}
+                                />
+                              )}
+                            />
+                         
+                        </div>
 
-            </section>
+                        {/* NGO */}
+                        <div className="mt-3">
+                          <label htmlFor="ngo">NGO </label>
+                          
+                            <Autocomplete
+                              freeSolo
+                              inputValue={ngo}
+                              disableClearable
+                              options={searchArray.ngo.map((data) => data)}
+                             
+                              onChange={(event, value) => {
+                                setForm_details((prevValue) => {
+                                  return {
+                                    ...prevValue,
+                                    ngo: value,
+                                  };
+                                });
+                              }}
+                              renderInput={(params) => (
+                                <TextField
+                                  {...params}
+                                  type="text"
+                                  name="ngo"
+                                  id="ngo"
+                                  onChange={inputEvent}
+                                  className="form-control"
+                                  InputProps={{
+                                    ...params.InputProps,
+                                    type: "search",
+                                  }}
+                                  error={(ngo_error) ? true : false}
+                                  helperText={ngo_error}
+                                />
+                              )}
+                            />
+                          
+                        </div>
 
-             {/* view section */}
-            <section className="view-section  mt-5 mb-5">
-                <div className="card">
-                    <div className="card-body">
-                        <h3 className="card-title text-center mb-4">Distribution Details</h3>
-                        <hr />
-                        <MaterialTable
-                            data={distribute_details}
-                            columns={columns}
-                            options={{
-                                headerStyle: {
-                                    backgroundColor: '#DEF3FA',
-                                    color: 'black',
-                                    whiteSpace: 'nowrap',
-                                },
-                                actionsCellStyle: {
-                                    backgroundColor: "#F8F9F9",
-                                },
-                                showTitle:false
-                            }}
-                            actions={[
-                                {
-                                    //edit
-                                    icon: 'edit',
-                                    tooltip: 'Edit',
-                                    onClick: (event, rowData) => handleRowUpdate(rowData)
-                                }
-                            ]}
-                            editable={{
+                        {/* quantity */}
+                        <div className="mt-3">
+                          <label htmlFor="area">Quantity (kg) </label>
+                         
+                            <TextField
+                              type="number"
+                              inputProps={{ min: "0", step: "1" }}
+                              id="qty"
+                              name="qty"
+                              className="form-control"
+                              onChange={inputEvent}
+                             
+                              value={qty}
+                              error={(qty_error) ? true : false}
+                              helperText={qty_error}
+                            />
+                         
+                        </div>
 
-                                //delete
-                                onRowDelete: (Data) => new Promise((resolve) => {
-                                    handleRowDelete(Data, resolve);
-                                })
-                            }}
-                        />
-                    </div>
+                        {/* data collected */}
+                        <div className="mt-3">
+                          <label htmlFor="data_collected">
+                            Data collected ?
+                          </label>
+                        
+                             <TextField 
+                                select
+                                className="form-control mt-1"
+                                onChange={inputEvent}
+                                id="data_collected"
+                                name="data_collected"
+                                value={data_collected}
+                                
+
+                             >
+                       <MenuItem value="YES">YES</MenuItem>
+                          <MenuItem value="NO">NO</MenuItem>
+                    </TextField>
+                          
+                        </div>
+
+                        {/*Mohalla/Masjid Jamat */}
+                        <div className="mt-3">
+                          <label htmlFor="jamat_name">
+                            Mohalla/Masjid Jamat
+                          </label>
+                         
+                            <Autocomplete
+                              freeSolo
+                              inputValue={jamat_name}
+                              disableClearable
+                              options={searchArray.mohalla_masjid_jamat.map(
+                                (data) => data
+                              )}
+                             
+                              onChange={(event, value) => {
+                                setForm_details((prevValue) => {
+                                  return {
+                                    ...prevValue,
+                                    jamat_name: value,
+                                  };
+                                });
+                              }}
+                              renderInput={(params) => (
+                                <TextField
+                                  {...params}
+                                  type="text"
+                                  name="jamat_name"
+                                  id="jamat_name"
+                                  onChange={inputEvent}
+                                  className="form-control"
+                                  InputProps={{
+                                    ...params.InputProps,
+                                    type: "search",
+                                  }}
+                                  error={(jamat_name_error) ? true : false}
+                                  helperText={jamat_name_error}
+                                />
+                              )}
+                            />
+                          
+                        </div>
+
+                        {/* area */}
+                        <div className="mt-3">
+                          <label htmlFor="area">Area</label>
+                          
+                            <Autocomplete
+                              freeSolo
+                              inputValue={area}
+                              disableClearable
+                              options={searchArray.area.map((data) => data)}
+                             
+                              onChange={(event, value) => {
+                                setForm_details((prevValue) => {
+                                  return {
+                                    ...prevValue,
+                                    area: value,
+                                  };
+                                });
+                              }}
+                              renderInput={(params) => (
+                                <TextField
+                                  {...params}
+                                  type="text"
+                                  name="area"
+                                  id="csg_volunteers"
+                                  onChange={inputEvent}
+                                  className="form-control"
+                                  InputProps={{
+                                    ...params.InputProps,
+                                    type: "search",
+                                  }}
+                                  error={(area_error) ? true : false}
+                                  helperText={area_error}
+                                />
+                              )}
+                            />
+                          
+                        </div>
+                      </div>
+                    </MuiThemeProvider>
+
+                    {/* too contact person details */}
+                    <MuiThemeProvider theme={colortheme}>
+                      {/* title */}
+                      <DialogTitle
+                        id="form-dialog-title"
+                        className="text-center"
+                      >
+                        Edit Contact Person Details
+                      </DialogTitle>
+
+                      <div className="row">
+                        {/* Contact person */}
+                        <div>
+                          <label htmlFor="contact_person">Contact Person</label>
+                         
+                            <Autocomplete
+                              freeSolo
+                              inputValue={contact_person}
+                              disableClearable
+                              options={searchArray.contact_person.map(
+                                (data) => data
+                              )}
+                             
+                              onChange={(event, value) => {
+                                setForm_details((prevValue) => {
+                                  return {
+                                    ...prevValue,
+                                    contact_person: value,
+                                  };
+                                });
+                              }}
+                              renderInput={(params) => (
+                                <TextField
+                                  {...params}
+                                  type="text"
+                                  name="contact_person"
+                                  id="contact_person"
+                                  onChange={inputEvent}
+                                  className="form-control"
+                                  InputProps={{
+                                    ...params.InputProps,
+                                    type: "search",
+                                  }}
+                                  error={(contact_person_error) ?  true : false}
+                                  helperText={contact_person_error}
+                                />
+                              )}
+                            />
+                         
+                        </div>
+
+                        {/* Contact */}
+                        <div className="mt-3">
+                          <label htmlFor="contact_person">
+                            Contact Person Contact No
+                          </label>
+                          
+                            <TextField
+                              type="text"
+                              id="cp_contact_no"
+                              name="cp_contact_no"
+                              className="form-control"
+                              onChange={inputEvent}
+                         
+                              value={cp_contact_no}
+                              error={(cp_contact_error) ? true : false}
+                              helperText={cp_contact_error}
+                            />
+                          
+                        </div>
+
+                        <div className="mt-3">
+                          <label htmlFor="vehicle_used">Vehicle Used</label>
+                         
+                            <Autocomplete
+                              freeSolo
+                              inputValue={vehicle_used}
+                              disableClearable
+                              options={searchArray.vehicle_used.map(
+                                (data) => data
+                              )}
+                             
+                              onChange={(event, value) => {
+                                setForm_details((prevValue) => {
+                                  return {
+                                    ...prevValue,
+                                    vehicle_used: value,
+                                  };
+                                });
+                              }}
+                              renderInput={(params) => (
+                                <TextField
+                                  {...params}
+                                  type="text"
+                                  name="vehicle_used"
+                                  id="vehicle_used"
+                                  onChange={inputEvent}
+                                  className="form-control"
+                                  InputProps={{
+                                    ...params.InputProps,
+                                    type: "search",
+                                  }}
+                                  error={(vehicle_used_error) ? true : false}
+                                  helperText={vehicle_used_error}
+                                />
+                              )}
+                            />
+                         
+                        </div>
+                      </div>
+                    </MuiThemeProvider>
+
+                    {/* submit button */}
+                    <MuiThemeProvider theme={colortheme}>
+                      <div className="row mt-4">
+                        <Button
+                          type="submit"
+                          variant="contained"
+                          color="primary"
+                        >
+                          save
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="contained"
+                          className="mt-2"
+                          onClick={() => setOpen(false)}
+                        >
+                          cancel
+                        </Button>
+                      </div>
+                    </MuiThemeProvider>
+                  </form>
                 </div>
-            </section>
-        </>
-    )
+              </div>
+            </DialogContent>
+          </Dialog>
+        </section>
+
+        {/* view section */}
+        <section className="view-section  mt-5 mb-5">
+          <div className="card">
+            <div className="card-body">
+              <h3 className="card-title text-center mb-4">
+                Distribution Details
+              </h3>
+              <hr />
+              <MaterialTable
+                data={distribute_details}
+                columns={columns}
+                options={{
+                  headerStyle: {
+                    backgroundColor: "#DEF3FA",
+                    color: "black",
+                    whiteSpace: "nowrap",
+                  },
+                  actionsCellStyle: {
+                    backgroundColor: "#F8F9F9",
+                  },
+                  showTitle: false,
+                }}
+                actions={[
+                  {
+                    //edit
+                    icon: "edit",
+                    tooltip: "Edit",
+                    onClick: (event, rowData) => handleRowUpdate(rowData),
+                  },
+                ]}
+                editable={{
+                  //delete
+                  onRowDelete: (Data) =>
+                    new Promise((resolve) => {
+                      handleRowDelete(Data, resolve);
+                    }),
+                }}
+              />
+            </div>
+          </div>
+        </section>
+      </>
+    );
 }
 
 export default DistributeEditDelete

@@ -2,7 +2,7 @@
 
 import 
 {
-    React,BootstrapTooltip,TextField,useState,MuiThemeProvider,colortheme,FormControlLabel,Checkbox,Link,Button,axios,
+    React,TextField,useState,MuiThemeProvider,colortheme,FormControlLabel,Checkbox,Link,Button,axios,
     Cookies,useEffect,toast,useHistory
 } from '../Import'
 
@@ -13,17 +13,21 @@ const LoginForm = () => {
     
     // get input fields
     const[login_details,setLogin_details]=useState({
-        'email_id':'',
-        'password':'',
-        'remember_me':false
+        email_id:'',
+        password:'',
+        remember_me:false
     });
 
 
     // error_fields
     const[errors,setErrors]=useState({
-        'email_error':'',
-        'pass_error':''
+        email_error:'',
+        pass_error:''
     });
+
+
+    
+
 
       
     // Destructing of objects
@@ -31,14 +35,8 @@ const LoginForm = () => {
     const{email_id,password,remember_me}=login_details;
 
 
-    // show tooltip 
-     const [open, setOpen] = useState(false);
 
-     
-    //Hide Tooltip
-    const hideToolTip =() =>{
-        setOpen(false);
-    }
+   
 
 
     // change input fields based on [onchange ]
@@ -77,7 +75,6 @@ const LoginForm = () => {
                 setErrors({
                     email_error,pass_error
                 });
-                setOpen(true);
             }
             else if(res.data.result)
             {
@@ -104,53 +101,92 @@ const LoginForm = () => {
 
     return (
       <div>
-          <div className="card border-0">
-              <div className="card-body">
+        <div className="card border-0">
+          <div className="card-body">
+            {/* card-title */}
+            <h2 className="card-title text-capitalize text-center">sign in</h2>
 
-                    {/* card-title */}
-                    <h2 className="card-title text-capitalize text-center">sign in</h2>
+            {/* card content */}
+            <form
+              onSubmit={submit}
+              className="form-group mt-3"
+              id="submit"
+              autoComplete="off"
+            >
+              {/* Email Address */}
+              <label htmlFor="email_id" className="mb-0 mt-2">
+                Email Address
+              </label>
+                <TextField
+                  className="form-control mt-0"
+                  type="email"
+                  name="email_id"
+                  id="email_id"
+                  onChange={inputEvent}
+                  value={email_id}
+                  error={ (email_error) ? true  : false}
+                  helperText={email_error}
+                />
+             
 
-                     {/* card content */}
-                     <form  onSubmit={submit} className="form-group mt-3" id="submit" autoComplete="off">
+              {/* Password */}
+              <label htmlFor="password" className="mb-0 mt-2">
+                Password
+              </label>
+             
+                <TextField
+                  className="form-control mt-0"
+                  type="password"
+                  name="password"
+                  id="password"
+                  onChange={inputEvent}
+                  value={password}
+                  error={(pass_error)? true :false}
+                  helperText={pass_error}
+                />
+             
 
-                        {/* Email Address */}
-                        <label htmlFor="email_id" className="mb-0 mt-2" >Email Address</label>
-                        <BootstrapTooltip title={email_error}  placement="right-end" open={open} >
-                            <TextField className="form-control mt-0"  type="email" name="email_id" id="email_id" onChange={inputEvent} onKeyUp={hideToolTip} value={email_id} />
-                        </BootstrapTooltip>
-
-                        {/* Password */}
-                        <label htmlFor="password" className="mb-0 mt-2" >Password</label>
-                        <BootstrapTooltip title={pass_error} placement="right-end" open={open} >
-                            <TextField className="form-control mt-0"  type="password" name="password" id="password" onChange={inputEvent} onKeyUp={hideToolTip} value ={password}/>
-                        </BootstrapTooltip>
-
-
-                        {/* checkbox */}
-                        <div className="row ml-0">
-                            <div className="remember_me col-12">
-                                <MuiThemeProvider theme={colortheme}>
-                                    <FormControlLabel  control={<Checkbox color="primary" id="remember_me" className="checkbox" name="remember_me" checked={login_details.remember_me} onChange={inputEvent} value={remember_me} /> } label={<span>Remember Me</span>}/>
-                                </MuiThemeProvider>
-                            </div>
-                        </div>
-
-
-                        <div className="row d-flex flex-column">
-                            <div className="col">
-                                <MuiThemeProvider theme={colortheme}>
-                                <Button  type="submit" variant="contained" color="primary">Login</Button>
-                                </MuiThemeProvider>   
-                            </div>
-                            <div className="col">
-                                <p className="mt-1">Don't have an account ? <Link to='/register'>register</Link></p>
-                            </div>
-                        </div>
-                     </form>
+              {/* checkbox */}
+              <div className="row ml-0">
+                <div className="remember_me col-12">
+                  <MuiThemeProvider theme={colortheme}>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          color="primary"
+                          id="remember_me"
+                          className="checkbox"
+                          name="remember_me"
+                          checked={login_details.remember_me}
+                          onChange={inputEvent}
+                          value={remember_me}
+                        />
+                      }
+                      label={<span>Remember Me</span>}
+                    />
+                  </MuiThemeProvider>
+                </div>
               </div>
+
+              <div className="row d-flex flex-column">
+                <div className="col">
+                  <MuiThemeProvider theme={colortheme}>
+                    <Button type="submit" variant="contained" color="primary">
+                      Login
+                    </Button>
+                  </MuiThemeProvider>
+                </div>
+                <div className="col">
+                  <p className="mt-1">
+                    Don't have an account ? <Link to="/register">register</Link>
+                  </p>
+                </div>
+              </div>
+            </form>
           </div>
+        </div>
       </div>
-    )
+    );
 }
 
 export default LoginForm

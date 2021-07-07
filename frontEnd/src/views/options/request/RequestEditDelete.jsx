@@ -1,7 +1,7 @@
 /**************************   Request Edit Delete   *******************************/
 
 import {React,useEffect,axios,toast,MaterialTable,useState,TextField,plugin_for_contact,
-    Select,MenuItem,MuiThemeProvider,colortheme,BootstrapTooltip,Autocomplete,Button,Dialog,DialogTitle,
+    MenuItem,MuiThemeProvider,colortheme,Autocomplete,Button,Dialog,DialogTitle,
     DialogContent,MuiPickersUtilsProvider,MomentUtils,KeyboardDatePicker,useCallback
 } from '../../Import'
 
@@ -19,8 +19,10 @@ const RequestEditDelete = () => {
     //dialog
     const [open, setOpen] =useState(false);
 
-    //tooltip
-    const[tooltip,setTooltip]=useState(false);
+    //show hide delivery date
+    const [Date, setDate]=useState('');
+
+   
 
   
 
@@ -58,7 +60,6 @@ const RequestEditDelete = () => {
         jamat_name_error:'',
         location_error:'',
         occupation_error:'',
-        req_card_type_error:'',
         req_contact_no_error:'',
         req_name_error:'',
         aadhar_card_no_error:'',
@@ -74,13 +75,13 @@ const RequestEditDelete = () => {
     const 
     {
          address_error,contact_person_error,cp_contact_error,jamat_name_error,location_error,occupation_error,
-         req_card_type_error,req_contact_no_error,req_name_error,aadhar_card_no_error,dependent_no_error,ngo_error,
+         req_contact_no_error,req_name_error,aadhar_card_no_error,dependent_no_error,ngo_error,
          children_no_error,ration_card_no_error,religion_error
      }=errors;
 
      const{
         req_name,req_contact_no,aadhar_card_no,card_type,dependent_no,children_no,occupation,address,location,jamat_name,
-        contact_person,cp_contact_no,ngo,ration_card_no,delivery_date,religion
+        contact_person,cp_contact_no,ngo,ration_card_no,delivery_date,religion,delivery_status
      }=Form_details;
 
 
@@ -147,7 +148,6 @@ const RequestEditDelete = () => {
                            renameKey(element,'ngo','NGO');
                        });
                     
-                       console.log(res.data.result);
                        setRequester_details(res.data.result);
                       
                 
@@ -285,11 +285,7 @@ const RequestEditDelete = () => {
      
     }
 
-    //Hide Tooltip
-    const hideToolTip =() =>{
-        setTooltip(false);
-    }
-
+   
     //plugin for contact
     const plugin=()=>{
         plugin_for_contact(document.querySelector('#req_contact_no'));
@@ -418,11 +414,14 @@ const RequestEditDelete = () => {
         }=rowData;
 
         
+        setDate(delivery_date);
 
         setForm_details({
             req_name,req_contact_no,aadhar_card_no,card_type,dependent_no,children_no,occupation,address,contact_person,id,
             location,cp_contact_no,jamat_name,created_date,ration_card_no,ngo,delivery_date,religion,delivery_status
         })
+
+        
         setOpen(true);
 
 
@@ -450,17 +449,17 @@ const RequestEditDelete = () => {
                 const 
                 {
                     address_error,contact_person_error,cp_contact_error,jamat_name_error,location_error,occupation_error,
-                    req_card_type_error,req_contact_no_error,req_name_error,aadhar_card_no_error,ration_card_no_error,religion_error,
+                    req_contact_no_error,req_name_error,aadhar_card_no_error,ration_card_no_error,religion_error,
                     ngo_error,dependent_no_error,children_no_error,
 
                 }=res.data.errors;
               
                 setErrors({
                     address_error,contact_person_error,cp_contact_error,jamat_name_error,location_error,occupation_error,
-                    req_card_type_error,req_contact_no_error,req_name_error,aadhar_card_no_error,dependent_no_error,children_no_error,
+                    req_contact_no_error,req_name_error,aadhar_card_no_error,dependent_no_error,children_no_error,
                     ration_card_no_error,religion_error,ngo_error
                 });
-                setTooltip(true);
+               
 
             }
             else if(res.data.success)
@@ -514,103 +513,91 @@ const RequestEditDelete = () => {
                         {/* Full Name */}
                         <div>
                           <label htmlFor="req_name">Full Name</label>
-                          <BootstrapTooltip
-                            title={req_name_error}
-                            open={tooltip}
-                            placement="right-end"
-                          >
+                          
                             <TextField
                               id="req_name"
                               type="text"
                               name="req_name"
                               className="form-control"
                               onChange={inputEvent}
-                              onSelect={hideToolTip}
                               value={req_name}
+                              error={(req_name_error) ? true : false }
+                              helperText={req_name_error}
                             />
-                          </BootstrapTooltip>
+                         
                         </div>
 
                         {/* requester Contact */}
                         <div className="mt-3">
                           <label htmlFor="req_contact_no">Contact</label>
-                          <BootstrapTooltip
-                            title={req_contact_no_error}
-                            open={tooltip}
-                            placement="right-end"
-                          >
+                          
                             <TextField
                               id="req_contact_no"
                               type="text"
                               name="req_contact_no"
                               className="form-control"
                               onChange={inputEvent}
-                              onSelect={hideToolTip}
                               value={req_contact_no}
+                              error={(req_contact_no_error) ? true : false }
+                              helperText={req_contact_no_error}
                             />
-                          </BootstrapTooltip>
+                          
                         </div>
 
                         {/* Aadhar Card Number */}
                         <div className="mt-3">
                           <label htmlFor="aadhar_card_no">Aadhar Card No</label>
-                          <BootstrapTooltip
-                            title={aadhar_card_no_error}
-                            open={tooltip}
-                            placement="right-end"
-                          >
+                         
                             <TextField
                               id="aadhar_card_no"
                               type="text"
                               name="aadhar_card_no"
                               className="form-control  "
                               onChange={inputEvent}
-                              onSelect={hideToolTip}
+                            
                               value={aadhar_card_no}
+                              error={(aadhar_card_no_error) ? true : false }
+                              helperText={aadhar_card_no_error}
                             />
-                          </BootstrapTooltip>
+                          
                         </div>
 
                         {/* ration Card Number */}
                         <div className="mt-3">
                           <label htmlFor="ration_card_no">Ration Card No</label>
-                          <BootstrapTooltip
-                            title={ration_card_no_error}
-                            open={tooltip}
-                            placement="right-end"
-                          >
+                         
                             <TextField
                               id="ration_card_no"
                               type="text"
                               name="ration_card_no"
                               className="form-control  "
                               onChange={inputEvent}
-                              onSelect={hideToolTip}
+                             
                               value={ration_card_no}
+                              error={(ration_card_no_error) ? true : false}
+                              helperText={ration_card_no_error}
                             />
-                          </BootstrapTooltip>
+                         
                         </div>
 
                         {/* Card Type */}
                         <div className="mt-3">
                           <label htmlFor="card_type">Select card-type</label>
-                          <BootstrapTooltip
-                            title={req_card_type_error}
-                            open={tooltip}
-                            placement="right-end"
-                          >
-                            <Select
-                              id="card_type"
-                              name="card_type"
-                              className="w-100 mt-1"
-                              onChange={inputEvent}
-                              onSelect={hideToolTip}
-                              value={card_type}
+                         
+                            <TextField 
+                            select
+                            className="form-control mt-1"
+                            onChange={inputEvent}
+                            value={card_type}
+                            id="card_type"
+                            name="card_type"
+
+
                             >
                               <MenuItem value="APL">APL</MenuItem>
                               <MenuItem value="BPL">BPL</MenuItem>
-                            </Select>
-                          </BootstrapTooltip>
+                            </TextField>
+                         
                         </div>
 
                         {/* Number of depenedents */}
@@ -619,11 +606,7 @@ const RequestEditDelete = () => {
                             {" "}
                             Number of depenedents
                           </label>
-                          <BootstrapTooltip
-                            title={dependent_no_error}
-                            open={tooltip}
-                            placement="right-end"
-                          >
+                         
                             <TextField
                               className="form-control"
                               inputProps={{ min: "0", step: "1" }}
@@ -631,10 +614,12 @@ const RequestEditDelete = () => {
                               type="number"
                               name="dependent_no"
                               onChange={inputEvent}
-                              onSelect={hideToolTip}
                               value={dependent_no}
+                              error={(dependent_no_error) ? true : false }
+                              helperText={dependent_no_error}
+
                             />
-                          </BootstrapTooltip>
+                         
                         </div>
 
                         {/* Number of children below 15 years age */}
@@ -642,11 +627,7 @@ const RequestEditDelete = () => {
                           <label htmlFor="children_no">
                             Number of children below 15 years age
                           </label>
-                          <BootstrapTooltip
-                            title={children_no_error}
-                            open={tooltip}
-                            placement="right-end"
-                          >
+                         
                             <TextField
                               className="form-control"
                               inputProps={{ min: "0", step: "1" }}
@@ -654,28 +635,25 @@ const RequestEditDelete = () => {
                               type="number"
                               name="children_no"
                               onChange={inputEvent}
-                              onClick={hideToolTip}
+                              error={(children_no_error) ? true : false}
+                              helperText={children_no_error}
                               value={children_no}
                             />
-                          </BootstrapTooltip>
+                         
                         </div>
 
                         {/* Occupation */}
                         <div className="mt-3">
                           <label htmlFor="occupation">Occupation</label>
-                          <BootstrapTooltip
-                            title={occupation_error}
-                            open={tooltip}
-                            placement="right-end"
-                          >
+                          
                             <Autocomplete
                               freeSolo
-                              value={occupation}
+                             inputValue={occupation}
                               disableClearable
                               options={searchArray.occupation.map(
                                 (data) => data
                               )}
-                              onSelect={hideToolTip}
+                             
                               className="mt-1"
                               onChange={(event, value) => {
                                 setForm_details((prevValue) => {
@@ -698,29 +676,27 @@ const RequestEditDelete = () => {
                                     ...params.InputProps,
                                     type: "search",
                                   }}
+                                  error={(occupation_error) ? true : false}
+                                  helperText={occupation_error}
                                 />
                               )}
                             />
-                          </BootstrapTooltip>
+                         
                         </div>
 
 
                         {/* Religion */}
                         <div className="mt-3">
                           <label htmlFor="occupation">Religion</label>
-                          <BootstrapTooltip
-                            title={religion_error}
-                            open={tooltip}
-                            placement="right-end"
-                          >
+                         
                             <Autocomplete
                               freeSolo
-                              value={religion}
+                              inputValue={religion}
                               disableClearable
                               options={searchArray.religion.map(
                                 (data) => data
                               )}
-                              onSelect={hideToolTip}
+                             
                               className="mt-1"
                               onChange={(event, value) => {
                                 setForm_details((prevValue) => {
@@ -743,26 +719,24 @@ const RequestEditDelete = () => {
                                     ...params.InputProps,
                                     type: "search",
                                   }}
+                                  error={(religion_error) ? true : false }
+                                  helperText={religion_error}
                                 />
                               )}
                             />
-                          </BootstrapTooltip>
+                         
                         </div>
 
                         {/* Address */}
                         <div className="mt-3">
                           <label htmlFor="address">Address</label>
-                          <BootstrapTooltip
-                            title={address_error}
-                            open={tooltip}
-                            placement="right-end"
-                          >
+                          
                             <Autocomplete
                               freeSolo
                               disableClearable
-                              value={address}
+                              inputValue={address}
                               options={searchArray.address.map((data) => data)}
-                              onSelect={hideToolTip}
+                             
                               className="mt-1"
                               onChange={(event, value) => {
                                 setForm_details((prevValue) => {
@@ -785,28 +759,26 @@ const RequestEditDelete = () => {
                                     ...params.InputProps,
                                     type: "search",
                                   }}
+                                  error={(address_error) ? true : false}
+                                  helperText={address_error}
                                 />
                               )}
                             />
-                          </BootstrapTooltip>
+                         
                         </div>
 
                         {/* Area/location */}
                         <div className="mt-3">
                           <label htmlFor="location">Area/Location</label>
-                          <BootstrapTooltip
-                            title={location_error}
-                            open={tooltip}
-                            placement="right-end"
-                          >
+                         
                             <Autocomplete
                               freeSolo
                               disableClearable
-                              value={location}
+                              inputValue={location}
                               options={searchArray.area_location.map(
                                 (data) => data
                               )}
-                              onSelect={hideToolTip}
+                             
                               className="mt-1"
                               onChange={(event, value) => {
                                 setForm_details((prevValue) => {
@@ -828,10 +800,12 @@ const RequestEditDelete = () => {
                                     ...params.InputProps,
                                     type: "search",
                                   }}
+                                  error={(location_error) ? true : false}
+                                  helperText={location_error}
                                 />
                               )}
                             />
-                          </BootstrapTooltip>
+                         
                         </div>
 
                         {/* delivery Date */}
@@ -856,6 +830,32 @@ const RequestEditDelete = () => {
                             </MuiPickersUtilsProvider>
                         </div>
 
+                          {/* show  delivery status  if delivery date is not empty*/}
+                          {
+                            (Date) 
+                            ?
+                            <div className="mt-3">
+                              <label htmlFor="card_type">Delivery Status</label>
+                         
+                                <TextField 
+                                select
+                                className="form-control mt-1"
+                                onChange={inputEvent}
+                                value={delivery_status}
+                                id="delivery_status"
+                                name="delivery_status"
+                                
+                                >
+                                  <MenuItem value="delivered">delivered</MenuItem>
+                                  <MenuItem value="pending">pending</MenuItem>
+                                </TextField>
+                         
+                           </div>
+
+                           : null
+
+                          }
+                         
                       </div>
                     </MuiThemeProvider>
 
@@ -873,16 +873,12 @@ const RequestEditDelete = () => {
                         {/* Contact person */}
                         <div>
                           <label htmlFor="contact_person">Contact Person</label>
-                          <BootstrapTooltip
-                            title={contact_person_error}
-                            open={tooltip}
-                            placement="right-end"
-                          >
+                          
                             <Autocomplete
                               freeSolo
                               disableClearable
-                              value={contact_person}
-                              onSelect={hideToolTip}
+                              inputValue={contact_person}
+                              
                               className="mt-1"
                               options={searchArray.contact_person.map(
                                 (data) => data
@@ -907,10 +903,12 @@ const RequestEditDelete = () => {
                                     ...params.InputProps,
                                     type: "search",
                                   }}
+                                  error={(contact_person_error) ? true : false}
+                                  helperText={contact_person_error}
                                 />
                               )}
                             />
-                          </BootstrapTooltip>
+                         
                         </div>
 
                         {/* Contact */}
@@ -918,21 +916,19 @@ const RequestEditDelete = () => {
                           <label htmlFor="cp_contact_no">
                             Contact Person Contact No
                           </label>
-                          <BootstrapTooltip
-                            title={cp_contact_error}
-                            open={tooltip}
-                            placement="right-end"
-                          >
+                         
                             <TextField
                               className="form-control mt-1"
                               id="cp_contact_no"
                               type="text"
                               name="cp_contact_no"
                               onChange={inputEvent}
-                              onSelect={hideToolTip}
+                             
                               value={cp_contact_no}
+                              error={(cp_contact_error) ? true : false}
+                              helperText={cp_contact_error}
                             />
-                          </BootstrapTooltip>
+                          
                         </div>
 
                           {/* NGO */}
@@ -940,16 +936,12 @@ const RequestEditDelete = () => {
                           <label htmlFor="ngo">
                             NGO
                           </label>
-                          <BootstrapTooltip
-                            title={ngo_error}
-                            open={tooltip}
-                            placement="right-end"
-                          >
+                          
                             <Autocomplete
                               freeSolo
                               disableClearable
-                              value={ngo}
-                              onSelect={hideToolTip}
+                              inputValue={ngo}
+                             
                               className="mt-1"
                               options={searchArray.ngo.map(
                                 (data) => data
@@ -975,10 +967,12 @@ const RequestEditDelete = () => {
                                     ...params.InputProps,
                                     type: "search",
                                   }}
+                                  error={(ngo_error) ? true : false}
+                                  helperText={ngo_error}
                                 />
                               )}
                             />
-                          </BootstrapTooltip>
+                          
                         </div>
                      
                         {/* Mohalla/Masjid jamat */}
@@ -986,16 +980,12 @@ const RequestEditDelete = () => {
                           <label htmlFor="jamat_name">
                             Mohalla/Masjid Jamat
                           </label>
-                          <BootstrapTooltip
-                            title={jamat_name_error}
-                            open={tooltip}
-                            placement="right-end"
-                          >
+                         
                             <Autocomplete
                               freeSolo
                               disableClearable
-                              value={jamat_name}
-                              onSelect={hideToolTip}
+                              inputValue={jamat_name}
+                              
                               className="mt-1"
                               options={searchArray.mohalla_masjid_jamat.map(
                                 (data) => data
@@ -1021,10 +1011,12 @@ const RequestEditDelete = () => {
                                     ...params.InputProps,
                                     type: "search",
                                   }}
+                                  error={(jamat_name_error) ? true : false}
+                                  helperText={jamat_name_error}
                                 />
                               )}
                             />
-                          </BootstrapTooltip>
+                         
                         </div>
                       </div>
                     </MuiThemeProvider>

@@ -2,8 +2,8 @@
 
 import 
 {
-    React,BootstrapTooltip,TextField,Select,MenuItem,useEffect,plugin_for_contact,useState,MuiThemeProvider,colortheme,
-    Button,axios,$,toast,Autocomplete,useCallback
+    React,TextField,MenuItem,useEffect,plugin_for_contact,useState,MuiThemeProvider,colortheme,
+    Button,axios,toast,Autocomplete,useCallback
 } from '../../Import'
 
 const DistributeForm = () => {
@@ -22,7 +22,6 @@ const DistributeForm = () => {
         cp_contact_no:'',
         vehicle_used:'',
         jamat_name:'',
-        values:[]
     });
 
     //errors
@@ -45,10 +44,12 @@ const DistributeForm = () => {
             ngo_error,qty_error,vehicle_used_error,jamat_name_error
      }=errors;
 
-    // show tooltip 
-    const [open, setOpen] = useState(false);
 
-    const[tooltip_position,setTooltip_position]=useState("top-end");
+     const {
+      area,ngo,incharge,csg_volunteers,contact_person,vehicle_used,jamat_name,
+     }=distribute_details
+
+
 
     // change input fields based on [onchange ]
     const inputEvent = (event) =>{
@@ -165,12 +166,6 @@ const DistributeForm = () => {
       
         plugin_for_contact(document.querySelector('#cp_contact_no'));
 
-
-        // setTooltip_position (($(window).width()<992) ? "right-end" : "top-end");
-        if($(window).width()<768){
-            setTooltip_position("right-end");
-        }
-
         fetch_distribution_details();
 
     }, [fetch_distribution_details])
@@ -184,10 +179,7 @@ const DistributeForm = () => {
     }
 
 
-      //Hide Tooltip
-      const hideToolTip =() =>{
-        setOpen(false);
-    }
+   
 
     //submit
     const submit = (event) =>{
@@ -215,22 +207,36 @@ const DistributeForm = () => {
                     area_error,contact_person_error,cp_contact_error,csg_volunteers_error,data_collected_error,incharge_error,
                     ngo_error,qty_error,vehicle_used_error,jamat_name_error
                 })
-                setOpen(true);
+               
             }
             else if(res.data.success){
                 setDistribute_details({
-                    'area':'',
-                    'qty':'',
-                    'ngo':'',
-                    'incharge':'',
-                    'csg_volnteers':'',
-                    'data_collected':'',
-                    'contact_person':'',
-                    'cp_contact_no':'',
-                    'vehicle_used':'',
-                    'jamat_name':'',
-                    'values':[]
+                    area:'',
+                    qty:'',
+                    ngo:'',
+                    incharge:'',
+                    csg_volnteers:'',
+                    data_collected:'',
+                    contact_person:'',
+                    cp_contact_no:'',
+                    vehicle_used:'',
+                    jamat_name:'',
+
                 });
+
+                setErrors({
+                  area_error:'',
+                  contact_person_error:'',
+                  cp_contact_error:'',
+                  csg_volunteers_error:'',
+                  data_collected_error:'',
+                  incharge_error:'',
+                  ngo_error:'',
+                  qty_error:'',
+                  vehicle_used_error:'',
+                  jamat_name_error:'',
+                });
+                
                 event.target.reset();
                 // toast.success(res.data.success);
             }
@@ -269,17 +275,13 @@ const DistributeForm = () => {
                     {/* incharge */}
                     <div className="col-lg-4 col-md-6  mt-3">
                       <label htmlFor="incharge">Incharge </label>
-                      <BootstrapTooltip
-                        title={incharge_error}
-                        open={open}
-                        placement={tooltip_position}
-                      >
+                      
                         <Autocomplete
                           freeSolo
-                          value={distribute_details.values}
+                         inputValue={incharge}
                           disableClearable
                           options={searchArray.incharge.map((data) => data)}
-                          onSelect={hideToolTip}
+                         
                           className="mt-1"
                           onChange={(event, value) => {
                             setDistribute_details((prevValue) => {
@@ -301,10 +303,12 @@ const DistributeForm = () => {
                                 ...params.InputProps,
                                 type: "search",
                               }}
+                              error={(incharge_error) ? true : false}
+                              helperText={incharge_error}
                             />
                           )}
                         />
-                      </BootstrapTooltip>
+                      
                     </div>
 
                     {/* Covid support group volunteers */}
@@ -312,19 +316,15 @@ const DistributeForm = () => {
                       <label htmlFor="csg_volnteers">
                         Covid support group volunteers
                       </label>
-                      <BootstrapTooltip
-                        title={csg_volunteers_error}
-                        open={open}
-                        placement={tooltip_position}
-                      >
+                     
                         <Autocomplete
                           freeSolo
-                          value={distribute_details.values}
+                          inputValue={csg_volunteers}
                           disableClearable
                           options={searchArray.csg_volunteers.map(
                             (data) => data
                           )}
-                          onSelect={hideToolTip}
+                         
                           className="mt-1"
                           onChange={(event, value) => {
                             setDistribute_details((prevValue) => {
@@ -346,26 +346,24 @@ const DistributeForm = () => {
                                 ...params.InputProps,
                                 type: "search",
                               }}
+                              error={(csg_volunteers_error) ? true : false}
+                              helperText={csg_volunteers_error}
                             />
                           )}
                         />
-                      </BootstrapTooltip>
+                     
                     </div>
 
                     {/* NGO */}
                     <div className="col-lg-4 col-md-6 mt-3">
                       <label htmlFor="ngo">NGO </label>
-                      <BootstrapTooltip
-                        title={ngo_error}
-                        open={open}
-                        placement={tooltip_position}
-                      >
+                     
                         <Autocomplete
                           freeSolo
-                          value={distribute_details.values}
+                          inputValue={ngo}
                           disableClearable
                           options={searchArray.ngo.map((data) => data)}
-                          onSelect={hideToolTip}
+                         
                           className="mt-1"
                           onChange={(event, value) => {
                             setDistribute_details((prevValue) => {
@@ -387,20 +385,18 @@ const DistributeForm = () => {
                                 ...params.InputProps,
                                 type: "search",
                               }}
+                              error={(ngo_error) ? true : false}
+                              helperText={ngo_error}
                             />
                           )}
                         />
-                      </BootstrapTooltip>
+                     
                     </div>
 
                     {/* quantity */}
                     <div className="col-lg-4 col-md-6  mt-3">
                       <label htmlFor="area">Quantity (kg) </label>
-                      <BootstrapTooltip
-                        title={qty_error}
-                        open={open}
-                        placement={tooltip_position}
-                      >
+                     
                         <TextField
                           type="number"
                           inputProps={{ min: "0", step: "1" }}
@@ -408,20 +404,32 @@ const DistributeForm = () => {
                           name="qty"
                           className="form-control mt-1"
                           onChange={inputEvent}
-                          onSelect={hideToolTip}
+                         
+                          error={(qty_error) ? true : false}
+                          helperText={qty_error}
                         />
-                      </BootstrapTooltip>
+                     
                     </div>
 
                     {/* data collected */}
                     <div className="col-lg-4 col-md-6  mt-3">
                       <label htmlFor="data_collected">Data collected ?</label>
-                      <BootstrapTooltip
-                        title={data_collected_error}
-                        open={open}
-                        placement={tooltip_position}
-                      >
-                        <Select
+                   
+                       <TextField 
+                      select
+                      className="form-control mt-1"
+                      onChange={inputEvent}
+                      id="data_collected"
+                      name="data_collected"
+                      value={distribute_details.data_collected}
+                      error={(data_collected_error) ? true : false }
+                      helperText={data_collected_error}
+
+                    >
+                       <MenuItem value="YES">YES</MenuItem>
+                          <MenuItem value="NO">NO</MenuItem>
+                    </TextField>
+                        {/* <Select
                           id="data_collected"
                           name="data_collected"
                           value={distribute_details.data_collected}
@@ -431,26 +439,22 @@ const DistributeForm = () => {
                         >
                           <MenuItem value="YES">YES</MenuItem>
                           <MenuItem value="NO">NO</MenuItem>
-                        </Select>
-                      </BootstrapTooltip>
+                        </Select> */}
+                     
                     </div>
 
                     {/*Mohalla/Masjid Jamat */}
                     <div className="col-lg-4 col-md-6  mt-3">
                       <label htmlFor="jamat_name">Mohalla/Masjid Jamat</label>
-                      <BootstrapTooltip
-                        title={jamat_name_error}
-                        open={open}
-                        placement={tooltip_position}
-                      >
+                     
                         <Autocomplete
                           freeSolo
-                          value={distribute_details.values}
+                          inputValue={jamat_name}
                           disableClearable
                           options={searchArray.mohalla_masjid_jamat.map(
                             (data) => data
                           )}
-                          onSelect={hideToolTip}
+                         
                           className="mt-1"
                           onChange={(event, value) => {
                             setDistribute_details((prevValue) => {
@@ -472,26 +476,24 @@ const DistributeForm = () => {
                                 ...params.InputProps,
                                 type: "search",
                               }}
+                              error={(jamat_name_error) ? true : false}
+                              helperText={jamat_name_error}
                             />
                           )}
                         />
-                      </BootstrapTooltip>
+                     
                     </div>
 
                     {/* area */}
                     <div className="col-lg mt-3">
                       <label htmlFor="area">Area</label>
-                      <BootstrapTooltip
-                        title={area_error}
-                        open={open}
-                        placement={tooltip_position}
-                      >
+                     
                         <Autocomplete
                           freeSolo
-                          value={distribute_details.values}
+                          inputValue={area}
                           disableClearable
                           options={searchArray.area.map((data) => data)}
-                          onSelect={hideToolTip}
+                         
                           className="mt-1"
                           onChange={(event, value) => {
                             setDistribute_details((prevValue) => {
@@ -513,10 +515,12 @@ const DistributeForm = () => {
                                 ...params.InputProps,
                                 type: "search",
                               }}
+                              error={(area_error)? true : false}
+                              helperText={area_error}
                             />
                           )}
                         />
-                      </BootstrapTooltip>
+                      
                     </div>
 
                     {/* too contact person details */}
@@ -530,19 +534,15 @@ const DistributeForm = () => {
                     {/* Contact person */}
                     <div className="col-lg-4 col-md-6  mt-3">
                       <label htmlFor="contact_person">Contact Person</label>
-                      <BootstrapTooltip
-                        title={contact_person_error}
-                        open={open}
-                        placement={tooltip_position}
-                      >
+                    
                         <Autocomplete
                           freeSolo
-                          value={distribute_details.values}
+                          inputValue={contact_person}
                           disableClearable
                           options={searchArray.contact_person.map(
                             (data) => data
                           )}
-                          onSelect={hideToolTip}
+                         
                           className="mt-1"
                           onChange={(event, value) => {
                             setDistribute_details((prevValue) => {
@@ -564,10 +564,12 @@ const DistributeForm = () => {
                                 ...params.InputProps,
                                 type: "search",
                               }}
+                              error={(contact_person_error) ? true : false}
+                              helperText={contact_person_error}
                             />
                           )}
                         />
-                      </BootstrapTooltip>
+                      
                     </div>
 
                     {/* Contact */}
@@ -575,36 +577,30 @@ const DistributeForm = () => {
                       <label htmlFor="contact_person">
                         Contact Person Contact No
                       </label>
-                      <BootstrapTooltip
-                        title={cp_contact_error}
-                        open={open}
-                        placement={tooltip_position}
-                      >
+                      
                         <TextField
                           type="text"
                           id="cp_contact_no"
                           name="cp_contact_no"
                           className="form-control mt-1 "
                           onChange={inputEvent}
-                          onKeyUp={hideToolTip}
+                         
+                          error={(cp_contact_error) ? true : false}
+                          helperText={cp_contact_error}
                         />
-                      </BootstrapTooltip>
+                     
                     </div>
 
                     {/* vehicle Used*/}
                     <div className="col-lg-4 mt-3">
                       <label htmlFor="vehicle_used">Vehicle Used</label>
-                      <BootstrapTooltip
-                        title={vehicle_used_error}
-                        open={open}
-                        placement={tooltip_position}
-                      >
+                     
                         <Autocomplete
                           freeSolo
-                          value={distribute_details.values}
+                          inputValue={vehicle_used}
                           disableClearable
                           options={searchArray.vehicle_used.map((data) => data)}
-                          onSelect={hideToolTip}
+                         
                           className="mt-1"
                           onChange={(event, value) => {
                             setDistribute_details((prevValue) => {
@@ -626,10 +622,12 @@ const DistributeForm = () => {
                                 ...params.InputProps,
                                 type: "search",
                               }}
+                              error={(vehicle_used_error) ? true : false}
+                              helperText={vehicle_used_error}
                             />
                           )}
                         />
-                      </BootstrapTooltip>
+                     
                     </div>
 
                     {/* submit button */}

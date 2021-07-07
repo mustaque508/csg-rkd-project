@@ -3,8 +3,8 @@
 
 import 
 {
-    React,TextField,useEffect,plugin_for_contact,Select,MenuItem,MuiThemeProvider,colortheme,Button,useState,axios,toast,
-    Autocomplete,BootstrapTooltip,$,FormControlLabel,Checkbox,MuiPickersUtilsProvider,KeyboardDatePicker,MomentUtils
+    React,TextField,useEffect,plugin_for_contact,MenuItem,MuiThemeProvider,colortheme,Button,useState,axios,toast,
+    Autocomplete,FormControlLabel,Checkbox,MuiPickersUtilsProvider,KeyboardDatePicker,MomentUtils,useCallback
 }
 from '../../Import'
 
@@ -30,10 +30,9 @@ const RequestForm = () => {
         cp_contact_no:'',
         delivered_date:'',
         ngo:'',
-        religion:'',
-        values:[]
-
+        religion:''
     });
+
 
     // error_fields
     const[errors,setErrors]=useState({
@@ -63,6 +62,11 @@ const RequestForm = () => {
          ration_card_no_error,ngo_error,religion_error
      }=errors;
 
+     const
+     {
+      occupation,address,location,jamat_name,contact_person,ngo,religion
+     }=request_details;
+
 
 
     //used for removing duplicate entries
@@ -87,10 +91,8 @@ const RequestForm = () => {
         ngo:[]
     });
 
-    // show tooltip 
-    const [open, setOpen] = useState(false);
-
-    const[tooltip_position,setTooltip_position]=useState("top-end");
+    
+ 
 
 
     //show date 
@@ -99,10 +101,92 @@ const RequestForm = () => {
     //checkbox
     const [checked, setChecked] = useState(false);
 
+
+    //get all requester_details
+    const fetch_requester_details=useCallback(
+      () => {
+        try
+        {
+            axios.get('/get_distinct_request_details')
+            .then((res)=>{
+                
+                if(res.data.result)
+                {
+                    
+
+                    res.data.result.map((data,index)=>{
+                        return (
+                            sets.occupation.add(data.occupation),
+                            sets.address.add(data.address),
+                            sets.area_location.add(data.area_location),
+                            sets.contact_person.add(data.contact_person),
+                            sets.mohalla_masjid_jamat.add(data.mohalla_masjid_jamat),
+                            sets.religion.add(data.religion),
+                            sets.ngo.add(data.NGO)
+                        )
+                        
+    
+                    })
+    
+                
+                    //occupation
+                    for (let item of  sets.occupation) {
+                        searchArray.occupation.push(item);
+                    }
+    
+                     //address
+                     for (let item of  sets.address) {
+                        searchArray.address.push(item);
+                    }
+                   
+    
+                     //area_location
+                     for (let item of  sets.area_location) {
+                        searchArray.area_location.push(item);
+                    }
+    
+                     //contact_person
+                     for (let item of  sets.contact_person) {
+                        searchArray.contact_person.push(item);
+                    }
+    
+                     //mohalla_masjid_jamat
+                     for (let item of  sets.mohalla_masjid_jamat) {
+                        searchArray.mohalla_masjid_jamat.push(item);
+                    }
+
+                     //religion
+                     for (let item of  sets.religion) {
+                      searchArray.religion.push(item);
+                    }
+
+                   //NGO
+                   for (let item of  sets.ngo) {
+                    searchArray.ngo.push(item);
+                  }
+                   
+                   
+                   
+                }
+                else if(res.data.error)
+                {
+                    toast.error(res.data.error,{autoClose: false}); 
+                }
+
+                
+    
+            }).catch((err)=>{
+                toast.error(err,{autoClose: false});  
+            })
+        }
+        catch (error) {
+          toast.error(error,{autoClose: false});  
+        }
+      },
+      [searchArray,sets],
+    )
   
     useEffect(() => {
-
-        const source = axios.CancelToken.source();
 
 
         //plugin for contact
@@ -110,100 +194,12 @@ const RequestForm = () => {
         plugin_for_contact(document.querySelector('#cp_contact_no'));
 
         //get all requester_details
-        const fetch_requester_details = async () =>{
-            try
-            {
-               await axios.get('/get_distinct_request_details',{cancelToken: source.token})
-                .then((res)=>{
-                    
-                    if(res.data.result)
-                    {
-                        
-                      
-        
-                        res.data.result.map((data,index)=>{
-                            return (
-                                sets.occupation.add(data.occupation),
-                                sets.address.add(data.address),
-                                sets.area_location.add(data.area_location),
-                                sets.contact_person.add(data.contact_person),
-                                sets.mohalla_masjid_jamat.add(data.mohalla_masjid_jamat),
-                                sets.religion.add(data.religion),
-                                sets.ngo.add(data.NGO)
-                            )
-                            
-        
-                        })
-        
-                    
-                        //occupation
-                        for (let item of  sets.occupation) {
-                            searchArray.occupation.push(item);
-                        }
-        
-                         //address
-                         for (let item of  sets.address) {
-                            searchArray.address.push(item);
-                        }
-                       
-        
-                         //area_location
-                         for (let item of  sets.area_location) {
-                            searchArray.area_location.push(item);
-                        }
-        
-                         //contact_person
-                         for (let item of  sets.contact_person) {
-                            searchArray.contact_person.push(item);
-                        }
-        
-                         //mohalla_masjid_jamat
-                         for (let item of  sets.mohalla_masjid_jamat) {
-                            searchArray.mohalla_masjid_jamat.push(item);
-                        }
-
-                         //religion
-                         for (let item of  sets.religion) {
-                          searchArray.religion.push(item);
-                        }
-
-                       //NGO
-                       for (let item of  sets.ngo) {
-                        searchArray.ngo.push(item);
-                      }
-                       
-                       
-                       
-                    }
-                    else if(res.data.error)
-                    {
-                        toast.error(res.data.error,{autoClose: false}); 
-                    }
-        
-                }).catch((err)=>{
-                    toast.error(err,{autoClose: false});  
-                })
-            }
-            catch (error) {
-                if (axios.isCancel(error)) {
-                } else {
-                    throw error
-                }
-            }
-        }
-
         fetch_requester_details();
 
-        // setTooltip_position 
-        if($(window).width()<768){
-            setTooltip_position("right-end");
-        }
+      
 
-        return () => {
-            source.cancel('Operation canceled by the user.');
-        }
 
-    },[searchArray,sets]);
+    },[fetch_requester_details]);
 
 
 
@@ -248,11 +244,7 @@ const RequestForm = () => {
     
  
 
-    //Hide Tooltip
-    const hideToolTip =() =>{
-        setOpen(false);
-    }
-
+  
    
     //change date 
     const handleDate =() =>{
@@ -306,7 +298,7 @@ const RequestForm = () => {
                   jamat_name_error,location_error,ngo_error,occupation_error,ration_card_no_error,religion_error,req_card_type_error,
                   req_contact_no_error,req_name_error
                 });
-                setOpen(true);
+              
 
             }
 
@@ -329,12 +321,31 @@ const RequestForm = () => {
                   cp_contact_no:'',
                   delivered_date:'',
                   ngo:'',
-                  religion:'',
-                  values:[]
+                  religion:''
                 });
+                
+                setErrors({
+                  address_error:'',
+                  contact_person_error:'',
+                  cp_contact_error:'',
+                  jamat_name_error:'',
+                  location_error:'',
+                  occupation_error:'',
+                  req_card_type_error:'',
+                  req_contact_no_error:'',
+                  req_name_error:'',
+                  aadhar_card_no_error:'',
+                  ration_card_no_error:'',
+                  dependent_no_error:'',
+                  children_no_error:'',
+                  ngo_error:'',
+                  religion_error:''
+                });
+                
                 event.target.reset();
                 setShow(false);
                 setChecked(false);
+                // fetch_requester_details();
 
                 // toast.success(res.data.success);
             }
@@ -405,109 +416,105 @@ const RequestForm = () => {
                   {/* Full Name */}
                   <div className="col-lg-4 col-md-12 mt-3">
                     <label htmlFor="req_name">Full Name</label>
-                    <BootstrapTooltip
-                      title={req_name_error}
-                      open={open}
-                      placement={tooltip_position}
-                    >
+                   
                       <TextField
                         id="req_name"
                         type="text"
                         name="req_name"
                         className="form-control mt-1"
                         onChange={inputEvent}
-                        onSelect={hideToolTip}
+                        error={(req_name_error) ? true : false }
+                        helperText={req_name_error}
                       />
-                    </BootstrapTooltip>
+                   
                   </div>
 
                   {/* requester Contact */}
                   <div className="col-lg-4 col-md-6 mt-3 ">
                     <label htmlFor="req_contact_no">Contact</label>
-                    <BootstrapTooltip
-                      title={req_contact_no_error}
-                      open={open}
-                      placement={tooltip_position}
-                    >
+                   
                       <TextField
                         id="req_contact_no"
                         type="text"
                         name="req_contact_no"
                         className="form-control mt-1 "
                         onChange={inputEvent}
-                        onSelect={hideToolTip}
+                        error={(req_contact_no_error) ? true : false }
+                        helperText={req_contact_no_error}
                       />
-                    </BootstrapTooltip>
+                  
                   </div>
 
                   {/* Aadhar card number */}
                   <div className="col-lg-4 col-md-6 mt-3 ">
                     <label htmlFor="aadhar_card_no">Aadhar Card Number</label>
-                    <BootstrapTooltip
-                      title={ aadhar_card_no_error}
-                      open={open}
-                      placement={tooltip_position}
-                    >
+                  
                       <TextField
                         id="aadhar_card_no"
                         type="text"
                         name="aadhar_card_no"
                         className="form-control mt-1 "
                         onChange={inputEvent}
-                        onSelect={hideToolTip}
+                        error={(aadhar_card_no_error) ?  true : false }
+                        helperText={aadhar_card_no_error}
                       />
-                    </BootstrapTooltip>
+                   
                   </div>
 
                   {/*Ration Card Number */}
                   <div className="col-lg-4 col-md-6 mt-3 ">
                     <label htmlFor="ration_card_no">Ration Card Number</label>
-                    <BootstrapTooltip
-                      title={ration_card_no_error}
-                      open={open}
-                      placement={tooltip_position}
-                    >
+                   
                       <TextField
                         id="ration_card_no"
                         type="text"
                         name="ration_card_no"
                         className="form-control mt-1 "
                         onChange={inputEvent}
-                        onSelect={hideToolTip}
+                        error={(ration_card_no_error) ? true : false}
+                        helperText={ration_card_no_error}
                       />
-                    </BootstrapTooltip>
+                   
                   </div>
 
                   {/* Card Type */}
                   <div className="col-lg-4  col-md-6 mt-3 ">
                     <label htmlFor="card_type">Select card-type</label>
-                    <BootstrapTooltip
-                      title={req_card_type_error}
-                      open={open}
-                      placement={tooltip_position}
+                    
+                    <TextField 
+                      select
+                      className="form-control mt-1"
+                      onChange={inputEvent}
+                      value={request_details.card_type}
+                      id="card_type"
+                      name="card_type"
+                      error={(req_card_type_error) ? true : false }
+                      helperText={req_card_type_error}
+
                     >
-                      <Select
+                      <MenuItem value="APL">APL</MenuItem>
+                      <MenuItem value="BPL">BPL</MenuItem>
+                    </TextField>
+                    
+                      {/* <Select
                         id="card_type"
                         name="card_type"
                         className="w-100 mt-1"
                         value={request_details.card_type}
                         onChange={inputEvent}
-                        onMouseOver={hideToolTip}
+                        error={true}
+                        
                       >
                         <MenuItem value="APL">APL</MenuItem>
                         <MenuItem value="BPL">BPL</MenuItem>
-                      </Select>
-                    </BootstrapTooltip>
+                      </Select> */}
+                   
                   </div>
 
                   {/* Number of depenedents */}
                   <div className="col-lg-4 col-md-6 mt-3">
                     <label htmlFor="dependent_no"> Number of depenedents</label>
-                    <BootstrapTooltip
-                      title={dependent_no_error}
-                      open={open}
-                      placement={tooltip_position}
-                    >
+                  
                       <TextField
                         className="form-control mt-1"
                         inputProps={{ min: "0", step: "1" }}
@@ -515,9 +522,10 @@ const RequestForm = () => {
                         type="number"
                         name="dependent_no"
                         onChange={inputEvent}
-                        onSelect={hideToolTip}
+                        error={(dependent_no_error) ? true : false}
+                        helperText={dependent_no_error}
                       />
-                    </BootstrapTooltip>
+                   
                   </div>
 
                   {/* Number of children below 15 years age */}
@@ -525,11 +533,7 @@ const RequestForm = () => {
                     <label htmlFor="children_no">
                       Number of children below 15 years age{" "}
                     </label>
-                    <BootstrapTooltip
-                      title={children_no_error}
-                      open={open}
-                      placement={tooltip_position}
-                    >
+                    
                       <TextField
                         className="form-control mt-1"
                         inputProps={{ min: "0", step: "1" }}
@@ -537,25 +541,21 @@ const RequestForm = () => {
                         type="number"
                         name="children_no"
                         onChange={inputEvent}
-                        onSelect={hideToolTip}
+                        error={(children_no_error) ? true : false}
+                        helperText={children_no_error}
                       />
-                    </BootstrapTooltip>
+                    
                   </div>
 
                   {/* Occupation */}
                   <div className="col-lg-4 col-md-6 mt-3 ">
                     <label htmlFor="occupation">Occupation</label>
-                    <BootstrapTooltip
-                      title={occupation_error}
-                      open={open}
-                      placement={tooltip_position}
-                    >
+                   
                       <Autocomplete
                         freeSolo
-                        value={request_details.values}
+                        inputValue={occupation}
                         disableClearable
                         options={searchArray.occupation.map((data) => data)}
-                        onSelect={hideToolTip}
                         className="mt-1"
                         onChange={(event, value) => {
                           setRequest_details((prevValue) => {
@@ -577,27 +577,25 @@ const RequestForm = () => {
                               ...params.InputProps,
                               type: "search",
                             }}
+                            error={(occupation_error) ? true : false}
+                            helperText={occupation_error}
                           />
                         )}
                       />
-                    </BootstrapTooltip>
+                   
                   </div>
 
                   {/* religion */}
                   <div className="col-lg-4 col-md-6 mt-3">
                     <label htmlFor="religion">Religion</label>
-                    <BootstrapTooltip
-                      title={religion_error}
-                      open={open}
-                      placement={tooltip_position}
-                    >
+                    
 
                       <Autocomplete
                         freeSolo
-                        value={request_details.values}
+                        inputValue={religion}
                         disableClearable
                         options={searchArray.religion.map((data) => data)}
-                        onSelect={hideToolTip}
+                        
                         className="mt-1"
                         onChange={(event, value) => {
                           setRequest_details((prevValue) => {
@@ -619,27 +617,25 @@ const RequestForm = () => {
                               ...params.InputProps,
                               type: "search",
                             }}
+                            error={(religion_error) ? true : false}
+                            helperText={religion_error}
                           />
                         )}
                       />
-                    </BootstrapTooltip>
+                   
 
                   </div>
 
                   {/* Address */}
                   <div className="col-lg col-md-6 mt-3 ">
                     <label htmlFor="address">Address</label>
-                    <BootstrapTooltip
-                      title={address_error}
-                      open={open}
-                      placement={tooltip_position}
-                    >
+                   
                       <Autocomplete
                         freeSolo
                         disableClearable
-                        value={request_details.values}
+                        inputValue={address}
                         options={searchArray.address.map((data) => data)}
-                        onSelect={hideToolTip}
+                       
                         className="mt-1"
                         onChange={(event, value) => {
                           setRequest_details((prevValue) => {
@@ -661,26 +657,24 @@ const RequestForm = () => {
                               ...params.InputProps,
                               type: "search",
                             }}
+                            error={(address_error) ? true : false}
+                            helperText={address_error}
                           />
                         )}
                       />
-                    </BootstrapTooltip>
+                   
                   </div>
 
                   {/* Area/location */}
                   <div className="col-lg-4 col-md-6 mt-3 ">
                     <label htmlFor="location">Area/Location</label>
-                    <BootstrapTooltip
-                      title={location_error}
-                      open={open}
-                      placement={tooltip_position}
-                    >
+                   
                       <Autocomplete
                         freeSolo
                         disableClearable
-                        value={request_details.values}
+                        inputValue={location}
                         options={searchArray.area_location.map((data) => data)}
-                        onSelect={hideToolTip}
+                        
                         className="mt-1"
                         onChange={(event, value) => {
                           setRequest_details((prevValue) => {
@@ -701,10 +695,12 @@ const RequestForm = () => {
                               ...params.InputProps,
                               type: "search",
                             }}
+                            error={(location_error) ? true : false}
+                            helperText={location_error}
                           />
                         )}
                       />
-                    </BootstrapTooltip>
+                   
                   </div>
 
                   {/* too contact person details */}
@@ -718,16 +714,12 @@ const RequestForm = () => {
                   {/* Contact person */}
                   <div className="col-lg-6 col-md-6 mt-3">
                     <label htmlFor="contact_person">Contact Person</label>
-                    <BootstrapTooltip
-                      title={contact_person_error}
-                      open={open}
-                      placement={tooltip_position}
-                    >
+                   
                       <Autocomplete
                         freeSolo
                         disableClearable
-                        value={request_details.values}
-                        onSelect={hideToolTip}
+                       inputValue={contact_person}
+                        
                         className="mt-1"
                         options={searchArray.contact_person.map((data) => data)}
                         onChange={(event, value) => {
@@ -749,10 +741,12 @@ const RequestForm = () => {
                               ...params.InputProps,
                               type: "search",
                             }}
+                            error={(contact_person_error) ? true : false}
+                            helperText={contact_person_error}
                           />
                         )}
                       />
-                    </BootstrapTooltip>
+                    
                   </div>
 
                   {/* Contact */}
@@ -760,37 +754,30 @@ const RequestForm = () => {
                     <label htmlFor="cp_contact_no">
                       Contact Person Contact No
                     </label>
-                    <BootstrapTooltip
-                      title={cp_contact_error}
-                      open={open}
-                      placement={tooltip_position}
-                    >
+                   
                       <TextField
                         className="form-control mt-1"
                         id="cp_contact_no"
                         type="text"
                         name="cp_contact_no"
                         onChange={inputEvent}
-                        onSelect={hideToolTip}
+                        error={(cp_contact_error) ? true : false}
+                        helperText={cp_contact_error}
                       />
-                    </BootstrapTooltip>
+                   
                   </div>
 
                   {/* NGO */}
                   <div className="col-lg-6 col-md-6  mt-3">
                     <label htmlFor="jamat_name">NGO</label>
-                    <BootstrapTooltip
-                      title={ngo_error}
-                      open={open}
-                      placement={tooltip_position}
-                    >
+                   
 
                       <Autocomplete
                         freeSolo
-                        value={request_details.values}
+                       inputValue={ngo}
                         disableClearable
                         options={searchArray.ngo.map((data) => data)}
-                        onSelect={hideToolTip}
+                        
                         className="mt-1"
                         onChange={(event, value) => {
                           setRequest_details((prevValue) => {
@@ -812,10 +799,12 @@ const RequestForm = () => {
                               ...params.InputProps,
                               type: "search",
                             }}
+                            error={(ngo_error) ? true : false}
+                            helperText={ngo_error}
                           />
                         )}
                       />
-                    </BootstrapTooltip>
+                   
 
                   </div>
 
@@ -823,16 +812,12 @@ const RequestForm = () => {
                   {/* Mohalla/Masjid jamat */}
                   <div className="col-lg-6 col-md mt-3">
                     <label htmlFor="jamat_name">Mohalla/Masjid Jamat</label>
-                    <BootstrapTooltip
-                      title={jamat_name_error}
-                      open={open}
-                      placement={tooltip_position}
-                    >
+                    
                       <Autocomplete
                         freeSolo
                         disableClearable
-                        value={request_details.values}
-                        onSelect={hideToolTip}
+                        inputValue={jamat_name}
+                       
                         className="mt-1"
                         options={searchArray.mohalla_masjid_jamat.map(
                           (data) => data
@@ -857,10 +842,12 @@ const RequestForm = () => {
                               ...params.InputProps,
                               type: "search",
                             }}
+                            error={(jamat_name_error) ? true : false}
+                            helperText={jamat_name_error}
                           />
                         )}
                       />
-                    </BootstrapTooltip>
+                   
                   </div>
 
                   {/* submit button */}

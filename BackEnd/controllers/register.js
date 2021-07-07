@@ -73,7 +73,7 @@ const validation = (req,res,next)=>{
 
 //get register_details
 router.post('/store_register_details',validation,register_model.storeData,(req,res)=>{
-    (res.locals.success) ? res.json({success:`your record saved successfully you can login now.`}): res.json({error:`got error when stroing form_details : ${res.locals.error.sqlMessage}`});
+    (res.locals.success) ? res.json({success:`Account created successfully.`}): res.json({error:`got error when stroing form_details : ${res.locals.error.sqlMessage}`});
 })
 module.exports = router;
 

@@ -15,7 +15,7 @@ const Main = () => {
                     </div>
 
                     {/* content */}
-                    <div className="content col-md-6  col-xl-4 mt-4">
+                    <div className="content col-md-6  col-xl-4 mt-3">
                         {
                              (useLocation().pathname === "/register") ? <RegisterForm/> : <LoginForm/> 
                         }

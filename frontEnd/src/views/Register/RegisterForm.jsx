@@ -3,7 +3,7 @@
 import 
 {
     React,TextField,MuiThemeProvider,colortheme,Button,Popover,OverlayTrigger,InfoSharpIcon,useState,plugin_for_contact,
-    useEffect,axios,BootstrapTooltip,toast,useHistory
+    useEffect,axios,toast,useHistory
 } from '../Import'
 
 
@@ -14,28 +14,27 @@ const RegisterForm = () => {
 
     // get input fields
     const [register_details, setregister_details] = useState({
-        'uname':'',
-        'contact':'',
-        'email_id':'',
-        'password':'',
-        'cpassword':''
+        uname:'',
+        contact:'',
+        email_id:'',
+        password:'',
+        cpassword:''
     
     });
     
     // error_fields
     const[errors,setErrors]=useState({
-        'name_error':'',
-        'phone_error':'',
-        'email_error':'',
-        'pass_error':'',
-        'cpass_error':''
+        name_error:'',
+        phone_error:'',
+        email_error:'',
+        pass_error:'',
+        cpass_error:''
     });
 
     //  Destructing of objects
     const {name_error,phone_error,email_error,pass_error,cpass_error}=errors;
 
-    // show tooltip 
-    const [open, setOpen] = useState(false);
+    
 
     // display country_code based on country in phone input_field 
     useEffect(() => {
@@ -62,11 +61,7 @@ const RegisterForm = () => {
         })
     }
 
-    //Hide Tooltip
-    const hideToolTip =() =>{
-        setOpen(false);
-    }
-
+  
     // popover for password rules
     const popover = (
         <Popover id="popover-basic">
@@ -98,19 +93,27 @@ const RegisterForm = () => {
                 setErrors({
                     name_error,phone_error,email_error,serial_key_error,pass_error,cpass_error
                 });
-                setOpen(true);
+                
                }
 
                if(res.data.success)
                {
-                   setregister_details({
-                        'uname':'',
-                        'contact':'',
-                        'email_id':'',
-                        'password':'',
-                        'cpassword':''
-                   });
-                   event.target.reset();
+                  //  setregister_details({
+                  //       uname:'',
+                  //       contact:'',
+                  //       email_id:'',
+                  //       password:'',
+                  //       cpassword:''
+                  //  });
+                  //  setErrors({
+                  //   name_error:'',
+                  //   phone_error:'',
+                  //   email_error:'',
+                  //   pass_error:'',
+                  //   cpass_error:''
+                  //  });
+                   
+                  //  event.target.reset();
                    history.push({
                        pathname:'/'
                    });
@@ -130,62 +133,125 @@ const RegisterForm = () => {
 
 
     return (
-       <section className="register-section">
-           <div className="card border-0">
-               <div className="card-body">
+      <section className="register-section">
+        <div className="card border-0">
+          <div className="card-body">
+            {/* card-title */}
+            <h2 className="card-title text-capitalize text-center">sign up</h2>
 
-                   {/* card-title */}
-                   <h2 className="card-title text-capitalize text-center">sign up</h2>
+            {/* content */}
+            <form
+              onSubmit={submit}
+              method="POST"
+              className="form-group mt-4"
+              id="submit"
+              autoComplete="off"
+            >
+              {/* Full Name */}
+              <label htmlFor="uname">Full Name</label>
 
-                   {/* content */}
-                   <form onSubmit={submit} method="POST" className="form-group mt-4" id="submit" autoComplete="off">
+              <TextField
+                className="form-control"
+                type="text"
+                name="uname"
+                id="uname"
+                onChange={inputEvent}
+                error={(name_error) ? true : false}
+                helperText={name_error}
+              />
 
-                        {/* Full Name */}
-                        <label htmlFor="uname">Full Name</label>
-                        <BootstrapTooltip title={name_error} placement="right-end" open={open}>
-                            <TextField className="form-control" type="text" name="uname" id="uname" onChange={inputEvent} onKeyUp={hideToolTip} />
-                        </BootstrapTooltip>
+              {/* Contact */}
+              <label htmlFor="contact" className="mt-3">
+                Contact
+              </label>
 
-                        {/* Contact */}
-                        <label htmlFor="contact" className="mt-3">Contact</label>
-                        <BootstrapTooltip title={phone_error} placement="right-end" open={open}>
-                            <TextField  className="form-control"  type="text" name="contact" id="contact" onChange={inputEvent} onKeyUp={hideToolTip} />
-                        </BootstrapTooltip>
+              <TextField
+                className="form-control"
+                type="text"
+                name="contact"
+                id="contact"
+                onChange={inputEvent}
+                error={phone_error ? true : false}
+                helperText={phone_error}
+              />
 
-                        {/* Email Address */}
-                        <label htmlFor="email_id" className="mt-3" >Email Address</label>
-                        <BootstrapTooltip title={email_error} placement="right-end" open={open}>
-                            <TextField className="form-control"  type="email" name="email_id" id="email_id" onChange={inputEvent} onKeyUp={hideToolTip} />
-                        </BootstrapTooltip>
+              {/* Email Address */}
+              <label htmlFor="email_id" className="mt-3">
+                Email Address
+              </label>
 
-                        {/* Password */}
-                        <label htmlFor="password" className="mt-3" >Password</label>
-                        <BootstrapTooltip title={pass_error} placement="right-end" open={open}>
-                            <TextField className="form-control mt-0"  type="password" name="password" id="password" onChange={inputEvent} onKeyUp={hideToolTip}  />
-                        </BootstrapTooltip>
+              <TextField
+                className="form-control"
+                type="email"
+                name="email_id"
+                id="email_id"
+                onChange={inputEvent}
+                error={email_error ? true : false}
+                helperText={email_error}
+              />
 
-                        {/* Confirm  Password */}
-                        <label htmlFor="password" className="mt-3">Confirm Password</label>
-                        <BootstrapTooltip title={cpass_error} placement="right-end" open={open}>
-                            <TextField className="form-control" type="password" name="cpassword" id="cpassword" onChange={inputEvent} onKeyUp={hideToolTip}  />
-                        </BootstrapTooltip>
+              {/* Password */}
+              <label htmlFor="password" className="mt-3">
+                Password
+              </label>
 
-                        {/* display password rules */}
-                        <OverlayTrigger trigger={['hover','focus']}  placement="left" overlay={popover}>
-                        <InfoSharpIcon  className="position-absolute text-primary" style={{'right':'1rem','cursor':'pointer','marginTop':'-4.1rem'}} id="info"/>
-                        </OverlayTrigger>
+              <TextField
+                className="form-control mt-0"
+                type="password"
+                name="password"
+                id="password"
+                onChange={inputEvent}
+                error={pass_error ? true : false}
+                helperText={pass_error}
+              />
 
-                        {/* submit button */}
-                        <MuiThemeProvider theme={colortheme}>
-                            <Button  type="submit" variant="contained" color="primary" className="mt-4">submit</Button>  
-                        </MuiThemeProvider>
+              {/* display password rules */}
+              <OverlayTrigger
+                trigger={["hover", "focus"]}
+                placement="left"
+                overlay={popover}
+              >
+                <InfoSharpIcon
+                  className="position-absolute text-primary"
+                  style={{
+                    right: "1rem",
+                    cursor: "pointer",
+                  }}
+                  id="info"
+                />
+              </OverlayTrigger>
 
-                   </form>
+              {/* Confirm  Password */}
+              <label htmlFor="password" className="mt-3">
+                Confirm Password
+              </label>
 
-               </div>
-           </div>
-       </section>
-    )
+              <TextField
+                className="form-control"
+                type="password"
+                name="cpassword"
+                id="cpassword"
+                onChange={inputEvent}
+                error={cpass_error ? true : false}
+                helperText={cpass_error}
+              />
+
+              {/* submit button */}
+              <MuiThemeProvider theme={colortheme}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  className="mt-4"
+                >
+                  submit
+                </Button>
+              </MuiThemeProvider>
+            </form>
+          </div>
+        </div>
+      </section>
+    );
 }
 
 export default RegisterForm

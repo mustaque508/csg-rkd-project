@@ -17,8 +17,8 @@ const validations = (req,res,next) =>{
 
     // apply validation
     errors.supplier_error=validation.validate_name(supplier);
-    errors.qty_error=validation.require_validation(qty);
-    errors.rate_error=validation.require_validation(rate);
+    errors.qty_error=validation.require_validation(qty.toString());
+    errors.rate_error=validation.require_validation(rate.toString());
     errors.delivered_by_error=validation.validate_name(delivered_by);
     errors.recieved_by_error=validation.validate_name(recieved_by);
     errors.loaded_by_error=validation.validate_name(loaded_by);

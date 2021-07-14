@@ -114,7 +114,7 @@ const LoginForm = () => {
               autoComplete="off"
             >
               {/* Email Address */}
-              <label htmlFor="email_id" className="mb-0 mt-2">
+              <label htmlFor="email_id" className="mb-0 mt-2" >
                 Email Address
               </label>
                 <TextField

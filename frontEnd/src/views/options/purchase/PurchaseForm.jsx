@@ -229,6 +229,17 @@ const PurchaseForm = () => {
                       unloaded_by_error:'',
                       vehicle_used_error:''
                     });
+
+                   searchArray.delivered_by=[];
+                   searchArray.loaded_by=[];
+                   searchArray.qty=[];
+                   searchArray.rate=[];
+                   searchArray.recieved_by=[];
+                   searchArray.supplier=[];
+                   searchArray.unloaded_by=[];
+                   searchArray.vehicle_used=[];
+
+                   fetch_purchase_details();
                     
                     event.target.reset();
                     // toast.success(res.data.success);
@@ -311,6 +322,7 @@ const PurchaseForm = () => {
                           id="qty"
                           inputProps={{ min: "0", step: "0.01" }}
                           onChange={inputEvent}
+                          onWheelCapture={(e)=>e.target.blur()}
                           className="form-control mt-1"
                           error={(qty_error) ? true : false}
                           helperText={qty_error}
@@ -327,6 +339,7 @@ const PurchaseForm = () => {
                           name="rate"
                           id="rate"
                           inputProps={{ min: "0", step: "0.01" }}
+                          onWheelCapture={(e)=>e.target.blur()}
                           onChange={inputEvent}
                           className="form-control mt-1"
                           error={(rate_error) ? true : false}

@@ -250,6 +250,18 @@ const PurchaseEditDelete = () => {
                dataUpdate[index]=Form_details;
                setPurchasedetails([...dataUpdate]);
             //    toast.success('your record updated successfully');
+
+              searchArray.delivered_by=[];
+              searchArray.loaded_by=[];
+              searchArray.qty=[];
+              searchArray.rate=[];
+              searchArray.recieved_by=[];
+              searchArray.supplier=[];
+              searchArray.unloaded_by=[];
+              searchArray.vehicle_used=[];
+
+              fetch_distinct_purchase_details();
+
                setOpen(false);
             }
         })
@@ -292,11 +304,11 @@ const PurchaseEditDelete = () => {
             field:'supplier'
         },
         {
-            title:'Quantity(kg)', 
+            title:'Quantity', 
             field:'qty'
         },
         {
-            title:'Rate(Rs)', 
+            title:'Rate', 
             field:'rate'
         },
         {
@@ -397,13 +409,14 @@ const PurchaseEditDelete = () => {
 
                         {/* quantity */}
                         <div className="mt-3">
-                          <label htmlFor="qty">Quantity (Kg) </label>
+                          <label htmlFor="qty">Quantity </label>
                          
                             <TextField
                               type="number"
                               name="qty"
                               id="qty"
                               inputProps={{ min: "0", step: "1" }}
+                              onWheelCapture={(e)=>e.target.blur()}
                               onChange={inputEvent}
                               className="form-control"
                               
@@ -416,7 +429,7 @@ const PurchaseEditDelete = () => {
 
                         {/* Rate */}
                         <div className="mt-3">
-                          <label htmlFor="rate">Rate (Rs) </label>
+                          <label htmlFor="rate">Rate </label>
                         
                             <TextField
                               type="number"
@@ -425,7 +438,7 @@ const PurchaseEditDelete = () => {
                               inputProps={{ min: "0", step: "1" }}
                               onChange={inputEvent}
                               className="form-control"
-                              
+                              onWheelCapture={(e)=>e.target.blur()}
                               value={rate}
                               error={(rate_error) ? true : false}
                               helperText={rate_error}

@@ -21,7 +21,7 @@ const DistributeForm = () => {
         contact_person:'',
         cp_contact_no:'',
         vehicle_used:'',
-        jamat_name:'',
+        jamat_name:''
     });
 
     //errors
@@ -35,7 +35,7 @@ const DistributeForm = () => {
         ngo_error:'',
         qty_error:'',
         vehicle_used_error:'',
-        jamat_name_error:'',
+        jamat_name_error:''
     });
 
      // Destructing of objects
@@ -93,8 +93,7 @@ const DistributeForm = () => {
         {
              axios.get('/get_distinct_distribute_details')
             .then((res)=>{
-                
-                console.log(res.data.result);
+              
                 if(res.data.result)
                 {
                         res.data.result.map ((data,index)=>{
@@ -145,7 +144,7 @@ const DistributeForm = () => {
                             searchArray.vehicle_used.push(item);
                         }
     
-                        console.log(searchArray);
+                       
                 }
                 else if(res.data.error)
                 {
@@ -210,18 +209,18 @@ const DistributeForm = () => {
                
             }
             else if(res.data.success){
-                setDistribute_details({
-                    area:'',
-                    qty:'',
-                    ngo:'',
-                    incharge:'',
-                    csg_volnteers:'',
-                    data_collected:'',
-                    contact_person:'',
-                    cp_contact_no:'',
-                    vehicle_used:'',
-                    jamat_name:'',
 
+                setDistribute_details({
+                  area:'',
+                  qty:'',
+                  ngo:'',
+                  incharge:'',
+                  csg_volunteers:'',
+                  data_collected:'',
+                  contact_person:'',
+                  cp_contact_no:'',
+                  vehicle_used:'',
+                  jamat_name:''
                 });
 
                 setErrors({
@@ -234,10 +233,23 @@ const DistributeForm = () => {
                   ngo_error:'',
                   qty_error:'',
                   vehicle_used_error:'',
-                  jamat_name_error:'',
+                  jamat_name_error:''
                 });
-                
+
                 event.target.reset();
+
+                plugin_for_contact(document.querySelector('#cp_contact_no'));
+
+                searchArray.area=[];
+                searchArray.ngo=[];
+                searchArray.incharge=[];
+                searchArray.csg_volunteers=[];
+                searchArray.contact_person=[];
+                searchArray.mohalla_masjid_jamat=[];
+                searchArray.vehicle_used=[];
+                
+                fetch_distribution_details();
+                
                 // toast.success(res.data.success);
             }
             else if(res.data.error)
@@ -395,16 +407,16 @@ const DistributeForm = () => {
 
                     {/* quantity */}
                     <div className="col-lg-4 col-md-6  mt-3">
-                      <label htmlFor="area">Quantity (kg) </label>
+                      <label htmlFor="area">Quantity </label>
                      
                         <TextField
                           type="number"
-                          inputProps={{ min: "0", step: "1" }}
+                          inputProps={{ min: "0",  step: "0.01"}}
                           id="qty"
                           name="qty"
                           className="form-control mt-1"
                           onChange={inputEvent}
-                         
+                          onWheelCapture={(e)=>e.target.blur()}
                           error={(qty_error) ? true : false}
                           helperText={qty_error}
                         />

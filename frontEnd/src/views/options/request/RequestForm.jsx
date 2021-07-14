@@ -1,6 +1,7 @@
 
 /****************************** kit Request form *************************************/
 
+import { useRef } from 'react';
 import 
 {
     React,TextField,useEffect,plugin_for_contact,MenuItem,MuiThemeProvider,colortheme,Button,useState,axios,toast,
@@ -10,8 +11,11 @@ from '../../Import'
 
 
 
+
+
 const RequestForm = () => {
 
+    const inputRef = useRef();
      
     //Request Details
     const [request_details,setRequest_details]=useState({
@@ -127,6 +131,8 @@ const RequestForm = () => {
                         
     
                     })
+
+                   
     
                 
                     //occupation
@@ -165,7 +171,9 @@ const RequestForm = () => {
                     searchArray.ngo.push(item);
                   }
                    
-                   
+
+                  console.log(searchArray);
+                 
                    
                 }
                 else if(res.data.error)
@@ -345,7 +353,22 @@ const RequestForm = () => {
                 event.target.reset();
                 setShow(false);
                 setChecked(false);
-                // fetch_requester_details();
+
+                //plugin for contact
+                plugin_for_contact(document.querySelector("#req_contact_no"));
+                plugin_for_contact(document.querySelector('#cp_contact_no'));
+
+                //reset data
+                 searchArray.occupation=[];
+                 searchArray.address=[];
+                 searchArray.area_location=[];
+                 searchArray.contact_person=[];
+                 searchArray.mohalla_masjid_jamat=[];
+                 searchArray.religion=[];
+                 searchArray.ngo=[];
+                 
+                fetch_requester_details();
+
 
                 // toast.success(res.data.success);
             }
@@ -516,6 +539,7 @@ const RequestForm = () => {
                     <label htmlFor="dependent_no"> Number of depenedents</label>
                   
                       <TextField
+                        ref={inputRef}
                         className="form-control mt-1"
                         inputProps={{ min: "0", step: "1" }}
                         id="dependent_no"
@@ -524,6 +548,7 @@ const RequestForm = () => {
                         onChange={inputEvent}
                         error={(dependent_no_error) ? true : false}
                         helperText={dependent_no_error}
+                        onWheelCapture={(e)=>e.target.blur()}
                       />
                    
                   </div>
@@ -541,6 +566,7 @@ const RequestForm = () => {
                         type="number"
                         name="children_no"
                         onChange={inputEvent}
+                        onWheelCapture={(e)=>e.target.blur()}
                         error={(children_no_error) ? true : false}
                         helperText={children_no_error}
                       />

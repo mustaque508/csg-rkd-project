@@ -57,6 +57,20 @@ const RequestView = () => {
         field: "id",
         filtering:false
       },
+       {
+        title: "Delivery Date",
+        field: "delivery_date",
+        type: "date",
+        dateSetting: { locale: "en-GB" },
+        filtering:false
+      },
+      {
+        title: "Delivery status", 
+        field:"delivery_status",
+        cellStyle:(e,rowData)=>{
+          return (rowData.delivery_status === "delivered") ? {color:"green"} : {color:"red"}
+        }
+      },
       {
         title: "Full Name",
         field: "full_name",
@@ -135,20 +149,6 @@ const RequestView = () => {
         type: "date",
         dateSetting: { locale: "en-GB" },
         filtering:false
-      },
-      {
-        title: "Delivery Date",
-        field: "delivery_date",
-        type: "date",
-        dateSetting: { locale: "en-GB" },
-        filtering:false
-      },
-      {
-        title: "Delivery status", 
-        field:"delivery_status",
-        cellStyle:(e,rowData)=>{
-          return (rowData.delivery_status === "delivered") ? {color:"green"} : {color:"red"}
-        }
       }
     ];
  

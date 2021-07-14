@@ -261,7 +261,7 @@ const DistributeEditDelete = () => {
             field:'ngo'
         },
         {
-            title:'Quantity (kg)', 
+            title:'Quantity', 
             field:'qty'
         },
         {
@@ -354,6 +354,17 @@ const DistributeEditDelete = () => {
                const dataUpdate=[...distribute_details];
                dataUpdate[index]=Form_details;
                setDistribute_details([...dataUpdate]);
+
+               searchArray.area=[];
+               searchArray.ngo=[];
+               searchArray.incharge=[];
+               searchArray.csg_volunteers=[];
+               searchArray.contact_person=[];
+               searchArray.mohalla_masjid_jamat=[];
+               searchArray.vehicle_used=[];
+
+               fetch_distinct_distribution_details();
+               
             //    toast.success('your record updated successfully');
                setOpen(false);
             }
@@ -515,16 +526,16 @@ const DistributeEditDelete = () => {
 
                         {/* quantity */}
                         <div className="mt-3">
-                          <label htmlFor="area">Quantity (kg) </label>
+                          <label htmlFor="area">Quantity </label>
                          
                             <TextField
                               type="number"
-                              inputProps={{ min: "0", step: "1" }}
+                              inputProps={{ min: "0", step: "0.01" }}
                               id="qty"
                               name="qty"
                               className="form-control"
                               onChange={inputEvent}
-                             
+                              onWheelCapture={(e)=>e.target.blur()}
                               value={qty}
                               error={(qty_error) ? true : false}
                               helperText={qty_error}

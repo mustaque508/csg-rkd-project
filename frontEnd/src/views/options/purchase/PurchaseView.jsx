@@ -52,11 +52,11 @@ const PurchaseView = () => {
             field:'supplier'
         },
         {
-            title:'Quantity(kg)', 
+            title:'Quantity', 
             field:'qty'
         },
         {
-            title:'Rate(Rs)', 
+            title:'Rate', 
             field:'rate'
         },
         {

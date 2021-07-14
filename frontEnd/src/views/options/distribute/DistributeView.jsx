@@ -59,7 +59,7 @@ function DistributeView() {
             field:'NGO'
         },
         {
-            title:'Quantity (kg)', 
+            title:'Quantity', 
             field:'qty'
         },
         {

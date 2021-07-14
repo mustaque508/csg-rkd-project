@@ -179,6 +179,7 @@ const RequestEditDelete = () => {
                 if(res.data.result)
                 {
                  
+
     
                     res.data.result.map((data,index)=>{
                         return (
@@ -190,6 +191,8 @@ const RequestEditDelete = () => {
                             sets.ngo.add(data.NGO),
                             sets.religion.add(data.religion)
                         )
+
+                      
                         
     
                     })
@@ -231,6 +234,8 @@ const RequestEditDelete = () => {
                         searchArray.religion.push(item);
                     }
                    
+
+                  console.log(searchArray);
                    
                    
                 }
@@ -464,7 +469,20 @@ const RequestEditDelete = () => {
             }
             else if(res.data.success)
             {
+              //reset data
+              searchArray.occupation=[];
+              searchArray.address=[];
+              searchArray.area_location=[];
+              searchArray.contact_person=[];
+              searchArray.mohalla_masjid_jamat=[];
+              searchArray.religion=[];
+              searchArray.ngo=[];
+              
+
+              fetch_distinct_requester_details();
               fetch_requester_details();
+
+              
               setOpen(false);
             }
         })
@@ -614,6 +632,7 @@ const RequestEditDelete = () => {
                               type="number"
                               name="dependent_no"
                               onChange={inputEvent}
+                              onWheelCapture={(e)=>e.target.blur()}
                               value={dependent_no}
                               error={(dependent_no_error) ? true : false }
                               helperText={dependent_no_error}
@@ -635,6 +654,7 @@ const RequestEditDelete = () => {
                               type="number"
                               name="children_no"
                               onChange={inputEvent}
+                              onWheelCapture={(e)=>e.target.blur()}
                               error={(children_no_error) ? true : false}
                               helperText={children_no_error}
                               value={children_no}
